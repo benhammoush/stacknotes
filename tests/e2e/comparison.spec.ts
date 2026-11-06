@@ -23,7 +23,7 @@ test("reads the complete table and opens a keyboard explanation", async ({
   );
   await expect(page.getByRole("columnheader")).toHaveCount(9);
   await page
-    .getByRole("button", { name: "Technical responsibilities", exact: true })
+    .getByRole("button", { name: "Who handles what", exact: true })
     .click();
   await expect(page.getByRole("rowheader")).toHaveCount(17);
   await expect(page.getByRole("cell")).toHaveCount(120);
@@ -32,7 +32,7 @@ test("reads the complete table and opens a keyboard explanation", async ({
     "https://developers.cloudflare.com/d1/",
   );
   const button = page.getByRole("button", {
-    name: "About Backups / PITR",
+    name: "About Backups and recovery history",
     exact: true,
   });
   await button.focus();
@@ -49,7 +49,7 @@ test("discovers explanations on hover and can dismiss them", async ({
 }) => {
   await page.goto("/");
   await page
-    .getByRole("button", { name: "Technical responsibilities", exact: true })
+    .getByRole("button", { name: "Who handles what", exact: true })
     .click();
   await page
     .getByRole("button", { name: "About Maintenance", exact: true })
@@ -70,7 +70,7 @@ for (const width of [360, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
     await page
-      .getByRole("button", { name: "Technical responsibilities", exact: true })
+      .getByRole("button", { name: "Who handles what", exact: true })
       .click();
     const region = page.getByRole("region", {
       name: "Managed database comparison",
@@ -91,7 +91,7 @@ for (const width of [360, 768, 1440]) {
     await expect(page.getByRole("link", { name: "Atlas" })).toBeInViewport();
     await expect(
       page.getByRole("button", {
-        name: "Technical responsibilities",
+        name: "Who handles what",
         exact: true,
       }),
     ).toBeInViewport();
@@ -119,7 +119,7 @@ test("opens an explanation by touch", async ({ browser }) => {
   try {
     await page.goto("http://127.0.0.1:4178/");
     await page
-      .getByRole("button", { name: "Technical responsibilities", exact: true })
+      .getByRole("button", { name: "Who handles what", exact: true })
       .tap();
     await page
       .getByRole("button", { name: "About Maintenance", exact: true })
@@ -137,7 +137,7 @@ test("expands and collapses the entire technical section by keyboard", async ({
 }) => {
   await page.goto("/");
   const toggle = page.getByRole("button", {
-    name: "Technical responsibilities",
+    name: "Who handles what",
     exact: true,
   });
   await expect(toggle).toHaveAttribute("aria-expanded", "false");

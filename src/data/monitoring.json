@@ -59,155 +59,161 @@
   ],
   "overview": [
     {
-      "label": "What you get",
+      "label": "Primary purpose",
       "values": [
-        "Application errors, tracing and related telemetry",
-        "Telemetry, uptime and incident tooling",
-        "Infrastructure and application observability",
-        "Hosted metrics, logs, traces and visualization",
-        "Application and infrastructure observability",
-        "High-cardinality event and trace analysis",
-        "Telemetry ingestion, storage and querying",
-        "Hosted / Serverless search and observability"
+        "Find and fix app errors and slow code using details captured when problems happen",
+        "Check that apps stay online, collect monitoring data and alert the people who handle problems",
+        "Monitor apps and servers together using a wide range of connected tools",
+        "Collect, chart and set alerts on app measurements, event records and request paths using Grafana",
+        "Investigate app and server health by collecting and searching monitoring data in one place",
+        "Investigate complex app behavior using detailed events and request paths across connected apps",
+        "Collect, store and search event records to understand app behavior and problems",
+        "Search and analyze event records and request paths using Elastic's hosted tools"
       ]
     },
     {
-      "label": "Pros",
+      "label": "Strengths",
       "values": [
-        "Error triage and application context",
-        "Uptime and incident workflow alongside telemetry",
-        "Broad product and integration catalog",
-        "Open telemetry ecosystem and Grafana",
-        "Integrated telemetry and query tooling",
-        "Exploratory debugging across rich events",
-        "Dataset-based telemetry and query workflow",
-        "Search, logs and observability ecosystem"
+        "Error investigation with details from the app",
+        "Online checks, monitoring data and problem-response tools together",
+        "Many monitoring products and ready-made connections",
+        "Grafana charts and support for open monitoring tools",
+        "Connected monitoring data and search tools",
+        "Explore detailed events to find unexpected causes",
+        "Group and search monitoring records in data collections",
+        "Search, event-record analysis and app-monitoring tools"
       ]
     },
     {
-      "label": "Cons",
+      "label": "Limitations",
       "values": [
-        "SDK setup and product quotas",
-        "Products and retention configured separately",
-        "Many billing dimensions and agent settings",
-        "Signal pipelines, cardinality and retention choices",
-        "Data, access and compute plan decisions",
-        "Useful results depend on rich instrumentation",
-        "Ingest schema, queries and cost controls",
-        "Hosted and Serverless have different controls"
+        "You connect code libraries and manage product usage limits",
+        "You configure each product and how long it keeps data",
+        "Several billing factors and data-collection settings",
+        "You configure collection, unique data values and how long to keep records",
+        "You choose data limits, team access and processing plans",
+        "Useful results depend on collecting enough app detail",
+        "You design incoming records, searches and cost controls",
+        "Hosted and Serverless plans expose different settings"
       ]
     },
     {
-      "label": "Billing",
+      "label": "How billing works",
       "values": [
-        "Plan + event / product usage",
-        "Products + responders / telemetry usage",
-        "Product-specific hosts / data / usage",
-        "Plan + signal-specific usage",
-        "Data + users / compute options",
-        "Plan + event / metric volume",
-        "Compute + storage",
-        "Hosted resources or Serverless usage"
+        "Plan, recorded events and product usage",
+        "Selected products, response-team members and monitoring-data usage",
+        "Depends on product: monitored machines, data or other usage",
+        "Plan and usage for each type of monitoring data",
+        "Data, users and processing options",
+        "Plan and volume of events and measurements",
+        "Processing and storage",
+        "Allocated server capacity or Serverless usage"
       ]
     }
   ],
   "responsibilities": [
     {
-      "label": "Telemetry backend",
-      "explanation": "This comparison covers hosted offerings. The provider operates its backend, but that does not remove responsibility for your agents, application performance or telemetry quality.",
+      "label": "Hosted monitoring service",
+      "explanation": "The provider runs the monitoring system. You still maintain the software that sends data from your app and servers, check that the data is useful and avoid slowing down your app. Monitoring data is also called telemetry.",
       "values": [
-        ["Auto", "Hosted platform"],
-        ["Auto", "Hosted platform"],
-        ["Auto", "Hosted platform"],
-        ["Auto", "Hosted stack"],
-        ["Auto", "Hosted platform"],
-        ["Auto", "Hosted platform"],
-        ["Auto", "Hosted platform"],
-        ["Auto", "Hosted / Serverless service"]
+        ["Auto", "Provider runs monitoring"],
+        ["Auto", "Provider runs monitoring"],
+        ["Auto", "Provider runs monitoring"],
+        ["Auto", "Provider runs monitoring"],
+        ["Auto", "Provider runs monitoring"],
+        ["Auto", "Provider runs monitoring"],
+        ["Auto", "Provider runs monitoring"],
+        ["Auto", "Provider runs the selected hosting option"]
       ]
     },
     {
-      "label": "Instrumentation",
-      "explanation": "Install and configure SDKs, agents, collectors or telemetry exporters. Verify missing signals and propagation across services; automatic instrumentation still requires integration and validation.",
+      "label": "Collecting monitoring data",
+      "explanation": "Connect code libraries or collection programs to send monitoring data. Logs record events, metrics measure values over time and traces show a request's path through connected apps. Check for missing data and broken connections. Automatic collection still needs setup and testing.",
       "values": [
-        ["Manual", "SDK / integrations"],
-        ["Manual", "Collectors / integrations"],
-        ["Manual", "Agent / SDK / integrations"],
-        ["Manual", "Alloy / SDK / exporters"],
-        ["Manual", "Agent / SDK / integrations"],
-        ["Manual", "OpenTelemetry / SDK"],
-        ["Manual", "SDK / collectors"],
-        ["Manual", "Agent / APM / OpenTelemetry"]
+        ["Manual", "Connect code libraries and collection tools"],
+        ["Manual", "Connect collection programs and tools"],
+        ["Manual", "Connect collection programs and code libraries"],
+        ["Manual", "Connect Alloy or other collection libraries and programs"],
+        ["Manual", "Connect collection programs and code libraries"],
+        ["Manual", "Connect OpenTelemetry tools or code libraries"],
+        ["Manual", "Connect code libraries or collection programs"],
+        [
+          "Manual",
+          "Connect collection programs, app monitoring or OpenTelemetry tools"
+        ]
       ]
     },
     {
-      "label": "Sensitive-data policy",
-      "explanation": "Prevent secrets and personal data from entering telemetry, configure supported filtering and access controls, and test redaction. Vendor processing features are not a substitute for a data policy.",
+      "label": "Protecting sensitive data",
+      "explanation": "Keep secrets and personal data out of monitoring records. Set supported filters and access rules, then test that sensitive values are removed. Provider filtering tools do not replace your own rules about what data may be collected.",
       "values": [
-        ["Manual", "Scrubbing / SDK filters"],
-        ["Manual", "Pipeline / source filters"],
-        ["Manual", "Agent / pipeline rules"],
-        ["Manual", "Collector / pipeline rules"],
-        ["Manual", "Agent / ingest rules"],
-        ["Manual", "Collector / field policy"],
-        ["Manual", "Source / ingest rules"],
-        ["Manual", "Agent / ingest pipelines"]
+        ["Manual", "Set sensitive-value removal and code-library filters"],
+        ["Manual", "Filter data before or during collection"],
+        ["Manual", "Set collection and processing filters"],
+        ["Manual", "Set collection and processing filters"],
+        ["Manual", "Filter data during collection and import"],
+        ["Manual", "Choose allowed fields and collection rules"],
+        ["Manual", "Filter data before or during import"],
+        ["Manual", "Filter data during collection and import"]
       ]
     },
     {
-      "label": "Sampling / retention",
-      "explanation": "Choose what to collect, sample and retain within product limits. Sampling affects which incidents you can investigate; longer retention and high-cardinality signals can change costs.",
+      "label": "Choosing what data to keep",
+      "explanation": "Choose which records to collect and how long to keep them. Sampling means keeping only a selection rather than every record; it affects which problems you can investigate. More history or measurements with many unique values can increase costs.",
       "values": [
-        ["Manual", "Sampling / product retention"],
-        ["Manual", "Sources / retention"],
-        ["Manual", "Product / index controls"],
-        ["Manual", "Signal / retention controls"],
-        ["Manual", "Data / retention controls"],
-        ["Manual", "Sampling / dataset settings"],
-        ["Manual", "Dataset / retention controls"],
-        ["Manual", "Lifecycle / project controls"]
+        [
+          "Manual",
+          "Choose record selection and storage duration for each product"
+        ],
+        ["Manual", "Choose data sources and storage duration"],
+        ["Manual", "Choose product and searchable-data settings"],
+        ["Manual", "Choose data types and storage duration"],
+        ["Manual", "Choose data settings and storage duration"],
+        ["Manual", "Choose record selection and data-collection settings"],
+        ["Manual", "Choose data collections and storage duration"],
+        ["Manual", "Set automatic data cleanup and project limits"]
       ]
     },
     {
-      "label": "Alerts / service goals",
-      "explanation": "Define meaningful symptoms, thresholds, service objectives and destinations. A managed alert engine does not know your business impact or decide who should respond.",
+      "label": "Alerts and reliability goals",
+      "explanation": "Choose which problems need attention, when to send alerts and who receives them. Set reliability goals, such as how often requests should succeed. The provider does not know the impact on your users or decide who should respond.",
       "values": [
-        ["Manual", "Issue / metric alert rules"],
-        ["Manual", "Monitors / alert policies"],
-        ["Manual", "Monitors / service objectives"],
-        ["Manual", "Alert rules / service objectives"],
-        ["Manual", "Policies / service objectives"],
-        ["Manual", "Triggers / service objectives"],
-        ["Manual", "Monitors / destinations"],
-        ["Manual", "Rules / connectors"]
+        ["Manual", "Set error and measurement alerts"],
+        ["Manual", "Set checks and alert rules"],
+        ["Manual", "Set checks and reliability goals"],
+        ["Manual", "Set alert rules and reliability goals"],
+        ["Manual", "Set alert rules and reliability goals"],
+        ["Manual", "Set alert conditions and reliability goals"],
+        ["Manual", "Set checks and alert recipients"],
+        ["Manual", "Set alert rules and notification connections"]
       ]
     },
     {
-      "label": "Access / environments",
-      "explanation": "Separate production and nonproduction telemetry, restrict credentials and assign least-privilege access. Team and role features vary by product and subscription.",
+      "label": "Access rules",
+      "explanation": "Keep live-app monitoring data separate from development and test data. Protect access keys and give each person or program only the access it needs. Available team and permission features depend on the product and plan.",
       "values": [
-        ["Manual", "Projects / teams / tokens"],
-        ["Manual", "Teams / sources / tokens"],
-        ["Manual", "Roles / tags / API keys"],
-        ["Manual", "Stacks / roles / tokens"],
-        ["Manual", "Accounts / roles / keys"],
-        ["Manual", "Environments / teams / keys"],
-        ["Manual", "Datasets / roles / tokens"],
-        ["Manual", "Spaces / projects / roles"]
+        ["Manual", "Set projects, team access and access keys"],
+        ["Manual", "Set team access, data sources and access keys"],
+        ["Manual", "Set permissions, data labels and access keys"],
+        ["Manual", "Set monitoring groups, permissions and access keys"],
+        ["Manual", "Set accounts, permissions and access keys"],
+        ["Manual", "Separate live and test data; set team access and keys"],
+        ["Manual", "Set data collections, permissions and access keys"],
+        ["Manual", "Set workspaces, projects and permissions"]
       ]
     },
     {
-      "label": "Incident resolution",
-      "explanation": "The platform can detect, notify and help investigate. Your team still diagnoses production impact, coordinates response, changes the application and verifies recovery.",
+      "label": "Fixing problems",
+      "explanation": "The platform can detect problems, send alerts and help with investigation. Your team still works out the effect on users, coordinates the response, repairs the app and checks that it works again.",
       "values": [
-        ["Manual", "Investigate / repair / verify"],
-        ["Manual", "Respond / repair / verify"],
-        ["Manual", "Investigate / repair / verify"],
-        ["Manual", "Investigate / repair / verify"],
-        ["Manual", "Investigate / repair / verify"],
-        ["Manual", "Investigate / repair / verify"],
-        ["Manual", "Investigate / repair / verify"],
-        ["Manual", "Investigate / repair / verify"]
+        ["Manual", "Investigate, repair and check recovery"],
+        ["Manual", "Respond, repair and check recovery"],
+        ["Manual", "Investigate, repair and check recovery"],
+        ["Manual", "Investigate, repair and check recovery"],
+        ["Manual", "Investigate, repair and check recovery"],
+        ["Manual", "Investigate, repair and check recovery"],
+        ["Manual", "Investigate, repair and check recovery"],
+        ["Manual", "Investigate, repair and check recovery"]
       ]
     }
   ]

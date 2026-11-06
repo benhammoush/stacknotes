@@ -51,210 +51,210 @@
   ],
   "overview": [
     {
-      "label": "What you get",
+      "label": "Primary purpose",
       "values": [
-        "SQL database integrated with Workers",
-        "Standard databases managed by AWS",
-        "AWS-built MySQL/Postgres-compatible database",
-        "Standard databases managed by Google",
-        "Managed SQL Server–based database",
-        "Postgres + login, files and APIs",
-        "Postgres + autoscaling and branching",
-        "Managed JSON-like document database"
+        "Store app data in tables and query it directly from Cloudflare Workers",
+        "Run familiar database software on AWS without managing the underlying servers",
+        "Run apps built for MySQL or PostgreSQL on AWS-designed database software",
+        "Run MySQL, PostgreSQL or SQL Server while Google manages the database servers",
+        "Run apps built for SQL Server while Azure manages the database servers",
+        "Build an app around PostgreSQL, with connected sign-in, file storage and data access tools",
+        "Use PostgreSQL with adjustable processing capacity and separate database copies for development",
+        "Store app data as flexible documents while MongoDB manages the database servers"
       ]
     },
     {
-      "label": "Pros",
+      "label": "Strengths",
       "values": [
-        "Simple Worker integration; usage billing",
-        "Broad configuration; standard engines",
-        "Distributed storage; cluster/serverless options",
-        "Google integration; standard engines",
-        "Azure integration; built-in local HA",
-        "Complete backend toolkit",
-        "Branching; elastic compute",
-        "Flexible documents; search tools"
+        "Direct connection from Workers; usage-based billing",
+        "Many settings and familiar database software",
+        "Storage spread across machines; several processing options",
+        "Google Cloud tools and familiar database software",
+        "Azure tools and built-in local failure recovery",
+        "Database, sign-in and file tools together",
+        "Separate development copies and adjustable processing capacity",
+        "Flexible data structure and search tools"
       ]
     },
     {
-      "label": "Cons",
+      "label": "Limitations",
       "values": [
-        "Small database cap; serial queries",
-        "More setup; provisioned capacity costs",
-        "AWS-specific features; complex pricing",
-        "More setup; provisioned capacity costs",
-        "Tier complexity; SQL Server ecosystem",
-        "Platform features to migrate; add-on costs",
-        "Possible idle-resume delay; plan limits",
-        "Different data model; indexing/sharding needs care"
+        "Limited size per database; each database processes queries one at a time",
+        "More setup; you pay for allocated server capacity",
+        "AWS-specific features and several billing factors",
+        "More setup; you pay for allocated server capacity",
+        "Several pricing levels; designed around SQL Server",
+        "Moving platform-specific features takes work; extras cost more",
+        "May take time to wake after inactivity; plan limits apply",
+        "Document data differs from tables; search indexes and data distribution need planning"
       ]
     },
     {
-      "label": "Billing",
+      "label": "How billing works",
       "values": [
-        "Rows + storage",
-        "Instance + usage",
-        "Compute + usage",
-        "Instance + usage",
-        "Tier + usage",
-        "Plan + usage",
+        "Rows read or written and data storage",
+        "Database server and usage",
+        "Processing capacity and usage",
+        "Database server and usage",
+        "Pricing level and usage",
+        "Plan and usage",
         "Usage",
-        "Tier + usage"
+        "Pricing level and usage"
       ]
     }
   ],
   "responsibilities": [
     {
       "label": "Maintenance",
-      "explanation": "Keeping the database software and infrastructure updated. The provider handles routine work, but you may still need to schedule maintenance or plan major engine upgrades.",
+      "explanation": "Keeping database software and its servers updated. The provider handles routine work, but you may still need to choose maintenance times or plan upgrades to a new major software version.",
       "values": [
         ["Auto", ""],
-        ["Auto", "Plan major upgrades"],
-        ["Auto", "Plan major upgrades"],
-        ["Auto", "Set window"],
+        ["Auto", "Plan major software upgrades"],
+        ["Auto", "Plan major software upgrades"],
+        ["Auto", "Choose maintenance times"],
         ["Auto", ""],
-        ["Auto", "Plan major upgrades"],
+        ["Auto", "Plan major software upgrades"],
         ["Auto", ""],
         ["Auto", ""]
       ]
     },
     {
       "label": "Connection pooling",
-      "explanation": "Reusing database connections instead of opening a new one for every request. Most services require choosing and configuring a client pool or proxy. D1 uses a Worker binding rather than a traditional connection pool.",
+      "explanation": "Connection pooling means reusing database connections instead of opening a new one for every request. You usually configure this in your app or use a connection-sharing tool. D1 connects directly to Worker code without a traditional pool. Supavisor and PgBouncer are connection-pooling tools.",
       "values": [
-        ["Auto", "Worker binding; no pool"],
-        ["Manual", "App / RDS Proxy"],
-        ["Manual", "App / RDS Proxy"],
-        ["Manual", "App / eligible pool"],
-        ["Manual", "Client pool"],
-        ["Manual", "Supavisor"],
-        ["Manual", "PgBouncer"],
-        ["Manual", "Driver pool"]
+        ["Auto", "Direct Worker connection; no pool"],
+        ["Manual", "Configure the app or RDS Proxy"],
+        ["Manual", "Configure the app or RDS Proxy"],
+        ["Manual", "Configure the app or a supported pooling tool"],
+        ["Manual", "Configure pooling in the app"],
+        ["Manual", "Configure Supavisor"],
+        ["Manual", "Configure PgBouncer"],
+        ["Manual", "Configure pooling in the database library"]
       ]
     },
     {
-      "label": "Concurrent requests",
-      "explanation": "Handling requests that arrive at the same time. Managed does not mean unlimited: concurrency, connections and throughput have limits. D1 executes queries serially within each database instance.",
+      "label": "Simultaneous requests",
+      "explanation": "Handling requests that arrive at the same time. A provider-run database still limits connections, simultaneous work and processing speed. D1 processes queries one at a time within each database copy.",
       "values": [
-        ["Auto", "Serial per instance"],
-        ["Auto", "Parallel; limited"],
-        ["Auto", "Parallel; limited"],
-        ["Auto", "Parallel; limited"],
-        ["Auto", "Parallel; limited"],
-        ["Auto", "Parallel; limited"],
-        ["Auto", "Parallel; limited"],
-        ["Auto", "Concurrent; limited"]
+        ["Auto", "One query at a time per database copy"],
+        ["Auto", "Several at once, within limits"],
+        ["Auto", "Several at once, within limits"],
+        ["Auto", "Several at once, within limits"],
+        ["Auto", "Several at once, within limits"],
+        ["Auto", "Several at once, within limits"],
+        ["Auto", "Several at once, within limits"],
+        ["Auto", "Several at once, within limits"]
       ]
     },
     {
-      "label": "Backups / PITR",
-      "explanation": "Backups keep recoverable copies. Point-in-time recovery (PITR) lets you recover to a point inside a retained history window. Availability, retention and charges depend on the plan; having backups does not prove a restore will meet your needs.",
+      "label": "Backups and recovery history",
+      "explanation": "Backups keep copies that can be restored. Point-in-time recovery lets you return data to a chosen moment within the saved history. Available features, history length and charges depend on the plan. Having backups does not prove that recovery will be fast or complete enough for your app.",
       "values": [
-        ["Auto", "7d Free / 30d Paid"],
-        ["Manual", "Enable retention"],
-        ["Auto", "Set retention"],
-        ["Manual", "Set backup + PITR"],
-        ["Auto", "Tier-dependent"],
-        ["Manual", "Paid backups; PITR add-on"],
-        ["Manual", "Set history window"],
-        ["Manual", "Tier + policy"]
+        ["Auto", "7 days on Free; 30 days on Paid"],
+        ["Manual", "Enable and choose how long to keep backups"],
+        ["Auto", "Choose how long to keep recovery history"],
+        ["Manual", "Set backups and point-in-time recovery"],
+        ["Auto", "Depends on pricing level"],
+        ["Manual", "Paid backups; point-in-time recovery costs extra"],
+        ["Manual", "Choose how much recovery history to keep"],
+        ["Manual", "Choose pricing level and backup rules"]
       ]
     },
     {
-      "label": "Restore",
-      "explanation": "Recovering data from a backup or history. You choose the recovery point, start the restore and validate the result. Some services create a new database or cluster, so reconnecting your application can be part of recovery.",
+      "label": "Restoring data",
+      "explanation": "Recovering data from a backup or saved history. You choose the recovery point, start the restore and check the result. Some products create a new database server or group of servers, so you may need to reconnect your app after recovery.",
       "values": [
-        ["Manual", "Time Travel: in place"],
-        ["Manual", "New instance"],
-        ["Manual", "New cluster"],
-        ["Manual", "Backup/PITR target"],
-        ["Manual", "New database"],
-        ["Manual", "Dashboard/API"],
-        ["Manual", "Restore / branch"],
-        ["Manual", "Target cluster"]
+        ["Manual", "Use Time Travel on the existing database"],
+        ["Manual", "Restore to a new database server"],
+        ["Manual", "Restore to a new database group"],
+        ["Manual", "Choose the backup or recovery destination"],
+        ["Manual", "Restore to a new database"],
+        ["Manual", "Start recovery in the dashboard or through code"],
+        ["Manual", "Restore or create a separate database copy"],
+        ["Manual", "Choose the database group to restore to"]
       ]
     },
     {
-      "label": "Compute scaling",
-      "explanation": "Changing the processing capacity available to the database. Manual includes enabling autoscaling and setting bounds: once configured, it can run automatically. D1 does not expose a database compute-size setting.",
+      "label": "Processing capacity",
+      "explanation": "Changing how much processing power the database has. Manual includes enabling automatic capacity changes and setting their limits: after setup, those changes can happen automatically. D1 does not offer a database server-size setting.",
       "values": [
-        ["Excluded", "Quotas; no sizing"],
-        ["Manual", "Resize"],
-        ["Manual", "Size / Serverless v2"],
-        ["Manual", "Resize"],
-        ["Manual", "Tier / serverless"],
-        ["Manual", "Resize"],
-        ["Manual", "Autoscaling bounds"],
-        ["Manual", "Autoscaling bounds"]
+        ["Excluded", "Usage limits; no server-size setting"],
+        ["Manual", "Choose server capacity"],
+        ["Manual", "Choose capacity or Serverless v2 settings"],
+        ["Manual", "Choose server capacity"],
+        ["Manual", "Choose pricing level or automatic capacity settings"],
+        ["Manual", "Choose server capacity"],
+        ["Manual", "Set automatic capacity limits"],
+        ["Manual", "Set automatic capacity limits"]
       ]
     },
     {
       "label": "Storage growth",
-      "explanation": "Increasing the room available for data. Some services grow storage automatically within limits; others require settings or a plan change. At a per-database cap you may need to split data across databases.",
+      "explanation": "Increasing the room available for data. Some products grow storage automatically within limits; others require settings or a plan change. At a database's size limit you may need to split data across several databases.",
       "values": [
-        ["Manual", "Partition at cap"],
-        ["Manual", "Size / autoscale"],
+        ["Manual", "Split data across databases at the size limit"],
+        ["Manual", "Choose storage size or automatic growth"],
         ["Auto", "Within limits"],
-        ["Manual", "Enable auto growth"],
-        ["Manual", "Tier / max size"],
-        ["Manual", "Disk / plan settings"],
+        ["Manual", "Enable automatic storage growth"],
+        ["Manual", "Choose pricing level and maximum size"],
+        ["Manual", "Choose disk size and plan"],
         ["Auto", "Within plan limits"],
-        ["Manual", "Autoscaling"]
+        ["Manual", "Configure automatic storage growth"]
       ]
     },
     {
-      "label": "Read replicas",
-      "explanation": "Copies used to serve reads. You may need to create replicas and route reads explicitly. Replication can lag; consistency settings matter. A replica is not an independent historical backup.",
+      "label": "Read-only copies",
+      "explanation": "Read replicas are database copies used to answer read requests. You may need to create them and direct reads to them. Copies can be behind the latest writes, so choose how up-to-date reads must be. A read-only copy is not a historical backup.",
       "values": [
-        ["Manual", "Enable + Sessions"],
-        ["Manual", "Add replicas"],
-        ["Manual", "Add readers"],
-        ["Manual", "Add replicas"],
-        ["Manual", "Tier / geo options"],
-        ["Manual", "Paid plans"],
-        ["Manual", "Add read compute"],
-        ["Manual", "Read preferences"]
+        ["Manual", "Enable copies and use the Sessions connection tools"],
+        ["Manual", "Add read-only copies"],
+        ["Manual", "Add read-only database servers"],
+        ["Manual", "Add read-only copies"],
+        ["Manual", "Choose pricing level and location options"],
+        ["Manual", "Available on paid plans"],
+        ["Manual", "Add processing capacity for reads"],
+        ["Manual", "Choose which database copies answer reads"]
       ]
     },
     {
-      "label": "HA / failover",
-      "explanation": "High availability (HA) reduces downtime when infrastructure fails. Failover switches to a healthy replacement. Local recovery, zone redundancy and cross-region recovery are different guarantees; verify the service and plan rather than treating Auto as zero downtime.",
+      "label": "Staying online after failures",
+      "explanation": "High availability means reducing downtime when machines fail. Failover means switching to a working replacement. Recovery on one site, across separate sites and across regions offers different protection. Check the service and plan: Auto does not mean there can be no downtime.",
       "values": [
-        ["Auto", "Platform-managed"],
-        ["Manual", "Multi-AZ"],
-        ["Manual", "Replicated storage; add readers"],
-        ["Manual", "Regional HA"],
-        ["Auto", "Zone/geo: configure"],
-        ["Manual", "Check plan-specific HA"],
-        ["Auto", "Service recovery"],
-        ["Auto", "Replica election"]
+        ["Auto", "Provider handles recovery"],
+        ["Manual", "Enable copies across separate AWS sites"],
+        ["Manual", "Storage is copied; add replacement database servers"],
+        ["Manual", "Enable recovery across sites in the same region"],
+        ["Auto", "Configure protection across sites or regions"],
+        ["Manual", "Check the plan's failure protection"],
+        ["Auto", "Provider handles service recovery"],
+        ["Auto", "A database copy is chosen as the replacement"]
       ]
     },
     {
       "label": "Long-term backups",
-      "explanation": "Keeping recoverable data beyond the normal backup or PITR window. You choose retention, export destinations and access controls, and test recovery. Export storage and tooling may be separate services.",
+      "explanation": "Keeping recoverable data beyond the normal backup or recovery-history period. Choose how long to keep copies, where exported files go and who can access them, then test recovery. Storing exports may require separate storage and tools.",
       "values": [
-        ["Excluded", "Export elsewhere"],
-        ["Manual", "Snapshots"],
-        ["Manual", "Snapshots"],
-        ["Manual", "Retention / exports"],
-        ["Manual", "Retention policy"],
+        ["Excluded", "Export data to separate storage"],
+        ["Manual", "Keep full database copies called snapshots"],
+        ["Manual", "Keep full database copies called snapshots"],
+        ["Manual", "Choose how long to keep backups or exports"],
+        ["Manual", "Choose how long to keep backups"],
         ["Manual", "Retain exports"],
         ["Manual", "Retain exports"],
-        ["Manual", "Policy / exports"]
+        ["Manual", "Set backup rules or keep exports"]
       ]
     },
     {
-      "label": "Monitoring / alerts",
-      "explanation": "Watching database health, usage and failures. Providers expose metrics, but you select alert thresholds, notification destinations and response procedures. Metrics alone do not notify you or fix an incident.",
+      "label": "Monitoring and alerts",
+      "explanation": "Watching database health, usage and failures. Providers supply measurements, but you choose which values need attention, who receives alerts and how to respond. Collecting measurements alone does not notify anyone or fix a problem.",
       "values": [
-        ["Manual", "Metrics + alerts"],
+        ["Manual", "Set health measurements and alerts"],
         ["Manual", "CloudWatch"],
         ["Manual", "CloudWatch"],
         ["Manual", "Cloud Monitoring"],
         ["Manual", "Azure Monitor"],
-        ["Manual", "Metrics + alerts"],
-        ["Manual", "Metrics + alerts"],
+        ["Manual", "Set health measurements and alerts"],
+        ["Manual", "Set health measurements and alerts"],
         ["Manual", "Atlas alerts"]
       ]
     }

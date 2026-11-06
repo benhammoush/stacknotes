@@ -59,155 +59,155 @@
   ],
   "overview": [
     {
-      "label": "What you get",
+      "label": "Primary purpose",
       "values": [
-        "Durable execution, steps and event orchestration",
-        "Hosted background task execution",
-        "Managed message queues",
-        "Scheduled task dispatch to HTTP / App Engine",
-        "Enterprise message broker",
-        "HTTP message delivery and scheduling",
-        "Managed queues with Worker or HTTP pull consumers",
-        "Managed durable workflow service"
+        "Coordinate multi-step background tasks that can retry and continue after interruptions",
+        "Run background tasks on the provider's servers, with retries and saved progress",
+        "Hold messages until your separately hosted code is ready to process them",
+        "Schedule requests to your server code and control how quickly they are sent",
+        "Pass messages between apps through queues or send them to several subscribers",
+        "Deliver scheduled or retried web requests to your existing server code",
+        "Hold messages for Worker code or other apps that fetch them over the web",
+        "Save and coordinate long-running task progress while your own servers run the task code"
       ]
     },
     {
-      "label": "Pros",
+      "label": "Strengths",
       "values": [
-        "Step retries and flow control",
-        "Task runtime and orchestration together",
-        "Standard / FIFO queues and AWS integration",
-        "Rate-controlled task dispatch",
-        "Queues, topics and subscriptions",
-        "HTTP-first delivery to existing endpoints",
-        "Worker integration and external consumers",
-        "Durable history and workflow recovery"
+        "Retry individual steps and control how tasks run",
+        "Runs task code and coordinates task steps",
+        "Standard or ordered queues; connects to AWS tools",
+        "Controls how quickly tasks reach your server",
+        "Queues and messages sent to multiple subscribers",
+        "Sends web requests to server code you already host",
+        "Connects to Workers and apps hosted elsewhere",
+        "Saved task history and recovery after interruptions"
       ]
     },
     {
-      "label": "Cons",
+      "label": "Limitations",
       "values": [
-        "SDK integration; execution model affects hosting",
-        "Task code and runtime resource choices",
-        "Consumer hosting and processing design",
-        "Not a general-purpose workflow runtime",
-        "Tier-specific features and broker configuration",
-        "Endpoint hosting and delivery limits",
-        "At-least-once delivery; ordering not guaranteed",
-        "You host and operate application workers"
+        "Requires a code library; where task code runs depends on the connection method",
+        "You maintain task code and choose processing capacity",
+        "You host message-processing code and decide how it runs",
+        "Delivers tasks but does not coordinate complete multi-step processes",
+        "Features depend on pricing level; messaging settings need configuration",
+        "You host the receiving server code; delivery limits apply",
+        "Messages can arrive more than once or out of order",
+        "You host and maintain the servers that run task code"
       ]
     },
     {
-      "label": "Billing",
+      "label": "How billing works",
       "values": [
-        "Plan + executions / usage",
-        "Plan + task compute / usage",
-        "Requests + transfer / optional features",
-        "Billable operations / network",
-        "Tier + operations or capacity / extras",
-        "Plan + messages / usage",
-        "Operations + queues above included amount",
-        "Plan / actions + storage / usage"
+        "Plan, task runs and usage",
+        "Plan, task processing and usage",
+        "Requests, data transfer and optional features",
+        "Task operations and data transfer",
+        "Pricing level, operations or capacity, and extras",
+        "Plan, messages and usage",
+        "Operations and queues beyond the included amount",
+        "Plan, task actions, storage and usage"
       ]
     }
   ],
   "responsibilities": [
     {
-      "label": "Service infrastructure",
-      "explanation": "The provider operates the queue or orchestration service. This does not necessarily include execution of your application code, your endpoint or your workers.",
+      "label": "Hosted task or queue service",
+      "explanation": "The provider runs the system that stores messages or coordinates task steps. It does not necessarily run your task code. A queue holds messages until code can process them; a workflow coordinates several steps and remembers their progress.",
       "values": [
-        ["Auto", "Orchestration service"],
-        ["Auto", "Cloud task platform"],
-        ["Auto", "Queue service"],
-        ["Auto", "Dispatch service"],
-        ["Auto", "Message broker"],
-        ["Auto", "Delivery service"],
-        ["Auto", "Queue service"],
-        ["Auto", "Workflow service / persistence"]
+        ["Auto", "Provider coordinates task steps"],
+        ["Auto", "Provider runs the task platform"],
+        ["Auto", "Provider runs the message queue"],
+        ["Auto", "Provider sends task requests"],
+        ["Auto", "Provider passes messages between apps"],
+        ["Auto", "Provider delivers web requests"],
+        ["Auto", "Provider runs the message queue"],
+        ["Auto", "Provider coordinates and saves task progress"]
       ]
     },
     {
-      "label": "Application runtime",
-      "explanation": "Auto means this product hosts task execution. Manual means execution hosting depends on the integration mode. Excluded means you supply a separate consumer, worker or HTTP endpoint.",
+      "label": "Running task code",
+      "explanation": "Auto means this product runs your task code. Manual means where code runs depends on how you connect the product. Excluded means you host the code elsewhere. A background worker is a program that processes tasks outside the user's immediate request.",
       "values": [
-        ["Manual", "Hosting depends on execution model"],
-        ["Auto", "Cloud hosts task code"],
-        ["Excluded", "Host consumers separately"],
-        ["Excluded", "Host target separately"],
-        ["Excluded", "Host consumers separately"],
-        ["Excluded", "Host endpoint separately"],
-        ["Excluded", "Workers or external HTTP consumers"],
-        ["Excluded", "Host application workers"]
+        ["Manual", "Hosting depends on the connection method"],
+        ["Auto", "Provider runs task code"],
+        ["Excluded", "Host message-processing code separately"],
+        ["Excluded", "Host the receiving server code separately"],
+        ["Excluded", "Host message-processing code separately"],
+        ["Excluded", "Host the receiving server code separately"],
+        ["Excluded", "Use Workers or other apps that fetch messages"],
+        ["Excluded", "Host background workers separately"]
       ]
     },
     {
-      "label": "Retry policy",
-      "explanation": "Configure retry limits, timeouts, backoff and failure handling. Queue redelivery and workflow step retries operate at different levels and do not undo an external side effect.",
+      "label": "Retry rules",
+      "explanation": "Choose how many times to retry, how long to wait and what happens after failure. Resending a message differs from repeating one task step. Neither automatically undoes a payment, email or data change that already happened.",
       "values": [
-        ["Manual", "Step / function policy"],
-        ["Manual", "Task retry policy"],
-        ["Manual", "Visibility / redrive policy"],
-        ["Manual", "Queue retry configuration"],
-        ["Manual", "Locks / delivery count"],
-        ["Manual", "Delivery retry policy"],
-        ["Manual", "Consumer / retry settings"],
-        ["Manual", "Activity / workflow policy"]
+        ["Manual", "Set retry rules for steps and tasks"],
+        ["Manual", "Set task retry rules"],
+        ["Manual", "Set processing time limits and failed-message handling"],
+        ["Manual", "Set queue retry rules"],
+        ["Manual", "Set message locks and maximum delivery attempts"],
+        ["Manual", "Set delivery retry rules"],
+        ["Manual", "Set processing and retry rules"],
+        ["Manual", "Set retry rules for task steps and complete processes"]
       ]
     },
     {
-      "label": "Idempotency",
-      "explanation": "Design business operations so retries and duplicate deliveries cannot duplicate payments, emails or writes. Deduplication features are not a blanket exactly-once guarantee for external effects.",
+      "label": "Preventing duplicate actions",
+      "explanation": "Make repeated work safe: a retried task or duplicate message must not charge a customer twice, resend an email or repeat a data change. This property is called idempotency. Built-in duplicate detection does not guarantee that every action happens exactly once.",
       "values": [
-        ["Manual", "Protect step side effects"],
-        ["Manual", "Protect task side effects"],
-        ["Manual", "Deduplicate processing"],
-        ["Manual", "Deduplicate processing"],
-        ["Manual", "Deduplicate processing"],
-        ["Manual", "Deduplicate processing"],
-        ["Manual", "Deduplicate processing"],
-        ["Manual", "Idempotent activities"]
+        ["Manual", "Make repeated task steps safe"],
+        ["Manual", "Make repeated task runs safe"],
+        ["Manual", "Detect duplicates before repeating actions"],
+        ["Manual", "Detect duplicates before repeating actions"],
+        ["Manual", "Detect duplicates before repeating actions"],
+        ["Manual", "Detect duplicates before repeating actions"],
+        ["Manual", "Detect duplicates before repeating actions"],
+        ["Manual", "Make repeated task steps safe"]
       ]
     },
     {
-      "label": "Durable workflow state",
-      "explanation": "Auto means the selected product persists multi-step execution history or results. A durable message is not itself a multi-step workflow engine; queue users build that coordination separately.",
+      "label": "Remembering task progress",
+      "explanation": "Auto means the product saves task history or step results so work can continue after interruptions. Saving a message in a queue does not coordinate a multi-step process. With queue-only products, you build that coordination separately.",
       "values": [
-        ["Auto", "Step results / orchestration"],
-        ["Auto", "Task runs / checkpoints"],
-        ["Excluded", "Message state only"],
-        ["Excluded", "Task dispatch state only"],
-        ["Excluded", "Broker state only"],
-        ["Excluded", "Delivery state only"],
-        ["Excluded", "Message state only"],
-        ["Auto", "Workflow event history"]
+        ["Auto", "Saves step results and task progress"],
+        ["Auto", "Saves task runs and restart points"],
+        ["Excluded", "Tracks messages, not task steps"],
+        ["Excluded", "Tracks task delivery, not task steps"],
+        ["Excluded", "Tracks messages, not task steps"],
+        ["Excluded", "Tracks delivery, not task steps"],
+        ["Excluded", "Tracks messages, not task steps"],
+        ["Auto", "Saves the history of task steps"]
       ]
     },
     {
-      "label": "Capacity / ordering",
-      "explanation": "Choose concurrency, rate limits and any ordering mechanism the product supports. FIFO or workflow determinism does not guarantee that every downstream side effect happens in a desired global order.",
+      "label": "Processing limits and order",
+      "explanation": "Choose how many tasks run at once, how quickly work arrives and any supported ordering rules. First-in, first-out queues process messages in arrival order within their ordering rules. That alone does not guarantee the order of every action across your app.",
       "values": [
-        ["Manual", "Concurrency / flow controls"],
-        ["Manual", "Queues / concurrency"],
-        ["Manual", "Standard / FIFO choice"],
-        ["Manual", "Dispatch rate / concurrency"],
-        ["Manual", "Sessions / capacity tier"],
-        ["Manual", "Flow control / queues"],
-        ["Manual", "Consumer concurrency; no ordering"],
-        ["Manual", "Task queues / worker capacity"]
+        ["Manual", "Set simultaneous-task and processing limits"],
+        ["Manual", "Set queues and simultaneous-task limits"],
+        ["Manual", "Choose standard or first-in, first-out queues"],
+        ["Manual", "Set request rate and simultaneous-task limits"],
+        ["Manual", "Set message groups and capacity level"],
+        ["Manual", "Set processing limits and queues"],
+        ["Manual", "Set simultaneous-task limits; order is not guaranteed"],
+        ["Manual", "Set task queues and worker capacity"]
       ]
     },
     {
-      "label": "Failed-work recovery",
-      "explanation": "Decide how to inspect, alert on and safely replay exhausted work. A dashboard or dead-letter queue does not establish a recovery procedure or prove replay is safe.",
+      "label": "Recovering failed tasks",
+      "explanation": "Decide how to inspect failed work, alert someone and safely try it again. A dead-letter queue stores messages that could not be processed. Having that queue or a dashboard does not prove that retrying the work is safe.",
       "values": [
-        ["Manual", "Inspect / replay runs"],
-        ["Manual", "Inspect / replay runs"],
-        ["Manual", "Dead-letter / redrive"],
-        ["Manual", "Log / track exhausted tasks"],
-        ["Manual", "Dead-letter handling"],
-        ["Manual", "Dead-letter / callbacks"],
-        ["Manual", "Dead-letter handling"],
-        ["Manual", "Inspect / reset / repair"]
+        ["Manual", "Inspect task runs and retry safely"],
+        ["Manual", "Inspect task runs and retry safely"],
+        ["Manual", "Inspect and retry failed messages"],
+        ["Manual", "Log and track tasks that used all retries"],
+        ["Manual", "Handle failed messages"],
+        ["Manual", "Handle failed messages and failure notifications"],
+        ["Manual", "Handle failed messages"],
+        ["Manual", "Inspect progress, reset tasks and repair failures"]
       ]
     }
   ]

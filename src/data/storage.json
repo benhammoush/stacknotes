@@ -59,155 +59,158 @@
   ],
   "overview": [
     {
-      "label": "What you get",
+      "label": "Primary purpose",
       "values": [
-        "General-purpose object storage",
-        "Object storage with S3-compatible API",
-        "Google Cloud object storage",
-        "Azure blob / object storage",
-        "Object storage with native and S3 APIs",
-        "File storage with RLS and CDN",
-        "App file storage on Google Cloud Storage",
-        "S3-compatible object storage with CDN"
+        "Store app files, backups and large data collections using AWS tools",
+        "Store and deliver app files using Cloudflare tools, without R2 data-transfer-out charges",
+        "Store app files, backups and data for analysis using Google Cloud tools",
+        "Store app files and data for analysis using Azure tools",
+        "Store backups, archives and app files using Backblaze or S3-compatible tools",
+        "Manage app uploads and file access using Supabase sign-in and database access rules",
+        "Manage user uploads in web and mobile apps using Firebase code libraries and access rules",
+        "Store and deliver app files using S3-compatible tools and an optional built-in delivery network"
       ]
     },
     {
-      "label": "Pros",
+      "label": "Strengths",
       "values": [
-        "Storage classes and AWS ecosystem",
-        "Cloudflare integration; no R2 egress charge",
-        "Storage classes and Google ecosystem",
-        "Azure identity and storage integration",
-        "S3 API and storage-focused service",
-        "Auth, resumable uploads and file policies",
-        "Client SDKs and Firebase Security Rules",
-        "S3 tooling and built-in CDN option"
+        "Several storage options and connections to AWS tools",
+        "Cloudflare connections; no R2 data-transfer-out charge",
+        "Several storage options and connections to Google Cloud tools",
+        "Connects to Azure account and storage tools",
+        "Works with S3-compatible tools; focused on storage",
+        "Connected sign-in, resumable uploads and file-access rules",
+        "App code libraries and Firebase Security Rules",
+        "Works with S3-compatible tools; optional built-in delivery network"
       ]
     },
     {
-      "label": "Cons",
+      "label": "Limitations",
       "values": [
-        "IAM, lifecycle and transfer cost decisions",
-        "S3 compatibility is not feature parity",
-        "Location, class and network cost choices",
-        "Account, redundancy and tier choices",
-        "API / delivery-path differences",
-        "Platform dependency; plan limits",
-        "Rules and Google Cloud billing requirements",
-        "Product / region limits; S3 differences"
+        "You configure access, how long to keep files and data-transfer costs",
+        "Works with S3 tools but does not support every S3 feature",
+        "You choose storage location, type and data-transfer costs",
+        "You choose account settings, copies across storage sites and storage type",
+        "Supported connections and file-delivery options differ from S3",
+        "Depends on Supabase tools and plan limits",
+        "Requires access rules and Google Cloud billing setup",
+        "Product and location limits; not every S3 feature is supported"
       ]
     },
     {
-      "label": "Billing",
+      "label": "How billing works",
       "values": [
-        "Storage + requests / retrieval / transfer",
-        "Storage + operations / retrieval class",
-        "Storage + operations / retrieval / network",
-        "Capacity + transactions / retrieval / transfer",
-        "Storage + usage / transfer terms",
-        "Plan + storage / egress / transformations",
-        "Google Cloud storage / operations / transfer",
-        "Base subscription + storage / bandwidth usage"
+        "Storage, requests, retrieving files and data transfer",
+        "Storage and operations; retrieval fees depend on storage type",
+        "Storage, operations, retrieving files and data transfer",
+        "Storage, operations, retrieving files and data transfer",
+        "Storage and usage; data-transfer terms apply",
+        "Plan, storage, data transfer out and image changes",
+        "Google Cloud storage, operations and data transfer",
+        "Base subscription, storage and data transfer"
       ]
     }
   ],
   "responsibilities": [
     {
       "label": "Storage infrastructure",
-      "explanation": "The provider operates the object-storage infrastructure. Durability is not protection from your own deletion, compromised credentials or an incorrect retention policy.",
+      "explanation": "The provider runs the file-storage system. Object storage stores files with identifying names and descriptive information, usually in groups called buckets. Reliable storage does not protect against your own deletions, stolen access keys or incorrect rules for keeping files.",
       "values": [
-        ["Auto", "Managed object store"],
-        ["Auto", "Managed object store"],
-        ["Auto", "Managed object store"],
-        ["Auto", "Managed blob store"],
-        ["Auto", "Managed object store"],
-        ["Auto", "Hosted storage"],
-        ["Auto", "Google Cloud bucket"],
-        ["Auto", "Managed object store"]
+        ["Auto", "Provider runs file storage"],
+        ["Auto", "Provider runs file storage"],
+        ["Auto", "Provider runs file storage"],
+        ["Auto", "Provider runs file storage"],
+        ["Auto", "Provider runs file storage"],
+        ["Auto", "Provider runs file storage"],
+        ["Auto", "Google Cloud stores the files"],
+        ["Auto", "Provider runs file storage"]
       ]
     },
     {
-      "label": "Private access",
-      "explanation": "Configure bucket permissions, application authorization and temporary access. Avoid public buckets or long-lived credentials when users should see only their own files.",
+      "label": "Access rules",
+      "explanation": "Choose who can read or change each file, check permissions in your app and use temporary access where needed. Avoid public file collections or permanent access keys when users should see only their own files.",
       "values": [
-        ["Manual", "IAM / bucket policy"],
-        ["Manual", "Tokens / bucket access"],
-        ["Manual", "IAM / bucket policy"],
-        ["Manual", "Identity / shared access"],
-        ["Manual", "Keys / bucket access"],
-        ["Manual", "Auth / RLS policies"],
-        ["Manual", "Auth / Security Rules"],
-        ["Manual", "Keys / bucket policy"]
+        ["Manual", "Set AWS permissions and file-collection rules"],
+        ["Manual", "Set access keys and file-collection permissions"],
+        ["Manual", "Set Google Cloud permissions and file-collection rules"],
+        ["Manual", "Set account permissions and temporary access"],
+        ["Manual", "Set access keys and file-collection permissions"],
+        ["Manual", "Connect sign-in and database row-access rules"],
+        ["Manual", "Connect sign-in and Firebase Security Rules"],
+        ["Manual", "Set access keys and file-collection rules"]
       ]
     },
     {
-      "label": "Upload integration",
-      "explanation": "Choose direct or server-mediated uploads, validate file type and size, and design resumable and retry-safe flows. Object storage does not validate your application's business rules.",
+      "label": "Uploading files",
+      "explanation": "Choose whether uploads go directly from the user's device or through your server. Check file type and size, support resuming interrupted uploads where available and make retries safe. Storage alone does not enforce your app's rules about allowed files.",
       "values": [
-        ["Manual", "SDK / signed upload"],
-        ["Manual", "S3 / Worker integration"],
-        ["Manual", "SDK / signed upload"],
-        ["Manual", "SDK / access token"],
-        ["Manual", "Native / S3 SDK"],
-        ["Manual", "SDK / resumable upload"],
-        ["Manual", "Client / Admin SDK"],
-        ["Manual", "S3 SDK / signed upload"]
+        ["Manual", "Use a code library or temporary upload link"],
+        ["Manual", "Connect S3-compatible tools or Worker code"],
+        ["Manual", "Use a code library or temporary upload link"],
+        ["Manual", "Use a code library or temporary access credential"],
+        ["Manual", "Use Backblaze or S3-compatible code libraries"],
+        ["Manual", "Use the code library or resumable uploads"],
+        ["Manual", "Use app or server code libraries"],
+        ["Manual", "Use S3-compatible libraries or temporary upload links"]
       ]
     },
     {
-      "label": "CDN configuration",
-      "explanation": "Excluded means a separate delivery product or integration, not that a CDN cannot be used. CDN caching also needs invalidation and access-control decisions.",
+      "label": "File delivery network",
+      "explanation": "A content delivery network (CDN) keeps copies of files near visitors. Excluded means you connect a separate delivery product, not that one cannot be used. You still decide who can access cached files and when old copies must be replaced.",
       "values": [
-        ["Excluded", "CloudFront / other CDN"],
-        ["Manual", "Public domain / cache rules"],
-        ["Excluded", "Cloud CDN / other service"],
-        ["Excluded", "Front Door / other CDN"],
-        ["Excluded", "Separate CDN integration"],
-        ["Manual", "Built-in CDN / plan rules"],
-        ["Excluded", "Separate delivery configuration"],
-        ["Manual", "Enable Spaces CDN"]
+        ["Excluded", "Connect CloudFront or another delivery network"],
+        ["Manual", "Connect a public domain and set caching rules"],
+        ["Excluded", "Connect Cloud CDN or another delivery network"],
+        ["Excluded", "Connect Front Door or another delivery network"],
+        ["Excluded", "Connect a separate delivery network"],
+        [
+          "Manual",
+          "Configure the built-in delivery network within plan limits"
+        ],
+        ["Excluded", "Set up file delivery separately"],
+        ["Manual", "Enable the built-in delivery network"]
       ]
     },
     {
-      "label": "Retention / recovery",
-      "explanation": "Select supported retention, versioning, soft-delete or independent copy mechanisms and test restoration. Features differ by product; these labels do not promise that every mechanism exists everywhere.",
+      "label": "Keeping and restoring files",
+      "explanation": "Choose how long to keep files and how to recover them. Depending on the product, this may mean keeping old versions, allowing deleted files to be restored or making independent copies. Test recovery; not every product supports every option.",
       "values": [
-        ["Manual", "Versioning / lifecycle / copies"],
-        ["Manual", "Lifecycle / recovery copies"],
-        ["Manual", "Soft delete / versions / lifecycle"],
-        ["Manual", "Retention / recovery settings"],
-        ["Manual", "Versions / lifecycle / copies"],
-        ["Manual", "Exports / recovery design"],
-        ["Manual", "Bucket / recovery design"],
-        ["Manual", "Versions / lifecycle / copies"]
+        ["Manual", "Set file-version rules, automatic cleanup and copies"],
+        ["Manual", "Set automatic cleanup and make recovery copies"],
+        ["Manual", "Set deleted-file recovery, versions and cleanup rules"],
+        ["Manual", "Choose how long to keep files and how to restore them"],
+        ["Manual", "Set file-version rules, automatic cleanup and copies"],
+        ["Manual", "Export files and plan recovery"],
+        ["Manual", "Configure file storage and plan recovery"],
+        ["Manual", "Set file-version rules, automatic cleanup and copies"]
       ]
     },
     {
-      "label": "Malware / content checks",
-      "explanation": "This comparison covers storage itself. Malware scanning, moderation and safe rendering need separate tooling or product integrations, even when the same vendor sells them.",
+      "label": "Harmful-file checks",
+      "explanation": "This comparison covers storage itself. Checking files for harmful software or prohibited content, and displaying uploads safely, requires separate tools or connected products, even when the same provider sells them.",
       "values": [
-        ["Excluded", "Separate scanning workflow"],
-        ["Excluded", "Separate scanning workflow"],
-        ["Excluded", "Separate scanning workflow"],
-        ["Excluded", "Separate security integration"],
-        ["Excluded", "Separate scanning workflow"],
-        ["Excluded", "Separate scanning workflow"],
-        ["Excluded", "Separate scanning workflow"],
-        ["Excluded", "Separate scanning workflow"]
+        ["Excluded", "Set up separate file checks"],
+        ["Excluded", "Set up separate file checks"],
+        ["Excluded", "Set up separate file checks"],
+        ["Excluded", "Connect a separate security tool"],
+        ["Excluded", "Set up separate file checks"],
+        ["Excluded", "Set up separate file checks"],
+        ["Excluded", "Set up separate file checks"],
+        ["Excluded", "Set up separate file checks"]
       ]
     },
     {
-      "label": "Cost / usage controls",
-      "explanation": "Model storage, operations, retrieval, transfer, CDN and minimum-duration charges for the actual access pattern. A zero-egress storage product does not make every connected service free.",
+      "label": "Cost and usage controls",
+      "explanation": "Estimate charges for storage, file operations, retrieving files, data transfer and delivery networks. Some storage types charge for a minimum storage period. No data-transfer-out charge on storage does not make connected products free.",
       "values": [
-        ["Manual", "Class / region / usage"],
-        ["Manual", "Operations / class / usage"],
-        ["Manual", "Class / region / usage"],
-        ["Manual", "Tier / region / usage"],
-        ["Manual", "Usage / transfer terms"],
-        ["Manual", "Plan / egress / usage"],
-        ["Manual", "Billing / quotas / usage"],
-        ["Manual", "Subscription / bandwidth"]
+        ["Manual", "Choose storage type, location and usage limits"],
+        ["Manual", "Track operations, storage type and usage"],
+        ["Manual", "Choose storage type, location and usage limits"],
+        ["Manual", "Choose storage type, location and usage limits"],
+        ["Manual", "Track usage and data-transfer terms"],
+        ["Manual", "Choose a plan and track data transfer and usage"],
+        ["Manual", "Set billing controls and track usage limits"],
+        ["Manual", "Track subscription and data transfer"]
       ]
     }
   ]

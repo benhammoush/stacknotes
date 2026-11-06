@@ -34,15 +34,14 @@ export default function ComparisonPage(props: ComparisonPageProps) {
         </div>
         <div className="legend" aria-label="Responsibility legend">
           <span>
-            <strong className="status auto">Auto</strong> Provider operates
+            <strong className="status auto">Auto</strong> Provider handles it
           </span>
           <span>
-            <strong className="status manual">Manual</strong> You configure or
-            design
+            <strong className="status manual">Manual</strong> You set it up
           </span>
           <span>
             <strong className="status excluded">Excluded</strong> Handle
-            elsewhere
+            separately
           </span>
         </div>
         <div className="table-tools">
@@ -102,7 +101,7 @@ export default function ComparisonPage(props: ComparisonPageProps) {
               {category.path === "/"
                 ? "Managed database providers"
                 : `${category.title} providers`}
-              : overview and technical responsibilities
+              : overview and who handles what
             </caption>
             <thead>
               <tr>
@@ -164,7 +163,7 @@ export default function ComparisonPage(props: ComparisonPageProps) {
                     <span className="section-chevron" aria-hidden="true">
                       ›
                     </span>
-                    Technical responsibilities
+                    Who handles what
                   </button>
                 </th>
               </tr>
@@ -235,35 +234,47 @@ export default function ComparisonPage(props: ComparisonPageProps) {
           {category.path === "/" ? (
             <>
               <p>
-                <strong>You manage:</strong> schema, constraints, transactions,
-                safe retries, queries/indexes, migrations, permissions,
-                retention and recovery testing.
+                <strong>You manage:</strong> data structure and validation,
+                changes that must succeed together, safe retries, queries and
+                search indexes, database changes, access rules, how long to keep
+                data and recovery testing.
               </p>
               <p>
-                Features and charges vary by plan/region. Auto is not free or
-                unlimited; Manual can mean one-time setup. Replicas are not
-                backups. RDS, Aurora and Cloud SQL use PostgreSQL examples.
+                Features and charges vary by plan and location. Auto does not
+                mean free or unlimited. Manual can mean one-time setup.
+                Read-only copies are not backups. RDS, Aurora and Cloud SQL use
+                PostgreSQL examples.
               </p>
               <p className="provenance">
-                November 2026 PDF baseline; not independently revalidated. Check
-                provider docs.
+                Based on the November 2026 PDF; technical claims have not been
+                independently revalidated. Wording has been simplified. Check
+                provider documentation.
               </p>
             </>
           ) : (
             <>
+              {category.path === "/hosting/" ? (
+                <p>
+                  A web app is used through a browser, including a website.
+                  Browser files provide its interface; server code handles work
+                  on the provider&apos;s machines. Background tasks do work
+                  separately, such as sending emails. A framework provides a
+                  starting structure and tools for app code.
+                </p>
+              ) : null}
               <p>
-                Hosted offerings; features, limits and charges vary by plan and
-                region. Auto is not free or unlimited. Manual can mean one-time
-                configuration. Excluded means outside the product compared, not
-                unavailable from the vendor.
+                These are provider-run products. Features, limits and charges
+                vary by plan and location. Auto does not mean free or unlimited.
+                Manual can mean one-time setup. Excluded means not included in
+                this product; the provider may sell a separate tool for it.
               </p>
               <p className="provenance">
-                Official documentation and billing models reviewed November 4,
-                2026. Summaries are not feature-equivalence or price rankings.
-                Provider headings link to documentation.
+                Based on official documentation and billing information reviewed
+                in November 2026. Similar descriptions do not mean identical
+                features or prices. Provider names link to documentation.
               </p>
               <details className="sources">
-                <summary>Billing sources</summary>
+                <summary>Pricing sources</summary>
                 <ul>
                   {data.providers.map((provider, index) => (
                     <li key={index}>

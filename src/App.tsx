@@ -4,7 +4,7 @@
  */
 import { useEffect, useRef } from "react";
 import { Link, matchPath, Route, Routes, useLocation } from "react-router-dom";
-import { categories } from "./data/categories";
+import { categories, categoryGroups } from "./data/categories";
 import ComparisonPage from "./components/ComparisonPage";
 import NotFound from "./components/NotFound";
 
@@ -14,6 +14,10 @@ import NotFound from "./components/NotFound";
  */
 export default function App() {
   const { pathname } = useLocation();
+  const activeGroup = categoryGroups.find(({ topics }) =>
+    topics.some((topic) => matchPath(topic.path, pathname)),
+  );
+  const topicGroup = activeGroup ?? categoryGroups[0];
   const previousPath = useRef(pathname);
   useEffect(() => {
     const category = categories.find((item) => matchPath(item.path, pathname));
@@ -51,7 +55,21 @@ export default function App() {
         </Link>
       </header>
       <nav className="category-nav" aria-label="Categories">
-        {categories.map((category) => (
+        {categoryGroups.map((group) => (
+          <Link
+            key={group.label}
+            to={group.topics[0].path}
+            aria-current={activeGroup === group ? "true" : undefined}
+          >
+            {group.label}
+          </Link>
+        ))}
+      </nav>
+      <nav
+        className="category-nav topic-nav"
+        aria-label={`${topicGroup.label} topics`}
+      >
+        {topicGroup.topics.map((category) => (
           <Link
             key={category.path}
             to={category.path}

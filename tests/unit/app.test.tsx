@@ -51,9 +51,7 @@ describe("application routing", () => {
     const { container, getByRole } = renderApp();
     const header = container.querySelector("header");
     fireEvent.click(getByRole("button", { name: "Compact view" }));
-    fireEvent.click(
-      getByRole("button", { name: "Technical responsibilities" }),
-    );
+    fireEvent.click(getByRole("button", { name: "Who handles what" }));
     expect(
       container.querySelector("#technical-rows")?.hasAttribute("hidden"),
     ).toBe(false);
@@ -76,6 +74,29 @@ describe("application routing", () => {
     scroll.mockRestore();
   });
 
+  it("opens a category's first topic directly without a landing page", () => {
+    const scroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+    const { getByRole, container } = renderApp("/hosting/");
+    const cloud = getByRole("link", { name: "Cloud services" });
+    expect(cloud.getAttribute("href")).toBe("/");
+    expect(cloud.getAttribute("aria-current")).toBe("true");
+    expect(
+      getByRole("navigation", { name: "Cloud services topics" }),
+    ).toBeTruthy();
+    expect(container.querySelectorAll("nav")).toHaveLength(2);
+    fireEvent.click(cloud);
+    expect(getByRole("heading", { level: 1 }).textContent).toBe(
+      "Managed databases",
+    );
+    expect(
+      getByRole("link", { name: "Databases" }).getAttribute("aria-current"),
+    ).toBe("page");
+    expect(getByRole("navigation", { name: "Categories" }).textContent).toBe(
+      "Cloud services",
+    );
+    scroll.mockRestore();
+  });
+
   it("shows unknown pages and recovers through the router", () => {
     const scroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
     const { getByRole, container } = renderApp("/unknown/nested-page");
@@ -85,6 +106,7 @@ describe("application routing", () => {
     expect(document.title).toBe("Page not found · Stacknotes");
     expect(container.querySelector("#comparison")).not.toBeNull();
     expect(container.querySelector('nav [aria-current="page"]')).toBeNull();
+    expect(container.querySelector('nav [aria-current="true"]')).toBeNull();
     fireEvent.click(getByRole("link", { name: "Browse comparisons" }));
     expect(getByRole("heading", { level: 1 }).textContent).toBe(
       "Managed databases",

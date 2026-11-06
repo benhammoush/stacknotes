@@ -1,9 +1,9 @@
 # Stacknotes
 
 A growing knowledge base for ideas, clear explanations, practical notes and useful
-comparisons. Current topics cover databases, hosting, authentication, storage,
-jobs & queues, and monitoring: what each service provides, its trade-offs and what
-you still need to manage.
+comparisons. Current topics cover databases, hosting, sign-in and accounts,
+storage, background tasks and queues, and monitoring: what each product is for,
+its strengths and limitations, and what you still need to manage.
 
 ## Tech stack
 
@@ -16,25 +16,27 @@ you still need to manage.
 
 ## Features
 
-- Six eight-provider comparisons with overview and responsibility matrices.
-- Monochrome workspace, colored logos and a locally hosted Inter font.
-- Blue ≠ cues identify less-common responsibility statuses, not better services.
-- Sticky labels, contained scrolling, provider jumps and a compact view.
+- Cloud services groups the six topics in a second navigation row, with no
+  category landing page or breadcrumbs.
+- Six comparisons, each covering eight products and who handles what.
+- Monochrome design, colored logos and a locally hosted Inter font.
+- Blue ≠ marks identify less-common responsibility labels, not better products.
+- Labels stay visible while scrolling; jump to a provider or use a compact view.
 - Plain-English explanations available by hover, keyboard or tap.
-- Official documentation links and visible plan-specific caveats.
+- Official documentation links and notes about plan-specific limits.
 
 ## Boundaries and integration
 
-Static editorial content; no backend, accounts, tracking or runtime provider APIs.
-One HTML entry and a shared React shell; category routes and navigation come from
-`src/data/categories.ts`, with JSON datasets separate from `src/components/`.
-Vercel serves the SPA shell for page routes. Unknown pages show the app's not-found
-view (HTTP 200); missing asset and API paths remain HTTP 404.
-The database comparison preserves a November 2026 PDF baseline, not a live pricing
-or feature feed. Other categories summarize official documentation and billing
-models reviewed November 4, 2026. Check official sources before operational decisions.
-
-Delivery workflows are prepared locally; remote setup and deployment are not verified.
+Comparison content is written in advance, not fetched live from providers.
+Stacknotes has no server code, user accounts or tracking.
+One React app serves all pages. Navigation is defined in `src/data/categories.ts`;
+comparison content lives in JSON files, separate from display code.
+Vercel serves the app for page addresses. Unknown pages show a not-found message;
+missing files and server-request paths return a 404 response.
+The database comparison is based on a November 2026 PDF. Its wording has been
+simplified, but its technical claims have not been independently revalidated.
+Other comparisons summarize official documentation and billing information reviewed
+in November 2026. Check official sources before choosing or configuring a product.
 
 ## Notices
 
