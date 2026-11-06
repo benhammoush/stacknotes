@@ -16,7 +16,7 @@ const missingPaths = [
 ];
 
 describe("publication route smoke", () => {
-  it("uses bounded GETs without following redirects or adding credentials by default", async () => {
+  it("uses anonymous bounded GETs without following redirects", async () => {
     const fetcher = vi.fn(
       async (url) =>
         new Response('<div id="root"></div>', {
@@ -77,7 +77,7 @@ describe("publication route smoke", () => {
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
-  it("wires the smoke into the validated adapter and confines bypass headers to its origin", async () => {
+  it("wires anonymous smoke checks into the validated adapter", async () => {
     const config = JSON.parse(readFileSync(".github/ci-cd.json", "utf8"));
     const hosting = JSON.parse(readFileSync("vercel.json", "utf8"));
     const settings = deliverySettings(
@@ -91,7 +91,6 @@ describe("publication route smoke", () => {
         PRODUCTION_PROJECT_ID: "prj_prod",
         VERCEL_PROJECT_ID: "prj_dev",
         TARGET_ORIGIN: origin,
-        SMOKE_BYPASS: "test-only-bypass",
       },
       config,
       hosting,
@@ -106,9 +105,7 @@ describe("publication route smoke", () => {
     await settings.smoke(fetcher);
     for (const [url, options] of fetcher.mock.calls) {
       expect(new URL(url).origin).toBe(origin);
-      expect(options.headers).toEqual({
-        "x-vercel-protection-bypass": "test-only-bypass",
-      });
+      expect(options.headers).toEqual({});
     }
   });
 });

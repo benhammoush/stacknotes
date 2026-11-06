@@ -8,9 +8,8 @@ import assert from "node:assert/strict";
  * Verify a deep link and reject SPA fallbacks for missing static resources and APIs.
  * @param fetcher - HTTP implementation supplied by the pinned shared publisher.
  * @param origin - Environment origin already validated by the delivery allowlist.
- * @param bypass - Optional protection-bypass secret sent only to the validated origin.
  */
-export async function smokeWeb(fetcher, origin, bypass) {
+export async function smokeWeb(fetcher, origin) {
   for (const [path, status] of [
     ["/hosting/", 200],
     ["/assets/__stacknotes_smoke_missing__.js", 404],
@@ -22,7 +21,7 @@ export async function smokeWeb(fetcher, origin, bypass) {
       method: "GET",
       redirect: "error",
       signal: AbortSignal.timeout(30_000),
-      headers: bypass ? { "x-vercel-protection-bypass": bypass } : {},
+      headers: {},
     });
     assert.equal(
       response.status,

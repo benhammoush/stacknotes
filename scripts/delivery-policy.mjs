@@ -38,7 +38,7 @@ export function deliverySettings(env, config, hosting) {
     origin.origin,
     env.CI_ENVIRONMENT === "dev"
       ? "https://stacknotes-dev.vercel.app"
-      : "https://stacknotes.vercel.app",
+      : "https://stacknotes-one.vercel.app",
     "Target origin must match the environment allowlist before any credentialed request.",
   );
   assert.deepEqual(config.buildEnvironment, { dev: {}, production: {} });
@@ -47,6 +47,6 @@ export function deliverySettings(env, config, hosting) {
     origin: origin.origin,
     buildEnvironment: {},
     hosting: { version: 3, routes: hosting.routes },
-    smoke: (fetcher) => smokeWeb(fetcher, origin.origin, env.SMOKE_BYPASS),
+    smoke: (fetcher) => smokeWeb(fetcher, origin.origin),
   };
 }

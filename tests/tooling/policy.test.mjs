@@ -38,7 +38,7 @@ describe("delivery policy", () => {
           CI_ENVIRONMENT: "production",
           GITHUB_EVENT_NAME: "workflow_dispatch",
           VERCEL_PROJECT_ID: "prj_prod",
-          TARGET_ORIGIN: "https://stacknotes.vercel.app",
+          TARGET_ORIGIN: "https://stacknotes-one.vercel.app",
         },
         config,
         hosting,
@@ -58,6 +58,7 @@ describe("delivery policy", () => {
     { TARGET_ORIGIN: "https://example.com/path" },
     { TARGET_ORIGIN: "https://example.com" },
     { TARGET_ORIGIN: "https://stacknotes.vercel.app" },
+    { TARGET_ORIGIN: "https://stacknotes-one.vercel.app" },
     { CI_ENVIRONMENT: "production" },
     {
       CI_ENVIRONMENT: "production",
@@ -81,6 +82,21 @@ describe("delivery policy", () => {
         hosting,
       ),
     ).toThrow();
+  });
+  it("rejects the former unassigned production address", () => {
+    expect(() =>
+      deliverySettings(
+        {
+          ...env,
+          CI_ENVIRONMENT: "production",
+          GITHUB_EVENT_NAME: "workflow_dispatch",
+          VERCEL_PROJECT_ID: "prj_prod",
+          TARGET_ORIGIN: "https://stacknotes.vercel.app",
+        },
+        config,
+        hosting,
+      ),
+    ).toThrow("environment allowlist");
   });
 });
 
@@ -116,6 +132,14 @@ it("keeps workflow references pinned and release dependencies intact", () => {
   expect(
     workflows["verify-and-deploy-prod.yml"].jobs.deploy_production.needs,
   ).toBe("verify_release");
+  for (const job of [
+    workflows["verify-and-deploy-dev.yml"].jobs.deploy_dev,
+    workflows["verify-and-deploy-prod.yml"].jobs.deploy_production,
+  ]) {
+    expect(job.secrets).toEqual({
+      VERCEL_TOKEN: "${{ secrets.VERCEL_TOKEN }}",
+    });
+  }
   const metadata = JSON.parse(readFileSync("package.json", "utf8"));
   const lock = JSON.parse(readFileSync("package-lock.json", "utf8"));
   expect(lock.version).toBe(metadata.version);
