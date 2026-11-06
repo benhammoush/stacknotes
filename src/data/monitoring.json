@@ -1,0 +1,214 @@
+{
+  "providers": [
+    {
+      "name": "Sentry",
+      "company": "Sentry",
+      "logo": "/providers/sentry.svg",
+      "url": "https://docs.sentry.io/",
+      "pricing": "https://sentry.io/pricing/"
+    },
+    {
+      "name": "Better Stack",
+      "company": "Better Stack",
+      "logo": "/providers/betterstack.png",
+      "url": "https://betterstack.com/docs/",
+      "pricing": "https://betterstack.com/pricing"
+    },
+    {
+      "name": "Datadog",
+      "company": "Datadog",
+      "logo": "/providers/datadog.svg",
+      "url": "https://docs.datadoghq.com/",
+      "pricing": "https://www.datadoghq.com/pricing/"
+    },
+    {
+      "name": "Grafana Cloud",
+      "company": "Grafana Labs",
+      "logo": "/providers/grafana.svg",
+      "url": "https://grafana.com/docs/grafana-cloud/",
+      "pricing": "https://grafana.com/pricing/"
+    },
+    {
+      "name": "New Relic",
+      "company": "New Relic",
+      "logo": "/providers/newrelic.png",
+      "url": "https://docs.newrelic.com/",
+      "pricing": "https://newrelic.com/pricing"
+    },
+    {
+      "name": "Honeycomb",
+      "company": "Honeycomb",
+      "logo": "/providers/honeycomb.png",
+      "url": "https://docs.honeycomb.io/",
+      "pricing": "https://www.honeycomb.io/pricing"
+    },
+    {
+      "name": "Axiom",
+      "company": "Axiom",
+      "logo": "/providers/axiom.svg",
+      "url": "https://axiom.co/docs",
+      "pricing": "https://axiom.co/pricing"
+    },
+    {
+      "name": "Elastic Cloud",
+      "company": "Elastic",
+      "logo": "/providers/elastic.svg",
+      "url": "https://www.elastic.co/docs/deploy-manage/deploy/elastic-cloud",
+      "pricing": "https://www.elastic.co/pricing/"
+    }
+  ],
+  "overview": [
+    {
+      "label": "What you get",
+      "values": [
+        "Application errors, tracing and related telemetry",
+        "Telemetry, uptime and incident tooling",
+        "Infrastructure and application observability",
+        "Hosted metrics, logs, traces and visualization",
+        "Application and infrastructure observability",
+        "High-cardinality event and trace analysis",
+        "Telemetry ingestion, storage and querying",
+        "Hosted / Serverless search and observability"
+      ]
+    },
+    {
+      "label": "Pros",
+      "values": [
+        "Error triage and application context",
+        "Uptime and incident workflow alongside telemetry",
+        "Broad product and integration catalog",
+        "Open telemetry ecosystem and Grafana",
+        "Integrated telemetry and query tooling",
+        "Exploratory debugging across rich events",
+        "Dataset-based telemetry and query workflow",
+        "Search, logs and observability ecosystem"
+      ]
+    },
+    {
+      "label": "Cons",
+      "values": [
+        "SDK setup and product quotas",
+        "Products and retention configured separately",
+        "Many billing dimensions and agent settings",
+        "Signal pipelines, cardinality and retention choices",
+        "Data, access and compute plan decisions",
+        "Useful results depend on rich instrumentation",
+        "Ingest schema, queries and cost controls",
+        "Hosted and Serverless have different controls"
+      ]
+    },
+    {
+      "label": "Billing",
+      "values": [
+        "Plan + event / product usage",
+        "Products + responders / telemetry usage",
+        "Product-specific hosts / data / usage",
+        "Plan + signal-specific usage",
+        "Data + users / compute options",
+        "Plan + event / metric volume",
+        "Compute + storage",
+        "Hosted resources or Serverless usage"
+      ]
+    }
+  ],
+  "responsibilities": [
+    {
+      "label": "Telemetry backend",
+      "explanation": "This comparison covers hosted offerings. The provider operates its backend, but that does not remove responsibility for your agents, application performance or telemetry quality.",
+      "values": [
+        ["Auto", "Hosted platform"],
+        ["Auto", "Hosted platform"],
+        ["Auto", "Hosted platform"],
+        ["Auto", "Hosted stack"],
+        ["Auto", "Hosted platform"],
+        ["Auto", "Hosted platform"],
+        ["Auto", "Hosted platform"],
+        ["Auto", "Hosted / Serverless service"]
+      ]
+    },
+    {
+      "label": "Instrumentation",
+      "explanation": "Install and configure SDKs, agents, collectors or telemetry exporters. Verify missing signals and propagation across services; automatic instrumentation still requires integration and validation.",
+      "values": [
+        ["Manual", "SDK / integrations"],
+        ["Manual", "Collectors / integrations"],
+        ["Manual", "Agent / SDK / integrations"],
+        ["Manual", "Alloy / SDK / exporters"],
+        ["Manual", "Agent / SDK / integrations"],
+        ["Manual", "OpenTelemetry / SDK"],
+        ["Manual", "SDK / collectors"],
+        ["Manual", "Agent / APM / OpenTelemetry"]
+      ]
+    },
+    {
+      "label": "Sensitive-data policy",
+      "explanation": "Prevent secrets and personal data from entering telemetry, configure supported filtering and access controls, and test redaction. Vendor processing features are not a substitute for a data policy.",
+      "values": [
+        ["Manual", "Scrubbing / SDK filters"],
+        ["Manual", "Pipeline / source filters"],
+        ["Manual", "Agent / pipeline rules"],
+        ["Manual", "Collector / pipeline rules"],
+        ["Manual", "Agent / ingest rules"],
+        ["Manual", "Collector / field policy"],
+        ["Manual", "Source / ingest rules"],
+        ["Manual", "Agent / ingest pipelines"]
+      ]
+    },
+    {
+      "label": "Sampling / retention",
+      "explanation": "Choose what to collect, sample and retain within product limits. Sampling affects which incidents you can investigate; longer retention and high-cardinality signals can change costs.",
+      "values": [
+        ["Manual", "Sampling / product retention"],
+        ["Manual", "Sources / retention"],
+        ["Manual", "Product / index controls"],
+        ["Manual", "Signal / retention controls"],
+        ["Manual", "Data / retention controls"],
+        ["Manual", "Sampling / dataset settings"],
+        ["Manual", "Dataset / retention controls"],
+        ["Manual", "Lifecycle / project controls"]
+      ]
+    },
+    {
+      "label": "Alerts / service goals",
+      "explanation": "Define meaningful symptoms, thresholds, service objectives and destinations. A managed alert engine does not know your business impact or decide who should respond.",
+      "values": [
+        ["Manual", "Issue / metric alert rules"],
+        ["Manual", "Monitors / alert policies"],
+        ["Manual", "Monitors / service objectives"],
+        ["Manual", "Alert rules / service objectives"],
+        ["Manual", "Policies / service objectives"],
+        ["Manual", "Triggers / service objectives"],
+        ["Manual", "Monitors / destinations"],
+        ["Manual", "Rules / connectors"]
+      ]
+    },
+    {
+      "label": "Access / environments",
+      "explanation": "Separate production and nonproduction telemetry, restrict credentials and assign least-privilege access. Team and role features vary by product and subscription.",
+      "values": [
+        ["Manual", "Projects / teams / tokens"],
+        ["Manual", "Teams / sources / tokens"],
+        ["Manual", "Roles / tags / API keys"],
+        ["Manual", "Stacks / roles / tokens"],
+        ["Manual", "Accounts / roles / keys"],
+        ["Manual", "Environments / teams / keys"],
+        ["Manual", "Datasets / roles / tokens"],
+        ["Manual", "Spaces / projects / roles"]
+      ]
+    },
+    {
+      "label": "Incident resolution",
+      "explanation": "The platform can detect, notify and help investigate. Your team still diagnoses production impact, coordinates response, changes the application and verifies recovery.",
+      "values": [
+        ["Manual", "Investigate / repair / verify"],
+        ["Manual", "Respond / repair / verify"],
+        ["Manual", "Investigate / repair / verify"],
+        ["Manual", "Investigate / repair / verify"],
+        ["Manual", "Investigate / repair / verify"],
+        ["Manual", "Investigate / repair / verify"],
+        ["Manual", "Investigate / repair / verify"],
+        ["Manual", "Investigate / repair / verify"]
+      ]
+    }
+  ]
+}

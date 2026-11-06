@@ -1,0 +1,262 @@
+{
+  "providers": [
+    {
+      "name": "D1",
+      "company": "Cloudflare",
+      "logo": "/providers/cloudflare.svg",
+      "url": "https://developers.cloudflare.com/d1/"
+    },
+    {
+      "name": "RDS",
+      "company": "AWS",
+      "logo": "/providers/aws.svg",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html"
+    },
+    {
+      "name": "Aurora",
+      "company": "AWS",
+      "logo": "/providers/aws.svg",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html"
+    },
+    {
+      "name": "Cloud SQL",
+      "company": "Google",
+      "logo": "/providers/google-cloud.svg",
+      "url": "https://cloud.google.com/sql/docs"
+    },
+    {
+      "name": "Azure SQL",
+      "company": "Microsoft",
+      "logo": "/providers/microsoft.svg",
+      "url": "https://learn.microsoft.com/en-us/azure/azure-sql/database/"
+    },
+    {
+      "name": "Supabase",
+      "company": "Supabase",
+      "logo": "/providers/supabase.svg",
+      "url": "https://supabase.com/docs"
+    },
+    {
+      "name": "Neon",
+      "company": "Neon",
+      "logo": "/providers/neon.svg",
+      "url": "https://neon.com/docs"
+    },
+    {
+      "name": "Atlas",
+      "company": "MongoDB",
+      "logo": "/providers/mongodb.svg",
+      "url": "https://www.mongodb.com/docs/atlas/"
+    }
+  ],
+  "overview": [
+    {
+      "label": "What you get",
+      "values": [
+        "SQL database integrated with Workers",
+        "Standard databases managed by AWS",
+        "AWS-built MySQL/Postgres-compatible database",
+        "Standard databases managed by Google",
+        "Managed SQL Server–based database",
+        "Postgres + login, files and APIs",
+        "Postgres + autoscaling and branching",
+        "Managed JSON-like document database"
+      ]
+    },
+    {
+      "label": "Pros",
+      "values": [
+        "Simple Worker integration; usage billing",
+        "Broad configuration; standard engines",
+        "Distributed storage; cluster/serverless options",
+        "Google integration; standard engines",
+        "Azure integration; built-in local HA",
+        "Complete backend toolkit",
+        "Branching; elastic compute",
+        "Flexible documents; search tools"
+      ]
+    },
+    {
+      "label": "Cons",
+      "values": [
+        "Small database cap; serial queries",
+        "More setup; provisioned capacity costs",
+        "AWS-specific features; complex pricing",
+        "More setup; provisioned capacity costs",
+        "Tier complexity; SQL Server ecosystem",
+        "Platform features to migrate; add-on costs",
+        "Possible idle-resume delay; plan limits",
+        "Different data model; indexing/sharding needs care"
+      ]
+    },
+    {
+      "label": "Billing",
+      "values": [
+        "Rows + storage",
+        "Instance + usage",
+        "Compute + usage",
+        "Instance + usage",
+        "Tier + usage",
+        "Plan + usage",
+        "Usage",
+        "Tier + usage"
+      ]
+    }
+  ],
+  "responsibilities": [
+    {
+      "label": "Maintenance",
+      "explanation": "Keeping the database software and infrastructure updated. The provider handles routine work, but you may still need to schedule maintenance or plan major engine upgrades.",
+      "values": [
+        ["Auto", ""],
+        ["Auto", "Plan major upgrades"],
+        ["Auto", "Plan major upgrades"],
+        ["Auto", "Set window"],
+        ["Auto", ""],
+        ["Auto", "Plan major upgrades"],
+        ["Auto", ""],
+        ["Auto", ""]
+      ]
+    },
+    {
+      "label": "Connection pooling",
+      "explanation": "Reusing database connections instead of opening a new one for every request. Most services require choosing and configuring a client pool or proxy. D1 uses a Worker binding rather than a traditional connection pool.",
+      "values": [
+        ["Auto", "Worker binding; no pool"],
+        ["Manual", "App / RDS Proxy"],
+        ["Manual", "App / RDS Proxy"],
+        ["Manual", "App / eligible pool"],
+        ["Manual", "Client pool"],
+        ["Manual", "Supavisor"],
+        ["Manual", "PgBouncer"],
+        ["Manual", "Driver pool"]
+      ]
+    },
+    {
+      "label": "Concurrent requests",
+      "explanation": "Handling requests that arrive at the same time. Managed does not mean unlimited: concurrency, connections and throughput have limits. D1 executes queries serially within each database instance.",
+      "values": [
+        ["Auto", "Serial per instance"],
+        ["Auto", "Parallel; limited"],
+        ["Auto", "Parallel; limited"],
+        ["Auto", "Parallel; limited"],
+        ["Auto", "Parallel; limited"],
+        ["Auto", "Parallel; limited"],
+        ["Auto", "Parallel; limited"],
+        ["Auto", "Concurrent; limited"]
+      ]
+    },
+    {
+      "label": "Backups / PITR",
+      "explanation": "Backups keep recoverable copies. Point-in-time recovery (PITR) lets you recover to a point inside a retained history window. Availability, retention and charges depend on the plan; having backups does not prove a restore will meet your needs.",
+      "values": [
+        ["Auto", "7d Free / 30d Paid"],
+        ["Manual", "Enable retention"],
+        ["Auto", "Set retention"],
+        ["Manual", "Set backup + PITR"],
+        ["Auto", "Tier-dependent"],
+        ["Manual", "Paid backups; PITR add-on"],
+        ["Manual", "Set history window"],
+        ["Manual", "Tier + policy"]
+      ]
+    },
+    {
+      "label": "Restore",
+      "explanation": "Recovering data from a backup or history. You choose the recovery point, start the restore and validate the result. Some services create a new database or cluster, so reconnecting your application can be part of recovery.",
+      "values": [
+        ["Manual", "Time Travel: in place"],
+        ["Manual", "New instance"],
+        ["Manual", "New cluster"],
+        ["Manual", "Backup/PITR target"],
+        ["Manual", "New database"],
+        ["Manual", "Dashboard/API"],
+        ["Manual", "Restore / branch"],
+        ["Manual", "Target cluster"]
+      ]
+    },
+    {
+      "label": "Compute scaling",
+      "explanation": "Changing the processing capacity available to the database. Manual includes enabling autoscaling and setting bounds: once configured, it can run automatically. D1 does not expose a database compute-size setting.",
+      "values": [
+        ["Excluded", "Quotas; no sizing"],
+        ["Manual", "Resize"],
+        ["Manual", "Size / Serverless v2"],
+        ["Manual", "Resize"],
+        ["Manual", "Tier / serverless"],
+        ["Manual", "Resize"],
+        ["Manual", "Autoscaling bounds"],
+        ["Manual", "Autoscaling bounds"]
+      ]
+    },
+    {
+      "label": "Storage growth",
+      "explanation": "Increasing the room available for data. Some services grow storage automatically within limits; others require settings or a plan change. At a per-database cap you may need to split data across databases.",
+      "values": [
+        ["Manual", "Partition at cap"],
+        ["Manual", "Size / autoscale"],
+        ["Auto", "Within limits"],
+        ["Manual", "Enable auto growth"],
+        ["Manual", "Tier / max size"],
+        ["Manual", "Disk / plan settings"],
+        ["Auto", "Within plan limits"],
+        ["Manual", "Autoscaling"]
+      ]
+    },
+    {
+      "label": "Read replicas",
+      "explanation": "Copies used to serve reads. You may need to create replicas and route reads explicitly. Replication can lag; consistency settings matter. A replica is not an independent historical backup.",
+      "values": [
+        ["Manual", "Enable + Sessions"],
+        ["Manual", "Add replicas"],
+        ["Manual", "Add readers"],
+        ["Manual", "Add replicas"],
+        ["Manual", "Tier / geo options"],
+        ["Manual", "Paid plans"],
+        ["Manual", "Add read compute"],
+        ["Manual", "Read preferences"]
+      ]
+    },
+    {
+      "label": "HA / failover",
+      "explanation": "High availability (HA) reduces downtime when infrastructure fails. Failover switches to a healthy replacement. Local recovery, zone redundancy and cross-region recovery are different guarantees; verify the service and plan rather than treating Auto as zero downtime.",
+      "values": [
+        ["Auto", "Platform-managed"],
+        ["Manual", "Multi-AZ"],
+        ["Manual", "Replicated storage; add readers"],
+        ["Manual", "Regional HA"],
+        ["Auto", "Zone/geo: configure"],
+        ["Manual", "Check plan-specific HA"],
+        ["Auto", "Service recovery"],
+        ["Auto", "Replica election"]
+      ]
+    },
+    {
+      "label": "Long-term backups",
+      "explanation": "Keeping recoverable data beyond the normal backup or PITR window. You choose retention, export destinations and access controls, and test recovery. Export storage and tooling may be separate services.",
+      "values": [
+        ["Excluded", "Export elsewhere"],
+        ["Manual", "Snapshots"],
+        ["Manual", "Snapshots"],
+        ["Manual", "Retention / exports"],
+        ["Manual", "Retention policy"],
+        ["Manual", "Retain exports"],
+        ["Manual", "Retain exports"],
+        ["Manual", "Policy / exports"]
+      ]
+    },
+    {
+      "label": "Monitoring / alerts",
+      "explanation": "Watching database health, usage and failures. Providers expose metrics, but you select alert thresholds, notification destinations and response procedures. Metrics alone do not notify you or fix an incident.",
+      "values": [
+        ["Manual", "Metrics + alerts"],
+        ["Manual", "CloudWatch"],
+        ["Manual", "CloudWatch"],
+        ["Manual", "Cloud Monitoring"],
+        ["Manual", "Azure Monitor"],
+        ["Manual", "Metrics + alerts"],
+        ["Manual", "Metrics + alerts"],
+        ["Manual", "Atlas alerts"]
+      ]
+    }
+  ]
+}

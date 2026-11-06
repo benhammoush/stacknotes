@@ -1,0 +1,50 @@
+Provider logos are trademarks of their respective owners, used for identification
+only, without endorsement or affiliation. The software license below does not
+grant trademark rights. Review applicable brand guidelines before public launch.
+
+Source: https://github.com/pheralb/svgl/tree/c0ec7ab121354ac1096b17b3aebbb293c8ce5600/static/library
+Retrieved November 4, 2026. SVG geometry and colors are preserved.
+Local public/providers/ filenames match upstream except:
+aws.svg = aws_dark.svg; mongodb.svg = mongodb-icon-dark.svg.
+Additional local mappings: vercel = vercel_dark; render = render_white;
+railway = railway_dark; clerk = clerk-icon-dark; inngest = inngest-dark;
+axiom = axiom-dark (all .svg). Other SVGL filenames match upstream.
+
+InterVariable.woff2 is the unmodified Inter v4.1 variable font from
+https://raw.githubusercontent.com/rsms/inter/v4.1/docs/font-files/InterVariable.woff2
+Copyright (c) 2016 The Inter Project Authors (https://github.com/rsms/inter).
+Licensed under SIL OFL 1.1; full license: public/fonts/OFL.txt.
+
+Official provider favicons, retrieved November 4, 2026, used unchanged for
+identification only (not covered by SVGL's MIT license):
+stytch.ico: https://stytch.com/favicon.ico
+descope.ico: https://www.descope.com/favicon.ico
+trigger.ico: https://trigger.dev/favicon.ico
+backblaze.png: https://cdn.prod.website-files.com/63d32de856f6323a43a277f2/64b1ab4aa5aef8291e9291ab_Favicon.png
+temporal.svg: https://temporal.io/favicon.svg
+betterstack.png: https://betterstack.com/assets/favicon-64296699.png
+newrelic.png: https://newrelic.com/themes/custom/erno/assets/images/metadata/favicon-32x32.png
+honeycomb.png: https://www.honeycomb.io/favicon-32x32.png
+elastic.svg: https://www.elastic.co/favicon.svg
+
+MIT License
+
+Copyright (c) 2022 Pablo Hdez
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

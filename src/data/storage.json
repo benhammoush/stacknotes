@@ -1,0 +1,214 @@
+{
+  "providers": [
+    {
+      "name": "S3",
+      "company": "AWS",
+      "logo": "/providers/aws.svg",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html",
+      "pricing": "https://aws.amazon.com/s3/pricing/"
+    },
+    {
+      "name": "R2",
+      "company": "Cloudflare",
+      "logo": "/providers/cloudflare.svg",
+      "url": "https://developers.cloudflare.com/r2/",
+      "pricing": "https://developers.cloudflare.com/r2/pricing/"
+    },
+    {
+      "name": "Cloud Storage",
+      "company": "Google",
+      "logo": "/providers/google-cloud.svg",
+      "url": "https://docs.cloud.google.com/storage/docs/introduction",
+      "pricing": "https://cloud.google.com/storage/pricing"
+    },
+    {
+      "name": "Blob Storage",
+      "company": "Microsoft",
+      "logo": "/providers/microsoft.svg",
+      "url": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction",
+      "pricing": "https://azure.microsoft.com/pricing/details/storage/blobs/"
+    },
+    {
+      "name": "B2",
+      "company": "Backblaze",
+      "logo": "/providers/backblaze.png",
+      "url": "https://www.backblaze.com/docs/cloud-storage",
+      "pricing": "https://www.backblaze.com/cloud-storage/pricing"
+    },
+    {
+      "name": "Storage",
+      "company": "Supabase",
+      "logo": "/providers/supabase.svg",
+      "url": "https://supabase.com/docs/guides/storage",
+      "pricing": "https://supabase.com/pricing"
+    },
+    {
+      "name": "Storage",
+      "company": "Firebase",
+      "logo": "/providers/firebase.svg",
+      "url": "https://firebase.google.com/docs/storage",
+      "pricing": "https://firebase.google.com/pricing"
+    },
+    {
+      "name": "Spaces",
+      "company": "DigitalOcean",
+      "logo": "/providers/digitalocean.svg",
+      "url": "https://docs.digitalocean.com/products/spaces/",
+      "pricing": "https://docs.digitalocean.com/products/spaces/details/pricing/"
+    }
+  ],
+  "overview": [
+    {
+      "label": "What you get",
+      "values": [
+        "General-purpose object storage",
+        "Object storage with S3-compatible API",
+        "Google Cloud object storage",
+        "Azure blob / object storage",
+        "Object storage with native and S3 APIs",
+        "File storage with RLS and CDN",
+        "App file storage on Google Cloud Storage",
+        "S3-compatible object storage with CDN"
+      ]
+    },
+    {
+      "label": "Pros",
+      "values": [
+        "Storage classes and AWS ecosystem",
+        "Cloudflare integration; no R2 egress charge",
+        "Storage classes and Google ecosystem",
+        "Azure identity and storage integration",
+        "S3 API and storage-focused service",
+        "Auth, resumable uploads and file policies",
+        "Client SDKs and Firebase Security Rules",
+        "S3 tooling and built-in CDN option"
+      ]
+    },
+    {
+      "label": "Cons",
+      "values": [
+        "IAM, lifecycle and transfer cost decisions",
+        "S3 compatibility is not feature parity",
+        "Location, class and network cost choices",
+        "Account, redundancy and tier choices",
+        "API / delivery-path differences",
+        "Platform dependency; plan limits",
+        "Rules and Google Cloud billing requirements",
+        "Product / region limits; S3 differences"
+      ]
+    },
+    {
+      "label": "Billing",
+      "values": [
+        "Storage + requests / retrieval / transfer",
+        "Storage + operations / retrieval class",
+        "Storage + operations / retrieval / network",
+        "Capacity + transactions / retrieval / transfer",
+        "Storage + usage / transfer terms",
+        "Plan + storage / egress / transformations",
+        "Google Cloud storage / operations / transfer",
+        "Base subscription + storage / bandwidth usage"
+      ]
+    }
+  ],
+  "responsibilities": [
+    {
+      "label": "Storage infrastructure",
+      "explanation": "The provider operates the object-storage infrastructure. Durability is not protection from your own deletion, compromised credentials or an incorrect retention policy.",
+      "values": [
+        ["Auto", "Managed object store"],
+        ["Auto", "Managed object store"],
+        ["Auto", "Managed object store"],
+        ["Auto", "Managed blob store"],
+        ["Auto", "Managed object store"],
+        ["Auto", "Hosted storage"],
+        ["Auto", "Google Cloud bucket"],
+        ["Auto", "Managed object store"]
+      ]
+    },
+    {
+      "label": "Private access",
+      "explanation": "Configure bucket permissions, application authorization and temporary access. Avoid public buckets or long-lived credentials when users should see only their own files.",
+      "values": [
+        ["Manual", "IAM / bucket policy"],
+        ["Manual", "Tokens / bucket access"],
+        ["Manual", "IAM / bucket policy"],
+        ["Manual", "Identity / shared access"],
+        ["Manual", "Keys / bucket access"],
+        ["Manual", "Auth / RLS policies"],
+        ["Manual", "Auth / Security Rules"],
+        ["Manual", "Keys / bucket policy"]
+      ]
+    },
+    {
+      "label": "Upload integration",
+      "explanation": "Choose direct or server-mediated uploads, validate file type and size, and design resumable and retry-safe flows. Object storage does not validate your application's business rules.",
+      "values": [
+        ["Manual", "SDK / signed upload"],
+        ["Manual", "S3 / Worker integration"],
+        ["Manual", "SDK / signed upload"],
+        ["Manual", "SDK / access token"],
+        ["Manual", "Native / S3 SDK"],
+        ["Manual", "SDK / resumable upload"],
+        ["Manual", "Client / Admin SDK"],
+        ["Manual", "S3 SDK / signed upload"]
+      ]
+    },
+    {
+      "label": "CDN configuration",
+      "explanation": "Excluded means a separate delivery product or integration, not that a CDN cannot be used. CDN caching also needs invalidation and access-control decisions.",
+      "values": [
+        ["Excluded", "CloudFront / other CDN"],
+        ["Manual", "Public domain / cache rules"],
+        ["Excluded", "Cloud CDN / other service"],
+        ["Excluded", "Front Door / other CDN"],
+        ["Excluded", "Separate CDN integration"],
+        ["Manual", "Built-in CDN / plan rules"],
+        ["Excluded", "Separate delivery configuration"],
+        ["Manual", "Enable Spaces CDN"]
+      ]
+    },
+    {
+      "label": "Retention / recovery",
+      "explanation": "Select supported retention, versioning, soft-delete or independent copy mechanisms and test restoration. Features differ by product; these labels do not promise that every mechanism exists everywhere.",
+      "values": [
+        ["Manual", "Versioning / lifecycle / copies"],
+        ["Manual", "Lifecycle / recovery copies"],
+        ["Manual", "Soft delete / versions / lifecycle"],
+        ["Manual", "Retention / recovery settings"],
+        ["Manual", "Versions / lifecycle / copies"],
+        ["Manual", "Exports / recovery design"],
+        ["Manual", "Bucket / recovery design"],
+        ["Manual", "Versions / lifecycle / copies"]
+      ]
+    },
+    {
+      "label": "Malware / content checks",
+      "explanation": "This comparison covers storage itself. Malware scanning, moderation and safe rendering need separate tooling or product integrations, even when the same vendor sells them.",
+      "values": [
+        ["Excluded", "Separate scanning workflow"],
+        ["Excluded", "Separate scanning workflow"],
+        ["Excluded", "Separate scanning workflow"],
+        ["Excluded", "Separate security integration"],
+        ["Excluded", "Separate scanning workflow"],
+        ["Excluded", "Separate scanning workflow"],
+        ["Excluded", "Separate scanning workflow"],
+        ["Excluded", "Separate scanning workflow"]
+      ]
+    },
+    {
+      "label": "Cost / usage controls",
+      "explanation": "Model storage, operations, retrieval, transfer, CDN and minimum-duration charges for the actual access pattern. A zero-egress storage product does not make every connected service free.",
+      "values": [
+        ["Manual", "Class / region / usage"],
+        ["Manual", "Operations / class / usage"],
+        ["Manual", "Class / region / usage"],
+        ["Manual", "Tier / region / usage"],
+        ["Manual", "Usage / transfer terms"],
+        ["Manual", "Plan / egress / usage"],
+        ["Manual", "Billing / quotas / usage"],
+        ["Manual", "Subscription / bandwidth"]
+      ]
+    }
+  ]
+}

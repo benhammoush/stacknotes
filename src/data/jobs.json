@@ -1,0 +1,214 @@
+{
+  "providers": [
+    {
+      "name": "Inngest",
+      "company": "Inngest",
+      "logo": "/providers/inngest.svg",
+      "url": "https://www.inngest.com/docs",
+      "pricing": "https://www.inngest.com/pricing"
+    },
+    {
+      "name": "Trigger.dev",
+      "company": "Trigger.dev",
+      "logo": "/providers/trigger.ico",
+      "url": "https://trigger.dev/docs",
+      "pricing": "https://trigger.dev/pricing"
+    },
+    {
+      "name": "SQS",
+      "company": "AWS",
+      "logo": "/providers/aws.svg",
+      "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html",
+      "pricing": "https://aws.amazon.com/sqs/pricing/"
+    },
+    {
+      "name": "Cloud Tasks",
+      "company": "Google",
+      "logo": "/providers/google-cloud.svg",
+      "url": "https://docs.cloud.google.com/tasks/docs/dual-overview",
+      "pricing": "https://cloud.google.com/tasks/pricing"
+    },
+    {
+      "name": "Service Bus",
+      "company": "Microsoft",
+      "logo": "/providers/microsoft.svg",
+      "url": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview",
+      "pricing": "https://azure.microsoft.com/pricing/details/service-bus/"
+    },
+    {
+      "name": "QStash",
+      "company": "Upstash",
+      "logo": "/providers/upstash.svg",
+      "url": "https://upstash.com/docs/qstash/overall/getstarted",
+      "pricing": "https://upstash.com/docs/qstash/overall/pricing"
+    },
+    {
+      "name": "Queues",
+      "company": "Cloudflare",
+      "logo": "/providers/cloudflare.svg",
+      "url": "https://developers.cloudflare.com/queues/",
+      "pricing": "https://developers.cloudflare.com/queues/platform/pricing/"
+    },
+    {
+      "name": "Temporal Cloud",
+      "company": "Temporal",
+      "logo": "/providers/temporal.svg",
+      "url": "https://docs.temporal.io/cloud",
+      "pricing": "https://temporal.io/pricing"
+    }
+  ],
+  "overview": [
+    {
+      "label": "What you get",
+      "values": [
+        "Durable execution, steps and event orchestration",
+        "Hosted background task execution",
+        "Managed message queues",
+        "Scheduled task dispatch to HTTP / App Engine",
+        "Enterprise message broker",
+        "HTTP message delivery and scheduling",
+        "Managed queues with Worker or HTTP pull consumers",
+        "Managed durable workflow service"
+      ]
+    },
+    {
+      "label": "Pros",
+      "values": [
+        "Step retries and flow control",
+        "Task runtime and orchestration together",
+        "Standard / FIFO queues and AWS integration",
+        "Rate-controlled task dispatch",
+        "Queues, topics and subscriptions",
+        "HTTP-first delivery to existing endpoints",
+        "Worker integration and external consumers",
+        "Durable history and workflow recovery"
+      ]
+    },
+    {
+      "label": "Cons",
+      "values": [
+        "SDK integration; execution model affects hosting",
+        "Task code and runtime resource choices",
+        "Consumer hosting and processing design",
+        "Not a general-purpose workflow runtime",
+        "Tier-specific features and broker configuration",
+        "Endpoint hosting and delivery limits",
+        "At-least-once delivery; ordering not guaranteed",
+        "You host and operate application workers"
+      ]
+    },
+    {
+      "label": "Billing",
+      "values": [
+        "Plan + executions / usage",
+        "Plan + task compute / usage",
+        "Requests + transfer / optional features",
+        "Billable operations / network",
+        "Tier + operations or capacity / extras",
+        "Plan + messages / usage",
+        "Operations + queues above included amount",
+        "Plan / actions + storage / usage"
+      ]
+    }
+  ],
+  "responsibilities": [
+    {
+      "label": "Service infrastructure",
+      "explanation": "The provider operates the queue or orchestration service. This does not necessarily include execution of your application code, your endpoint or your workers.",
+      "values": [
+        ["Auto", "Orchestration service"],
+        ["Auto", "Cloud task platform"],
+        ["Auto", "Queue service"],
+        ["Auto", "Dispatch service"],
+        ["Auto", "Message broker"],
+        ["Auto", "Delivery service"],
+        ["Auto", "Queue service"],
+        ["Auto", "Workflow service / persistence"]
+      ]
+    },
+    {
+      "label": "Application runtime",
+      "explanation": "Auto means this product hosts task execution. Manual means execution hosting depends on the integration mode. Excluded means you supply a separate consumer, worker or HTTP endpoint.",
+      "values": [
+        ["Manual", "Hosting depends on execution model"],
+        ["Auto", "Cloud hosts task code"],
+        ["Excluded", "Host consumers separately"],
+        ["Excluded", "Host target separately"],
+        ["Excluded", "Host consumers separately"],
+        ["Excluded", "Host endpoint separately"],
+        ["Excluded", "Workers or external HTTP consumers"],
+        ["Excluded", "Host application workers"]
+      ]
+    },
+    {
+      "label": "Retry policy",
+      "explanation": "Configure retry limits, timeouts, backoff and failure handling. Queue redelivery and workflow step retries operate at different levels and do not undo an external side effect.",
+      "values": [
+        ["Manual", "Step / function policy"],
+        ["Manual", "Task retry policy"],
+        ["Manual", "Visibility / redrive policy"],
+        ["Manual", "Queue retry configuration"],
+        ["Manual", "Locks / delivery count"],
+        ["Manual", "Delivery retry policy"],
+        ["Manual", "Consumer / retry settings"],
+        ["Manual", "Activity / workflow policy"]
+      ]
+    },
+    {
+      "label": "Idempotency",
+      "explanation": "Design business operations so retries and duplicate deliveries cannot duplicate payments, emails or writes. Deduplication features are not a blanket exactly-once guarantee for external effects.",
+      "values": [
+        ["Manual", "Protect step side effects"],
+        ["Manual", "Protect task side effects"],
+        ["Manual", "Deduplicate processing"],
+        ["Manual", "Deduplicate processing"],
+        ["Manual", "Deduplicate processing"],
+        ["Manual", "Deduplicate processing"],
+        ["Manual", "Deduplicate processing"],
+        ["Manual", "Idempotent activities"]
+      ]
+    },
+    {
+      "label": "Durable workflow state",
+      "explanation": "Auto means the selected product persists multi-step execution history or results. A durable message is not itself a multi-step workflow engine; queue users build that coordination separately.",
+      "values": [
+        ["Auto", "Step results / orchestration"],
+        ["Auto", "Task runs / checkpoints"],
+        ["Excluded", "Message state only"],
+        ["Excluded", "Task dispatch state only"],
+        ["Excluded", "Broker state only"],
+        ["Excluded", "Delivery state only"],
+        ["Excluded", "Message state only"],
+        ["Auto", "Workflow event history"]
+      ]
+    },
+    {
+      "label": "Capacity / ordering",
+      "explanation": "Choose concurrency, rate limits and any ordering mechanism the product supports. FIFO or workflow determinism does not guarantee that every downstream side effect happens in a desired global order.",
+      "values": [
+        ["Manual", "Concurrency / flow controls"],
+        ["Manual", "Queues / concurrency"],
+        ["Manual", "Standard / FIFO choice"],
+        ["Manual", "Dispatch rate / concurrency"],
+        ["Manual", "Sessions / capacity tier"],
+        ["Manual", "Flow control / queues"],
+        ["Manual", "Consumer concurrency; no ordering"],
+        ["Manual", "Task queues / worker capacity"]
+      ]
+    },
+    {
+      "label": "Failed-work recovery",
+      "explanation": "Decide how to inspect, alert on and safely replay exhausted work. A dashboard or dead-letter queue does not establish a recovery procedure or prove replay is safe.",
+      "values": [
+        ["Manual", "Inspect / replay runs"],
+        ["Manual", "Inspect / replay runs"],
+        ["Manual", "Dead-letter / redrive"],
+        ["Manual", "Log / track exhausted tasks"],
+        ["Manual", "Dead-letter handling"],
+        ["Manual", "Dead-letter / callbacks"],
+        ["Manual", "Dead-letter handling"],
+        ["Manual", "Inspect / reset / repair"]
+      ]
+    }
+  ]
+}

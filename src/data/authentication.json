@@ -1,0 +1,214 @@
+{
+  "providers": [
+    {
+      "name": "Clerk",
+      "company": "Clerk",
+      "logo": "/providers/clerk.svg",
+      "url": "https://clerk.com/docs",
+      "pricing": "https://clerk.com/pricing"
+    },
+    {
+      "name": "Auth0",
+      "company": "Okta",
+      "logo": "/providers/auth0.svg",
+      "url": "https://auth0.com/docs/get-started",
+      "pricing": "https://auth0.com/pricing"
+    },
+    {
+      "name": "Firebase Auth",
+      "company": "Google",
+      "logo": "/providers/firebase.svg",
+      "url": "https://firebase.google.com/docs/auth",
+      "pricing": "https://firebase.google.com/pricing"
+    },
+    {
+      "name": "Supabase Auth",
+      "company": "Supabase",
+      "logo": "/providers/supabase.svg",
+      "url": "https://supabase.com/docs/guides/auth",
+      "pricing": "https://supabase.com/pricing"
+    },
+    {
+      "name": "Cognito",
+      "company": "AWS",
+      "logo": "/providers/aws.svg",
+      "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html",
+      "pricing": "https://aws.amazon.com/cognito/pricing/"
+    },
+    {
+      "name": "AuthKit",
+      "company": "WorkOS",
+      "logo": "/providers/workos.svg",
+      "url": "https://workos.com/docs/user-management",
+      "pricing": "https://workos.com/pricing"
+    },
+    {
+      "name": "Stytch",
+      "company": "Stytch",
+      "logo": "/providers/stytch.ico",
+      "url": "https://stytch.com/docs",
+      "pricing": "https://stytch.com/pricing"
+    },
+    {
+      "name": "Descope",
+      "company": "Descope",
+      "logo": "/providers/descope.ico",
+      "url": "https://docs.descope.com/",
+      "pricing": "https://www.descope.com/pricing"
+    }
+  ],
+  "overview": [
+    {
+      "label": "What you get",
+      "values": [
+        "Hosted identity, account UI and SDKs",
+        "Customer identity platform",
+        "Managed authentication with client SDKs",
+        "Hosted Auth integrated with Postgres",
+        "User pools, managed login and federation",
+        "Hosted identity and enterprise integrations",
+        "Consumer / B2B identity APIs and SDKs",
+        "Hosted authentication with visual flows"
+      ]
+    },
+    {
+      "label": "Pros",
+      "values": [
+        "Prebuilt account components",
+        "Connections and identity customization",
+        "Firebase client integration",
+        "Auth tokens integrate with RLS policies",
+        "AWS IAM and federation integration",
+        "AuthKit plus SSO / directory products",
+        "API-driven integration and B2B tooling",
+        "Visual flow builder and embedded UI"
+      ]
+    },
+    {
+      "label": "Cons",
+      "values": [
+        "SDK / component dependency; add-on dimensions",
+        "Plan and tenant configuration complexity",
+        "Method, quota and Identity Platform differences",
+        "RLS, SMTP and app permission design",
+        "Pool, token and IAM configuration",
+        "Different products have different billing units",
+        "Consumer / B2B model and integration decisions",
+        "Flow configuration and plan-specific limits"
+      ]
+    },
+    {
+      "label": "Billing",
+      "values": [
+        "Plan + retained users / add-ons",
+        "Plan + active users / features",
+        "Method-dependent; SMS and Identity Platform usage",
+        "Plan + active users / SSO / add-ons",
+        "Tier + active users / extra features",
+        "AuthKit users; SSO / directory connections separately",
+        "Active users + connections / usage",
+        "Plan + users / tenants / usage"
+      ]
+    }
+  ],
+  "responsibilities": [
+    {
+      "label": "Identity service",
+      "explanation": "The hosted service operates the identity backend and token issuance. You must integrate it correctly, validate access on your backend and handle outages safely.",
+      "values": [
+        ["Auto", "Hosted identity"],
+        ["Auto", "Hosted identity"],
+        ["Auto", "Hosted identity"],
+        ["Auto", "Hosted Auth"],
+        ["Auto", "Managed user pool"],
+        ["Auto", "Hosted AuthKit"],
+        ["Auto", "Hosted identity"],
+        ["Auto", "Hosted identity"]
+      ]
+    },
+    {
+      "label": "Sign-in setup",
+      "explanation": "Choose sign-in methods, configure identity providers and redirect URLs, and implement an accessible client flow. Support and charges vary by method and plan.",
+      "values": [
+        ["Manual", "Components / methods"],
+        ["Manual", "Connections / login"],
+        ["Manual", "Providers / UI"],
+        ["Manual", "Providers / redirects"],
+        ["Manual", "Pool / app client"],
+        ["Manual", "Methods / AuthKit UI"],
+        ["Manual", "Project / SDK / UI"],
+        ["Manual", "Flows / SDK"]
+      ]
+    },
+    {
+      "label": "Session policy",
+      "explanation": "Provider session tooling does not choose your cookie protections, duration, revocation checks, cross-device policy or sensitive-operation reauthentication for you.",
+      "values": [
+        ["Manual", "Session / backend policy"],
+        ["Manual", "Token / session settings"],
+        ["Manual", "Persistence / revocation checks"],
+        ["Manual", "Session / refresh policy"],
+        ["Manual", "Token / app settings"],
+        ["Manual", "Session / backend policy"],
+        ["Manual", "Session / backend policy"],
+        ["Manual", "Flow / session policy"]
+      ]
+    },
+    {
+      "label": "App authorization",
+      "explanation": "Authentication identifies a user. Your application still decides which records, tenants and actions that identity may access, even when the provider offers role or permission tools.",
+      "values": [
+        ["Manual", "App checks / roles"],
+        ["Manual", "App checks / roles"],
+        ["Manual", "App / Security Rules"],
+        ["Manual", "App / RLS policies"],
+        ["Manual", "App / IAM policies"],
+        ["Manual", "App checks / roles"],
+        ["Manual", "App checks / roles"],
+        ["Manual", "App checks / roles"]
+      ]
+    },
+    {
+      "label": "Application database",
+      "explanation": "This row concerns a database for your application's records, not the provider's identity directory. Firebase Auth and Cognito do not by themselves include their vendors' separate database services.",
+      "values": [
+        ["Excluded", "Connect your database"],
+        ["Excluded", "Connect your database"],
+        ["Excluded", "Separate database service"],
+        ["Manual", "Configure project Postgres"],
+        ["Excluded", "Separate database service"],
+        ["Excluded", "Connect your database"],
+        ["Excluded", "Connect your database"],
+        ["Excluded", "Connect your database"]
+      ]
+    },
+    {
+      "label": "Recovery / MFA",
+      "explanation": "Configure recovery and extra factors as supported by the chosen method and plan. Test lost-device, failed-delivery and reauthentication paths rather than assuming a feature checkbox proves safety.",
+      "values": [
+        ["Manual", "Methods / policies"],
+        ["Manual", "Methods / policies"],
+        ["Manual", "Methods / product tier"],
+        ["Manual", "Methods / sender"],
+        ["Manual", "Pool / method policy"],
+        ["Manual", "Methods / policy"],
+        ["Manual", "Methods / policy"],
+        ["Manual", "Flows / policy"]
+      ]
+    },
+    {
+      "label": "Deletion / export",
+      "explanation": "Deleting an identity does not automatically remove every application record, uploaded file, external account or retained backup. Coordinate and validate that lifecycle yourself.",
+      "values": [
+        ["Manual", "Coordinate app cleanup"],
+        ["Manual", "Coordinate app cleanup"],
+        ["Manual", "Coordinate app cleanup"],
+        ["Manual", "Coordinate app cleanup"],
+        ["Manual", "Coordinate app cleanup"],
+        ["Manual", "Coordinate app cleanup"],
+        ["Manual", "Coordinate app cleanup"],
+        ["Manual", "Coordinate app cleanup"]
+      ]
+    }
+  ]
+}

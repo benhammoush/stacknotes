@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "profile": "web",
+  "nodeVersion": "24.21.0",
+  "automationSha": "43018f3d7ec3605d14379be6f1f5de287ad6a1f1",
+  "integration": false,
+  "legacyChecks": [],
+  "deploymentVariables": [
+    "VERCEL_ORG_ID",
+    "VERCEL_PROJECT_ID",
+    "DEV_PROJECT_ID",
+    "PRODUCTION_PROJECT_ID",
+    "TARGET_ORIGIN"
+  ],
+  "buildEnvironment": { "dev": {}, "production": {} }
+}

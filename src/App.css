@@ -1,0 +1,65 @@
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 2vw;
+  border-bottom: 1px solid var(--border);
+}
+.wordmark {
+  font-size: 1.35rem;
+  font-weight: 750;
+  color: var(--foreground);
+  text-decoration: none;
+  letter-spacing: -0.05em;
+}
+.brand-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.35rem;
+  background: var(--surface-raised);
+  color: var(--foreground);
+  border-radius: 7px;
+  letter-spacing: 0;
+}
+main {
+  padding: 1.75rem 2vw 0;
+}
+h1 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  margin: 0;
+}
+.category-nav {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0 2vw;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+}
+.category-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 0.8rem 0;
+  border-bottom: 2px solid transparent;
+  font-size: 0.875rem;
+}
+.category-nav a[aria-current="page"] {
+  color: var(--foreground);
+  border-bottom-color: var(--foreground);
+}
+@media (max-width: 600px) {
+  .site-header {
+    padding: 1rem;
+  }
+  main {
+    padding: 1.5rem 1rem 0;
+  }
+  .category-nav {
+    padding-inline: 1rem;
+  }
+}

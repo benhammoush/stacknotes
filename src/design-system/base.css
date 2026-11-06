@@ -1,0 +1,51 @@
+@font-face {
+  font-family: Inter;
+  src: url("/fonts/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-padding-top: 1rem;
+}
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font: 0.9375rem/1.6 var(--font-sans);
+}
+button {
+  font: inherit;
+}
+a {
+  color: var(--accent);
+  text-underline-offset: 0.25em;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 1rem;
+  z-index: 10;
+  padding: 0.75rem;
+  background: var(--surface-raised);
+}
+.skip-link:focus {
+  top: 1rem;
+}
+button {
+  cursor: pointer;
+}
+::selection {
+  background: var(--accent);
+  color: var(--background);
+}
