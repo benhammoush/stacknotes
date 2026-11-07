@@ -33,7 +33,8 @@ describe("six category pages", () => {
     expect(categoryGroups.map(({ label }) => label)).toEqual([
       "Cloud services",
     ]);
-    expect(categoryGroups[0].topics).toEqual(categories);
+    expect(categoryGroups[0].topics.slice(1)).toEqual(categories);
+    expect(categoryGroups[0].topics[0].path).toBe("/combinations/");
     expect(new Set(categories.map(({ path }) => path)).size).toBe(6);
     const html = readFileSync(
       resolve(import.meta.dirname, "../../index.html"),
@@ -106,7 +107,7 @@ describe("six category pages", () => {
       const { container: root } = renderApp(category.path);
       expect(
         root.querySelectorAll('nav[aria-label="Cloud services topics"] a'),
-      ).toHaveLength(6);
+      ).toHaveLength(7);
       expect(
         root.querySelectorAll('nav[aria-label="Categories"] a'),
       ).toHaveLength(1);

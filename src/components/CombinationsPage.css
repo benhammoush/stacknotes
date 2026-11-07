@@ -1,0 +1,36 @@
+.combinations-page {
+  padding-bottom: 0.5rem;
+}
+.combinations-table.compact {
+  --label-width: 180px;
+}
+.combinations-table td a {
+  color: var(--foreground);
+  text-decoration: none;
+}
+.combinations-table td a:hover {
+  text-decoration: underline;
+}
+.combination-name {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.combination-note summary {
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 400;
+}
+.combination-note p {
+  color: var(--foreground);
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin: 0.625rem 0 0;
+}
+.combination-product-example > span {
+  display: block;
+  color: var(--muted);
+}
+.combinations-footer {
+  color: var(--muted);
+  margin: 1rem 0 0;
+}

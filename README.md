@@ -16,9 +16,15 @@ its strengths and limitations, and what you still need to manage.
 
 ## Features
 
-- Cloud services groups the six topics in a second navigation row, with no
+- Cloud services groups six comparisons and Common combinations in a second navigation row, with no
   category landing page or breadcrumbs.
 - Six comparisons, each covering ten products and who handles what.
+- Ten suggested service combinations show how hosting, data, accounts, files, background
+  tasks and monitoring fit together, with official source links and setup caveats.
+  Common combinations is the first topic; its compact table has combinations
+  as rows and service types as columns, with extra details collapsed by default.
+  “What to know” includes a product example and its source, marked as a partial
+  match rather than proof of the entire suggested combination.
 - Monochrome design, colored logos and a locally hosted Inter font.
 - Blue ≠ marks identify less-common responsibility labels, not better products.
 - Labels stay visible while scrolling; jump to a provider or use a compact view.
