@@ -174,6 +174,17 @@ describe("six category pages", () => {
     );
   });
 
+  it("describes databases as data storage rather than app hosting", () => {
+    const databases = categories.find(({ path }) => path === "/")!.data;
+    for (const purpose of databases.overview[0].values) {
+      expect(purpose).not.toMatch(/\bapps?\b/i);
+      expect(purpose).toMatch(/\b(data|database|PostgreSQL|MySQL)\b/);
+    }
+    expect(databases.overview[0].values[2]).toBe(
+      "Store data in an AWS-built database compatible with MySQL or PostgreSQL",
+    );
+  });
+
   it("keeps consequential product boundaries visible", () => {
     const hosting = categories.find(({ path }) => path === "/hosting/")!;
     const ecs = hosting.data.providers.findIndex(

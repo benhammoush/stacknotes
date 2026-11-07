@@ -53,14 +53,14 @@
     {
       "label": "Primary purpose",
       "values": [
-        "Store app data in tables and query it directly from Cloudflare Workers",
-        "Run familiar database software on AWS without managing the underlying servers",
-        "Run apps built for MySQL or PostgreSQL on AWS-designed database software",
-        "Run MySQL, PostgreSQL or SQL Server while Google manages the database servers",
-        "Run apps built for SQL Server while Azure manages the database servers",
-        "Build an app around PostgreSQL, with connected sign-in, file storage and data access tools",
+        "Store data in tables and query it directly from Cloudflare Workers",
+        "Use MySQL, PostgreSQL or other supported database systems without managing their servers on AWS",
+        "Store data in an AWS-built database compatible with MySQL or PostgreSQL",
+        "Use MySQL, PostgreSQL or SQL Server without managing their servers on Google Cloud",
+        "Use a SQL Server-based database without managing its servers on Azure",
+        "Store data in PostgreSQL, with connected sign-in, file storage and data access tools",
         "Use PostgreSQL with adjustable processing capacity and separate database copies for development",
-        "Store app data as flexible documents while MongoDB manages the database servers"
+        "Store data as flexible documents in a managed MongoDB database"
       ]
     },
     {
