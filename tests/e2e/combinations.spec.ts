@@ -7,6 +7,7 @@ import { test, expect } from "@playwright/test";
 for (const width of [360, 768, 1440]) {
   test(`common combinations compare rows by service type at ${width}px`, async ({
     page,
+    browserName,
   }) => {
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
@@ -38,6 +39,8 @@ for (const width of [360, 768, 1440]) {
       "Storage",
       "Background tasks & queues",
       "Monitoring",
+      "Caching",
+      "Search",
     ]);
     await expect(table.locator(".combination-name")).toHaveText([
       "AWS",
@@ -51,15 +54,170 @@ for (const width of [360, 768, 1440]) {
       "Render + Clerk",
       "Railway + Clerk",
     ]);
-    await expect(table.getByRole("cell")).toHaveCount(60);
+    await expect(table.getByRole("cell")).toHaveCount(80);
     await expect(table.getByRole("rowheader")).toHaveCount(10);
+    for (const rowIndex of [0, 2, 4, 5, 7, 8, 9]) {
+      await expect(
+        table
+          .locator("tbody tr")
+          .nth(rowIndex)
+          .getByRole("cell")
+          .nth(1)
+          .getByRole("link"),
+      ).toHaveText("PostgreSQL");
+    }
+    await expect(table.locator("tbody .company")).toHaveCount(81);
+    await expect(
+      table.locator("tbody tr > td:first-of-type .company"),
+    ).toHaveCount(0);
+    await expect(
+      table
+        .locator("tbody tr")
+        .first()
+        .getByRole("cell")
+        .nth(3)
+        .locator(".company"),
+    ).toHaveText("Within AWS");
+    await expect(
+      table
+        .locator("tbody tr")
+        .nth(8)
+        .getByRole("cell")
+        .nth(3)
+        .locator(".company"),
+    ).toHaveText("External · AWS");
+    await expect(
+      table
+        .locator("tbody tr")
+        .nth(4)
+        .getByRole("cell")
+        .nth(1)
+        .locator(".company"),
+    ).toHaveText("External · Supabase");
+    const azureSearch = table
+      .locator("tbody tr")
+      .nth(1)
+      .getByRole("cell")
+      .nth(7);
+    await expect(azureSearch.getByRole("link")).toHaveText([
+      "Elastic Cloud",
+      "Algolia",
+      "Typesense Cloud",
+    ]);
+    await expect(azureSearch.locator(".company")).toHaveText([
+      "External · Elastic",
+      "External · Algolia",
+      "External · Typesense",
+    ]);
+    for (const link of await azureSearch.getByRole("link").all()) {
+      await expect(link).toHaveCSS("font-weight", "400");
+    }
+    await expect(
+      table
+        .locator("tbody tr")
+        .nth(7)
+        .getByRole("cell")
+        .nth(6)
+        .getByRole("link"),
+    ).toHaveText(["Valkey", "Redis"]);
+    await expect(
+      table
+        .locator("tbody tr")
+        .nth(7)
+        .getByRole("cell")
+        .nth(6)
+        .locator(".company"),
+    ).toHaveText(["Within DigitalOcean", "External · Upstash"]);
+    await expect(
+      table
+        .locator("tbody tr")
+        .last()
+        .getByRole("cell")
+        .nth(6)
+        .getByRole("link"),
+    ).toHaveText(["Redis", "Redis"]);
+    await expect(
+      table
+        .locator("tbody tr")
+        .last()
+        .getByRole("cell")
+        .nth(6)
+        .locator(".company"),
+    ).toHaveText(["Within Railway", "External · Upstash"]);
+    await expect(
+      table.getByRole("link", {
+        name: "Redis — Within Railway",
+        exact: true,
+      }),
+    ).toHaveAttribute("href", "https://docs.railway.com/guides/redis");
     await expect(
       page.getByText("10 combinations", { exact: true }),
     ).toBeVisible();
-    await expect(table.locator(".combination-product-example")).toHaveCount(10);
+    await expect(table.locator(".combination-product-example")).toHaveCount(0);
+    await expect(table.locator("details")).toHaveCount(0);
+    await expect(page.locator(".combination-dialog")).toHaveCount(10);
+    const guidance = page.locator("#choice-aws");
+    await expect(guidance).toBeHidden();
+    const name = table.locator(".combination-name").first();
+    const info = table.getByRole("button", {
+      name: "About AWS",
+      exact: true,
+    });
+    await name.hover();
+    await expect(guidance).toBeHidden();
+    await info.hover();
+    await expect(guidance).toBeHidden();
+    await info.focus();
+    await expect(guidance).toBeHidden();
+    await page.keyboard.press("Enter");
+    await expect(guidance).toBeVisible();
+    await expect(guidance).toHaveAccessibleName("AWS");
+    await expect(guidance).toContainText("wide choice of cloud services");
+    await expect(guidance).toContainText(
+      "more setup than with a small app platform",
+    );
+    const popup = await guidance.boundingBox();
+    expect(
+      Math.abs(popup!.x + popup!.width / 2 - width / 2),
+    ).toBeLessThanOrEqual(2);
+    expect(Math.abs(popup!.y + popup!.height / 2 - 450)).toBeLessThanOrEqual(2);
     await expect(
-      table.locator(".combination-product-example").first(),
-    ).toBeHidden();
+      guidance.getByRole("button", { name: "Close combination guide" }),
+    ).toBeFocused();
+    await page.keyboard.press("Tab");
+    // WebKit's default keyboard preference skips links during Tab navigation.
+    if (browserName === "webkit") await guidance.getByRole("link").focus();
+    await expect(guidance.getByRole("link")).toBeFocused();
+    await page.keyboard.press("Shift+Tab");
+    await expect(
+      guidance.getByRole("button", { name: "Close combination guide" }),
+    ).toBeFocused();
+    await table.getByRole("link", { name: "Hosting", exact: true }).focus();
+    await expect(
+      guidance.getByRole("button", { name: "Close combination guide" }),
+    ).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(guidance).toBeHidden();
+    await expect(info).toBeFocused();
+    await info.click();
+    await expect(guidance).toBeVisible();
+    await guidance
+      .getByRole("button", { name: "Close combination guide" })
+      .click();
+    await expect(guidance).toBeHidden();
+    await info.click();
+    await page.mouse.click(2, 2);
+    await expect(guidance).toBeHidden();
+    expect(
+      await table
+        .locator("tbody tr")
+        .first()
+        .evaluate((element) => element.getBoundingClientRect().height),
+    ).toBeLessThanOrEqual(96);
+    if (width === 1440) {
+      await table.getByRole("rowheader").nth(5).scrollIntoViewIfNeeded();
+      await expect(table.getByRole("rowheader").nth(5)).toBeInViewport();
+    }
     for (const image of await table.locator("img").all()) {
       await expect
         .poll(() =>
@@ -81,13 +239,14 @@ for (const width of [360, 768, 1440]) {
           (element) => element.scrollWidth <= element.clientWidth,
         ),
       ).toBe(true);
+      await region.scrollIntoViewIfNeeded();
       await region.evaluate((element) => {
         element.scrollTop = element.scrollHeight;
       });
       await expect(table.getByRole("rowheader").last()).toBeInViewport();
       await expect(
         table.getByRole("columnheader", {
-          name: "Monitoring",
+          name: "Search",
           exact: true,
         }),
       ).toBeInViewport();
@@ -117,7 +276,7 @@ for (const width of [360, 768, 1440]) {
       await expect(table.getByRole("rowheader").first()).toBeInViewport();
       await expect(
         table.getByRole("columnheader", {
-          name: "Monitoring",
+          name: "Search",
           exact: true,
         }),
       ).toBeInViewport();
@@ -128,42 +287,32 @@ for (const width of [360, 768, 1440]) {
         .poll(() => region.evaluate((element) => element.scrollLeft))
         .toBe(0);
     }
-    const scope = table.locator("th details").nth(5);
-    await scope.locator("summary").focus();
-    await page.keyboard.press("Enter");
-    await expect(scope).toHaveAttribute("open", "");
-    const product = scope.locator(".combination-product-example");
-    await expect(product).toBeVisible();
-    await expect(product).toContainText("partial match");
-    await expect(
-      product.getByRole("link", { name: "Neptune", exact: true }),
-    ).toHaveAttribute("href", "https://meetneptune.com/");
-    await expect(
-      product.getByRole("link", { name: "Source for Neptune", exact: true }),
-    ).toHaveAttribute(
-      "href",
-      "https://neon.com/blog/neptune-built-a-fast-serverless-backend-with-neon-and-vercel",
+    const scope = page.locator("#choice-vercel-neon-clerk");
+    await table
+      .getByRole("button", { name: "About Vercel + Neon + Clerk", exact: true })
+      .click();
+    await expect(scope).toBeVisible();
+    await expect(scope.locator(".combination-product-example")).toHaveCount(0);
+    await expect(scope).toContainText(
+      "More services means more connections to maintain",
     );
     await expect(scope).not.toContainText("Does not establish Clerk");
-    await expect(scope.locator("p").first()).toHaveCSS("font-size", "14px");
-    await page.keyboard.press("Enter");
-    await expect(scope).not.toHaveAttribute("open", "");
+    await page.keyboard.press("Escape");
+    await expect(scope).toBeHidden();
     await region.evaluate((element) => {
       element.scrollTop = 0;
       element.scrollLeft = 0;
     });
-    const details = table.locator("th details").first();
-    await details.locator("summary").focus();
-    await page.keyboard.press("Enter");
-    await expect(details).toHaveAttribute("open", "");
-    await expect(details).toContainText("You connect permissions");
-    await expect(details.locator("p").first()).toHaveCSS("font-size", "14px");
-    await expect(details.locator("p").first()).toHaveCSS(
-      "color",
-      "rgb(238, 238, 238)",
-    );
-    await page.keyboard.press("Enter");
-    await expect(details).not.toHaveAttribute("open", "");
+    for (const label of ["Caching", "Search"]) {
+      await table.getByRole("link", { name: label, exact: true }).click();
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+        `Managed ${label.toLowerCase()}`,
+      );
+      await page.goBack();
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+        "Common combinations",
+      );
+    }
     const database = table.getByRole("link", { name: "Database", exact: true });
     await database.focus();
     await page.keyboard.press("Enter");

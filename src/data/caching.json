@@ -1,0 +1,123 @@
+{
+  "providers": [
+    {
+      "name": "Upstash Redis",
+      "company": "Upstash",
+      "logo": "/providers/upstash.svg",
+      "url": "https://upstash.com/docs/redis/overall/getstarted",
+      "pricing": "https://upstash.com/pricing/redis"
+    },
+    {
+      "name": "ElastiCache",
+      "company": "AWS",
+      "logo": "/providers/aws.svg",
+      "url": "https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/WhatIs.html",
+      "pricing": "https://aws.amazon.com/elasticache/pricing/",
+      "caveat": "Valkey, Redis OSS or Memcached"
+    },
+    {
+      "name": "Memorystore for Valkey",
+      "company": "Google",
+      "logo": "/providers/google-cloud.svg",
+      "url": "https://docs.cloud.google.com/memorystore/docs/valkey",
+      "pricing": "https://cloud.google.com/memorystore/valkey/pricing"
+    },
+    {
+      "name": "Azure Managed Redis",
+      "company": "Microsoft",
+      "logo": "/providers/microsoft.svg",
+      "url": "https://learn.microsoft.com/en-us/azure/redis/overview",
+      "pricing": "https://azure.microsoft.com/pricing/details/managed-redis/"
+    }
+  ],
+  "overview": [
+    {
+      "label": "Primary purpose",
+      "values": [
+        "Keep frequently used data, session records and counters in a hosted Redis-compatible store.",
+        "Keep frequently used data in an AWS-managed in-memory cache.",
+        "Keep frequently used data and counters in a Google-managed Valkey cluster.",
+        "Keep frequently used data and session records in a Microsoft-managed Redis service."
+      ]
+    },
+    {
+      "label": "Strengths",
+      "values": [
+        "Web-request access as well as Redis clients; useful for apps with short-lived functions.",
+        "Choice of engines, serverless caches or configured clusters alongside AWS services.",
+        "Valkey commands with managed cluster infrastructure and optional replicas.",
+        "Redis Enterprise features and connections to Azure services."
+      ]
+    },
+    {
+      "label": "Limitations",
+      "values": [
+        "Command support, request limits and availability features depend on the plan; choose regions carefully.",
+        "Engines and deployment modes differ; configure network access and check command support.",
+        "Requires compatible clients and network access; capacity and replica choices still matter.",
+        "Features depend on tier and configuration; plan memory, connections and access rules."
+      ]
+    },
+    {
+      "label": "How billing works",
+      "values": [
+        "Request-based or fixed plans, with storage and transfer limits.",
+        "Serverless usage or allocated nodes; engine, storage and transfer affect charges.",
+        "Allocated node capacity, replicas and applicable network charges.",
+        "Selected tier and capacity; replication and other usage can add charges."
+      ]
+    }
+  ],
+  "responsibilities": [
+    {
+      "label": "Hosted cache service",
+      "explanation": "The provider operates the cache infrastructure. This comparison covers shared application data caches, not browser or CDN page caching. Managed hosting does not choose which data your app should cache.",
+      "values": [
+        ["Auto", "Provider operates the service"],
+        ["Auto", "Provider operates the chosen cache deployment"],
+        ["Auto", "Provider operates the Valkey cluster"],
+        ["Auto", "Microsoft operates the Redis service"]
+      ]
+    },
+    {
+      "label": "Expiration and stale data",
+      "explanation": "An expiration time sets how long a cached value can remain. Your app must set suitable times and refresh or remove stale values when the original data changes. The cache cannot infer your business rules.",
+      "values": [
+        ["Manual", "Set expiration and refresh changed values"],
+        ["Manual", "Set expiration and refresh changed values"],
+        ["Manual", "Set expiration and refresh changed values"],
+        ["Manual", "Set expiration and refresh changed values"]
+      ]
+    },
+    {
+      "label": "Sessions and rate limiting",
+      "explanation": "Sessions can store temporary user state; rate limiting counts requests to enforce a limit. A cache can hold those records, but your app or a connected tool must implement the policy. Neither feature is automatically a complete sign-in service.",
+      "values": [
+        ["Manual", "Connect session or rate-limit code; set retention"],
+        ["Manual", "Connect compatible app code for the chosen engine"],
+        ["Manual", "Connect session or rate-limit code; set retention"],
+        ["Manual", "Connect session or rate-limit code; set retention"]
+      ]
+    },
+    {
+      "label": "Access and secrets",
+      "explanation": "Cache records may contain private data. Keep credentials out of browser code, configure encrypted connections and permitted clients, and separate users' records. A managed service does not enforce your app's user permissions for you.",
+      "values": [
+        ["Manual", "Protect tokens and limit access to private records"],
+        ["Manual", "Configure network and client permissions"],
+        ["Manual", "Configure network and client permissions"],
+        ["Manual", "Configure network and client permissions"]
+      ]
+    },
+    {
+      "label": "Cache loss and recovery",
+      "explanation": "Cached values can expire, be evicted when memory fills, or become unavailable. Your app needs a safe fallback and a way to rebuild them. If sessions or counters must survive loss, explicitly check persistence, replication and recovery guarantees for the chosen plan.",
+      "values": [
+        ["Manual", "Plan fallback and check plan recovery guarantees"],
+        ["Manual", "Plan fallback; recovery varies by engine and mode"],
+        ["Manual", "Plan fallback and configure required replicas"],
+        ["Manual", "Plan fallback and configure persistence and availability"]
+      ]
+    }
+  ]
+}
