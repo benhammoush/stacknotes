@@ -62,7 +62,11 @@ describe("six category pages", () => {
   for (const category of categories) {
     it(`${category.label} has complete matrices, sources and semantic disclosure`, () => {
       const { data } = category;
-      expect(data.providers).toHaveLength(8);
+      expect(data.providers).toHaveLength(10);
+      expect(
+        new Set(data.providers.map(({ company, name }) => `${company}:${name}`))
+          .size,
+      ).toBe(10);
       expect(data.overview).toHaveLength(4);
       expect(data.overview.map(({ label }) => label)).toEqual([
         "Primary purpose",
@@ -76,7 +80,7 @@ describe("six category pages", () => {
       for (const purpose of data.overview[0].values)
         expect(purpose.trim().length).toBeGreaterThan(30);
       for (const row of [...data.overview, ...data.responsibilities]) {
-        expect(row.values).toHaveLength(8);
+        expect(row.values).toHaveLength(10);
         const visibleCopy = [row.label, ...row.values.flat()].join(" ");
         expect(visibleCopy).not.toMatch(
           /\b(frontend|backend|full-stack|runtime|workload|SDK|RLS|IAM|B2B|egress|ingest|orchestration|telemetry|idempotency)\b| \/ /i,
@@ -138,25 +142,114 @@ describe("six category pages", () => {
         );
       }
       expect(root.querySelectorAll(".sources a")).toHaveLength(
-        category.path === "/" ? 0 : 8,
+        category.path === "/" ? 0 : 10,
       );
       const compact = root.querySelector<HTMLButtonElement>("#compact-toggle")!;
-      fireEvent.click(compact);
       expect(compact.getAttribute("aria-pressed")).toBe("true");
-      expect(
-        root.querySelector(".table-scroll")?.classList.contains("compact"),
-      ).toBe(true);
       fireEvent.click(compact);
+      expect(compact.getAttribute("aria-pressed")).toBe("false");
       expect(
         root.querySelector(".table-scroll")?.classList.contains("compact"),
       ).toBe(false);
+      fireEvent.click(compact);
+      expect(
+        root.querySelector(".table-scroll")?.classList.contains("compact"),
+      ).toBe(true);
     });
   }
 
+  it.each([
+    [
+      "/",
+      "DynamoDB",
+      "Read-only copies",
+      ["Excluded", "No conventional read-only copies; caching is separate"],
+    ],
+    [
+      "/",
+      "Firestore",
+      "Backups and recovery history",
+      ["Manual", "Enable paid backup schedules and recovery history"],
+    ],
+    [
+      "/hosting/",
+      "Heroku",
+      "Keeping app data",
+      ["Excluded", "Use a database or separate file-storage product"],
+    ],
+    [
+      "/authentication/",
+      "FusionAuth Cloud",
+      "App database",
+      [
+        "Excluded",
+        "Connect your database; hosted storage is for sign-in records",
+      ],
+    ],
+    [
+      "/jobs/",
+      "Pub/Sub",
+      "Running task code",
+      ["Excluded", "Host subscribers or use a separate processing product"],
+    ],
+    [
+      "/jobs/",
+      "EventBridge",
+      "Remembering task progress",
+      ["Excluded", "Tracks events and delivery, not task steps"],
+    ],
+  ] as const)(
+    "keeps %s %s responsibilities aligned after reordering",
+    (path, name, label, expected) => {
+      const data = categories.find((category) => category.path === path)!.data;
+      const column = data.providers.findIndex(
+        (provider) => provider.name === name,
+      );
+      expect(column).toBeGreaterThanOrEqual(0);
+      expect(
+        data.responsibilities.find((row) => row.label === label)?.values[
+          column
+        ],
+      ).toEqual(expected);
+    },
+  );
+
+  it("keeps the new product scope and billing qualifications visible", () => {
+    const signIn = categories.find(
+      ({ path }) => path === "/authentication/",
+    )!.data;
+    expect(
+      signIn.providers.find(({ name }) => name === "Entra External ID")?.caveat,
+    ).toBe("Customer sign-in offering");
+    expect(
+      signIn.providers.find(({ name }) => name === "FusionAuth Cloud")?.caveat,
+    ).toBe("Provider-hosted offering");
+    const storage = categories.find(({ path }) => path === "/storage/")!.data;
+    const wasabi = storage.providers.findIndex(
+      ({ company }) => company === "Wasabi",
+    );
+    expect(storage.overview[3].values[wasabi]).toContain(
+      "minimum billing and storage duration",
+    );
+    const ibm = storage.providers.findIndex(({ company }) => company === "IBM");
+    expect(storage.overview[3].values[ibm]).toContain("One Rate");
+  });
+
   it("uses shared descriptions for shared purposes and explains necessary terms", () => {
     const hosting = categories.find(({ path }) => path === "/hosting/")!.data;
-    expect(hosting.overview[0].values[0]).toBe(hosting.overview[0].values[1]);
-    expect(hosting.overview[0].values[3]).toBe(hosting.overview[0].values[4]);
+    const [vercel, netlify, render, railway] = [
+      "Vercel",
+      "Netlify",
+      "Render",
+      "Railway",
+    ].map(
+      (name) =>
+        hosting.overview[0].values[
+          hosting.providers.findIndex((provider) => provider.name === name)
+        ],
+    );
+    expect(vercel).toBe(netlify);
+    expect(render).toBe(railway);
     expect(hosting.responsibilities[0].explanation).toContain(
       "A container packages code and its required software",
     );
@@ -174,12 +267,27 @@ describe("six category pages", () => {
     );
   });
 
+  it("describes databases as data storage rather than app hosting", () => {
+    const databases = categories.find(({ path }) => path === "/")!.data;
+    for (const purpose of databases.overview[0].values) {
+      expect(purpose).not.toMatch(/\bapps?\b/i);
+      expect(purpose).toMatch(/\b(data|database|PostgreSQL|MySQL)\b/);
+    }
+    expect(
+      databases.overview[0].values[
+        databases.providers.findIndex(({ name }) => name === "Aurora")
+      ],
+    ).toBe(
+      "Store data in an AWS-built database compatible with MySQL or PostgreSQL",
+    );
+  });
+
   it("keeps consequential product boundaries visible", () => {
     const hosting = categories.find(({ path }) => path === "/hosting/")!;
     const ecs = hosting.data.providers.findIndex(
       ({ name }) => name === "ECS Express Mode",
     );
-    expect(ecs).toBe(6);
+    expect(ecs).toBe(9);
     expect(hosting.data.providers[ecs].url).toContain(
       "/AmazonECS/latest/developerguide/express-service-overview.html",
     );
@@ -198,9 +306,15 @@ describe("six category pages", () => {
     const jobs = categories.find(({ path }) => path === "/jobs/")!.data;
     expect(
       jobs.responsibilities.find(({ label }) => label === "Running task code")
-        ?.values[7],
+        ?.values[
+        jobs.providers.findIndex(({ name }) => name === "Temporal Cloud")
+      ],
     ).toEqual(["Excluded", "Host background workers separately"]);
-    expect(jobs.overview[0].values[6]).toContain("fetch them over the web");
+    expect(
+      jobs.overview[0].values[
+        jobs.providers.findIndex(({ name }) => name === "Queues")
+      ],
+    ).toContain("fetch them over the web");
     expect(
       categories
         .find(({ path }) => path === "/monitoring/")!

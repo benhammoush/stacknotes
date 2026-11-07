@@ -60,7 +60,7 @@ describe("application routing", () => {
     expect(container.querySelector("header")).toBe(header);
     expect(
       container.querySelector(".table-scroll")?.classList.contains("compact"),
-    ).toBe(false);
+    ).toBe(true);
     expect(
       container.querySelector("#technical-rows")?.hasAttribute("hidden"),
     ).toBe(true);

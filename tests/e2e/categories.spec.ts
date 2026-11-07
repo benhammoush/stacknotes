@@ -96,14 +96,14 @@ for (const category of categories) {
         .getByRole("link"),
     ).toHaveCount(6);
     await expect(page.locator("#technical-rows")).toBeHidden();
-    await expect(page.getByRole("cell")).toHaveCount(32);
+    await expect(page.getByRole("cell")).toHaveCount(40);
     const purpose = page.getByRole("row", { name: /^Primary purpose / });
-    await expect(purpose.getByRole("cell")).toHaveCount(8);
+    await expect(purpose.getByRole("cell")).toHaveCount(10);
     await expect(
       page.getByRole("rowheader", { name: "What you get" }),
     ).toHaveCount(0);
     if (category.path === "/hosting/") {
-      await page.getByLabel("Jump to").selectOption("6");
+      await page.getByLabel("Jump to").selectOption("9");
       const ecs = page.getByRole("link", {
         name: "ECS Express Mode",
         exact: true,
@@ -113,7 +113,7 @@ for (const category of categories) {
         "href",
         "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-overview.html",
       );
-      await expect(purpose.getByRole("cell").nth(6)).toContainText(
+      await expect(purpose.getByRole("cell").nth(9)).toContainText(
         "automated server, network and traffic-routing setup",
       );
       await expect(
@@ -142,16 +142,22 @@ for (const category of categories) {
       ),
     ).toBe(true);
     const region = page.locator(".table-scroll");
-    const fullWidth = await region.evaluate((element) => element.scrollWidth);
-    await page.getByRole("button", { name: "Compact view" }).click();
+    const compactWidth = await region.evaluate(
+      (element) => element.scrollWidth,
+    );
     await expect(
       page.getByRole("button", { name: "Compact view" }),
     ).toHaveAttribute("aria-pressed", "true");
+    await page.getByRole("button", { name: "Compact view" }).click();
+    await expect(
+      page.getByRole("button", { name: "Compact view" }),
+    ).toHaveAttribute("aria-pressed", "false");
     expect(
       await region.evaluate((element) => element.scrollWidth),
-    ).toBeLessThan(fullWidth);
-    await page.getByLabel("Jump to").selectOption("7");
-    await expect(page.locator("#provider-7")).toBeInViewport();
+    ).toBeGreaterThan(compactWidth);
+    await page.getByRole("button", { name: "Compact view" }).click();
+    await page.getByLabel("Jump to").selectOption("9");
+    await expect(page.locator("#provider-9")).toBeInViewport();
     await expect(
       page.getByRole("columnheader", { name: "Characteristic" }),
     ).toBeInViewport();
@@ -181,7 +187,7 @@ for (const category of categories) {
     await expect(page.locator("#technical-rows")).toBeHidden();
     if (category.path !== "/") {
       await page.getByText("Pricing sources", { exact: true }).click();
-      await expect(page.locator(".sources li a")).toHaveCount(8);
+      await expect(page.locator(".sources li a")).toHaveCount(10);
     }
     expect(errors).toEqual([]);
   });
@@ -297,7 +303,7 @@ test("resets route state, closes old explanations and handles unknown pages", as
   await expect(page.locator("#term-0")).toBeHidden();
   await expect(
     page.getByRole("button", { name: "Compact view" }),
-  ).toHaveAttribute("aria-pressed", "false");
+  ).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("main")).toBeFocused();
   await page.goBack();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(

@@ -11,21 +11,23 @@ import { categories } from "../../src/data/categories";
 import { renderApp } from "./render";
 
 describe("database comparison", () => {
-  it("keeps all eight services, four overview rows and eleven responsibility rows", () => {
+  it("covers ten products, four overview rows and eleven responsibility rows", () => {
     expect(data.providers.map(({ name }) => name)).toEqual([
-      "D1",
       "RDS",
-      "Aurora",
-      "Cloud SQL",
+      "DynamoDB",
+      "Atlas",
       "Azure SQL",
+      "Cloud SQL",
+      "Aurora",
+      "Firestore",
       "Supabase",
       "Neon",
-      "Atlas",
+      "D1",
     ]);
     expect(data.overview).toHaveLength(4);
     expect(data.responsibilities).toHaveLength(11);
     for (const row of [...data.overview, ...data.responsibilities])
-      expect(row.values).toHaveLength(8);
+      expect(row.values).toHaveLength(10);
     for (const row of data.responsibilities) {
       expect(row.explanation.length).toBeGreaterThan(60);
       for (const [status] of row.values)
@@ -44,15 +46,34 @@ describe("database comparison", () => {
     expect(container.querySelector("script")).toBeNull();
   });
 
+  it("sizes the real ten-product comparison from its provider count", () => {
+    const { container } = renderApp();
+    expect(
+      container
+        .querySelector("table")
+        ?.style.getPropertyValue("--provider-count"),
+    ).toBe("10");
+    expect(container.querySelectorAll("thead th")).toHaveLength(11);
+    expect(container.querySelectorAll("tbody td")).toHaveLength(150);
+    expect(container.querySelector(".provider-count")?.textContent).toBe(
+      "10 providers",
+    );
+    expect(
+      container.querySelector(".table-scroll")?.classList.contains("compact"),
+    ).toBe(true);
+    for (const row of container.querySelectorAll("tbody tr:not(.section-row)"))
+      expect(row.querySelectorAll("td")).toHaveLength(10);
+  });
+
   it("renders a labelled table, source links and uniquely connected explanations", () => {
     const { container: root } = renderApp();
-    expect(root.querySelectorAll("thead th")).toHaveLength(9);
+    expect(root.querySelectorAll("thead th")).toHaveLength(11);
     expect(root.querySelectorAll('th[scope="row"]')).toHaveLength(15);
-    expect(root.querySelectorAll("td")).toHaveLength(120);
-    expect(root.querySelectorAll("thead a")).toHaveLength(8);
+    expect(root.querySelectorAll("td")).toHaveLength(150);
+    expect(root.querySelectorAll("thead a")).toHaveLength(10);
     expect(
       root.querySelectorAll('thead img.provider-logo[alt=""]'),
-    ).toHaveLength(8);
+    ).toHaveLength(10);
     expect(root.querySelector("table caption")?.textContent).toContain(
       "Managed database providers",
     );
@@ -91,7 +112,7 @@ describe("database comparison", () => {
     expect(rows.hidden).toBe(true);
     expect(rows.querySelectorAll("tr")).toHaveLength(11);
     expect(root.querySelectorAll("tbody:not(#technical-rows) td")).toHaveLength(
-      32,
+      40,
     );
     fireEvent.click(toggle);
     expect(toggle.getAttribute("aria-expanded")).toBe("true");

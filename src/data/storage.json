@@ -8,13 +8,6 @@
       "pricing": "https://aws.amazon.com/s3/pricing/"
     },
     {
-      "name": "R2",
-      "company": "Cloudflare",
-      "logo": "/providers/cloudflare.svg",
-      "url": "https://developers.cloudflare.com/r2/",
-      "pricing": "https://developers.cloudflare.com/r2/pricing/"
-    },
-    {
       "name": "Cloud Storage",
       "company": "Google",
       "logo": "/providers/google-cloud.svg",
@@ -29,6 +22,20 @@
       "pricing": "https://azure.microsoft.com/pricing/details/storage/blobs/"
     },
     {
+      "name": "Object Storage",
+      "company": "IBM",
+      "logo": "/providers/ibm.svg",
+      "url": "https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-about-cloud-object-storage",
+      "pricing": "https://www.ibm.com/products/cloud-object-storage/pricing"
+    },
+    {
+      "name": "R2",
+      "company": "Cloudflare",
+      "logo": "/providers/cloudflare.svg",
+      "url": "https://developers.cloudflare.com/r2/",
+      "pricing": "https://developers.cloudflare.com/r2/pricing/"
+    },
+    {
       "name": "B2",
       "company": "Backblaze",
       "logo": "/providers/backblaze.png",
@@ -36,11 +43,18 @@
       "pricing": "https://www.backblaze.com/cloud-storage/pricing"
     },
     {
-      "name": "Storage",
-      "company": "Supabase",
-      "logo": "/providers/supabase.svg",
-      "url": "https://supabase.com/docs/guides/storage",
-      "pricing": "https://supabase.com/pricing"
+      "name": "Hot Cloud Storage",
+      "company": "Wasabi",
+      "logo": "/providers/wasabi.png",
+      "url": "https://wasabi.com/cloud-object-storage",
+      "pricing": "https://wasabi.com/pricing"
+    },
+    {
+      "name": "Spaces",
+      "company": "DigitalOcean",
+      "logo": "/providers/digitalocean.svg",
+      "url": "https://docs.digitalocean.com/products/spaces/",
+      "pricing": "https://docs.digitalocean.com/products/spaces/details/pricing/"
     },
     {
       "name": "Storage",
@@ -50,11 +64,11 @@
       "pricing": "https://firebase.google.com/pricing"
     },
     {
-      "name": "Spaces",
-      "company": "DigitalOcean",
-      "logo": "/providers/digitalocean.svg",
-      "url": "https://docs.digitalocean.com/products/spaces/",
-      "pricing": "https://docs.digitalocean.com/products/spaces/details/pricing/"
+      "name": "Storage",
+      "company": "Supabase",
+      "logo": "/providers/supabase.svg",
+      "url": "https://supabase.com/docs/guides/storage",
+      "pricing": "https://supabase.com/pricing"
     }
   ],
   "overview": [
@@ -62,52 +76,60 @@
       "label": "Primary purpose",
       "values": [
         "Store app files, backups and large data collections using AWS tools",
-        "Store and deliver app files using Cloudflare tools, without R2 data-transfer-out charges",
         "Store app files, backups and data for analysis using Google Cloud tools",
         "Store app files and data for analysis using Azure tools",
+        "Store files, backups and large data collections using IBM Cloud and S3-compatible tools",
+        "Store and deliver app files using Cloudflare tools, without R2 data-transfer-out charges",
         "Store backups, archives and app files using Backblaze or S3-compatible tools",
-        "Manage app uploads and file access using Supabase sign-in and database access rules",
+        "Store backups, archives and other files with capacity-based billing and S3-compatible tools",
+        "Store and deliver app files using S3-compatible tools and an optional built-in delivery network",
         "Manage user uploads in web and mobile apps using Firebase code libraries and access rules",
-        "Store and deliver app files using S3-compatible tools and an optional built-in delivery network"
+        "Manage app uploads and file access using Supabase sign-in and database access rules"
       ]
     },
     {
       "label": "Strengths",
       "values": [
         "Several storage options and connections to AWS tools",
-        "Cloudflare connections; no R2 data-transfer-out charge",
         "Several storage options and connections to Google Cloud tools",
         "Connects to Azure account and storage tools",
+        "Storage-location protection options and IBM Cloud access controls",
+        "Cloudflare connections; no R2 data-transfer-out charge",
         "Works with S3-compatible tools; focused on storage",
-        "Connected sign-in, resumable uploads and file-access rules",
+        "Capacity-focused pricing and file-locking tools for backups",
+        "Works with S3-compatible tools; optional built-in delivery network",
         "App code libraries and Firebase Security Rules",
-        "Works with S3-compatible tools; optional built-in delivery network"
+        "Connected sign-in, resumable uploads and file-access rules"
       ]
     },
     {
       "label": "Limitations",
       "values": [
         "You configure access, how long to keep files and data-transfer costs",
-        "Works with S3 tools but does not support every S3 feature",
         "You choose storage location, type and data-transfer costs",
         "You choose account settings, copies across storage sites and storage type",
+        "Storage type, location protection and pricing plan need configuration",
+        "Works with S3 tools but does not support every S3 feature",
         "Supported connections and file-delivery options differ from S3",
-        "Depends on Supabase tools and plan limits",
+        "Minimum capacity and storage-duration charges apply; usage terms matter",
+        "Product and location limits; not every S3 feature is supported",
         "Requires access rules and Google Cloud billing setup",
-        "Product and location limits; not every S3 feature is supported"
+        "Depends on Supabase tools and plan limits"
       ]
     },
     {
       "label": "How billing works",
       "values": [
         "Storage, requests, retrieving files and data transfer",
+        "Storage, operations, retrieving files and data transfer",
+        "Storage, operations, retrieving files and data transfer",
+        "Storage and usage by plan; bundled One Rate pricing is also available",
         "Storage and operations; retrieval fees depend on storage type",
-        "Storage, operations, retrieving files and data transfer",
-        "Storage, operations, retrieving files and data transfer",
         "Storage and usage; data-transfer terms apply",
-        "Plan, storage, data transfer out and image changes",
+        "Storage capacity with minimum billing and storage duration; reserved-capacity options",
+        "Base subscription, storage and data transfer",
         "Google Cloud storage, operations and data transfer",
-        "Base subscription, storage and data transfer"
+        "Plan, storage, data transfer out and image changes"
       ]
     }
   ],
@@ -116,6 +138,8 @@
       "label": "Storage infrastructure",
       "explanation": "The provider runs the file-storage system. Object storage stores files with identifying names and descriptive information, usually in groups called buckets. Reliable storage does not protect against your own deletions, stolen access keys or incorrect rules for keeping files.",
       "values": [
+        ["Auto", "Provider runs file storage"],
+        ["Auto", "Provider runs file storage"],
         ["Auto", "Provider runs file storage"],
         ["Auto", "Provider runs file storage"],
         ["Auto", "Provider runs file storage"],
@@ -131,13 +155,15 @@
       "explanation": "Choose who can read or change each file, check permissions in your app and use temporary access where needed. Avoid public file collections or permanent access keys when users should see only their own files.",
       "values": [
         ["Manual", "Set AWS permissions and file-collection rules"],
-        ["Manual", "Set access keys and file-collection permissions"],
         ["Manual", "Set Google Cloud permissions and file-collection rules"],
         ["Manual", "Set account permissions and temporary access"],
+        ["Manual", "Set IBM Cloud permissions and file-collection rules"],
         ["Manual", "Set access keys and file-collection permissions"],
-        ["Manual", "Connect sign-in and database row-access rules"],
+        ["Manual", "Set access keys and file-collection permissions"],
+        ["Manual", "Set access keys and file-collection rules"],
+        ["Manual", "Set access keys and file-collection rules"],
         ["Manual", "Connect sign-in and Firebase Security Rules"],
-        ["Manual", "Set access keys and file-collection rules"]
+        ["Manual", "Connect sign-in and database row-access rules"]
       ]
     },
     {
@@ -145,13 +171,15 @@
       "explanation": "Choose whether uploads go directly from the user's device or through your server. Check file type and size, support resuming interrupted uploads where available and make retries safe. Storage alone does not enforce your app's rules about allowed files.",
       "values": [
         ["Manual", "Use a code library or temporary upload link"],
-        ["Manual", "Connect S3-compatible tools or Worker code"],
         ["Manual", "Use a code library or temporary upload link"],
         ["Manual", "Use a code library or temporary access credential"],
+        ["Manual", "Use IBM Cloud or S3-compatible code libraries"],
+        ["Manual", "Connect S3-compatible tools or Worker code"],
         ["Manual", "Use Backblaze or S3-compatible code libraries"],
-        ["Manual", "Use the code library or resumable uploads"],
+        ["Manual", "Use S3-compatible libraries or backup tools"],
+        ["Manual", "Use S3-compatible libraries or temporary upload links"],
         ["Manual", "Use app or server code libraries"],
-        ["Manual", "Use S3-compatible libraries or temporary upload links"]
+        ["Manual", "Use the code library or resumable uploads"]
       ]
     },
     {
@@ -159,16 +187,15 @@
       "explanation": "A content delivery network (CDN) keeps copies of files near visitors. Excluded means you connect a separate delivery product, not that one cannot be used. You still decide who can access cached files and when old copies must be replaced.",
       "values": [
         ["Excluded", "Connect CloudFront or another delivery network"],
-        ["Manual", "Connect a public domain and set caching rules"],
         ["Excluded", "Connect Cloud CDN or another delivery network"],
         ["Excluded", "Connect Front Door or another delivery network"],
         ["Excluded", "Connect a separate delivery network"],
-        [
-          "Manual",
-          "Configure the built-in delivery network within plan limits"
-        ],
+        ["Manual", "Connect a public domain and set caching rules"],
+        ["Excluded", "Connect a separate delivery network"],
+        ["Excluded", "Connect a separate delivery network"],
+        ["Manual", "Enable the built-in delivery network"],
         ["Excluded", "Set up file delivery separately"],
-        ["Manual", "Enable the built-in delivery network"]
+        ["Manual", "Configure the built-in delivery network within plan limits"]
       ]
     },
     {
@@ -176,13 +203,18 @@
       "explanation": "Choose how long to keep files and how to recover them. Depending on the product, this may mean keeping old versions, allowing deleted files to be restored or making independent copies. Test recovery; not every product supports every option.",
       "values": [
         ["Manual", "Set file-version rules, automatic cleanup and copies"],
-        ["Manual", "Set automatic cleanup and make recovery copies"],
         ["Manual", "Set deleted-file recovery, versions and cleanup rules"],
         ["Manual", "Choose how long to keep files and how to restore them"],
+        [
+          "Manual",
+          "Set versions, file locks, cleanup rules and recovery copies"
+        ],
+        ["Manual", "Set automatic cleanup and make recovery copies"],
         ["Manual", "Set file-version rules, automatic cleanup and copies"],
-        ["Manual", "Export files and plan recovery"],
+        ["Manual", "Set versions, file locks and backup-retention rules"],
+        ["Manual", "Set file-version rules, automatic cleanup and copies"],
         ["Manual", "Configure file storage and plan recovery"],
-        ["Manual", "Set file-version rules, automatic cleanup and copies"]
+        ["Manual", "Export files and plan recovery"]
       ]
     },
     {
@@ -191,8 +223,10 @@
       "values": [
         ["Excluded", "Set up separate file checks"],
         ["Excluded", "Set up separate file checks"],
-        ["Excluded", "Set up separate file checks"],
         ["Excluded", "Connect a separate security tool"],
+        ["Excluded", "Set up separate file checks"],
+        ["Excluded", "Set up separate file checks"],
+        ["Excluded", "Set up separate file checks"],
         ["Excluded", "Set up separate file checks"],
         ["Excluded", "Set up separate file checks"],
         ["Excluded", "Set up separate file checks"],
@@ -204,13 +238,18 @@
       "explanation": "Estimate charges for storage, file operations, retrieving files, data transfer and delivery networks. Some storage types charge for a minimum storage period. No data-transfer-out charge on storage does not make connected products free.",
       "values": [
         ["Manual", "Choose storage type, location and usage limits"],
+        ["Manual", "Choose storage type, location and usage limits"],
+        ["Manual", "Choose storage type, location and usage limits"],
+        ["Manual", "Choose storage type, location protection and billing plan"],
         ["Manual", "Track operations, storage type and usage"],
-        ["Manual", "Choose storage type, location and usage limits"],
-        ["Manual", "Choose storage type, location and usage limits"],
         ["Manual", "Track usage and data-transfer terms"],
-        ["Manual", "Choose a plan and track data transfer and usage"],
+        [
+          "Manual",
+          "Plan for minimum capacity, storage duration and usage terms"
+        ],
+        ["Manual", "Track subscription and data transfer"],
         ["Manual", "Set billing controls and track usage limits"],
-        ["Manual", "Track subscription and data transfer"]
+        ["Manual", "Choose a plan and track data transfer and usage"]
       ]
     }
   ]

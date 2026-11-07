@@ -18,7 +18,7 @@ its strengths and limitations, and what you still need to manage.
 
 - Cloud services groups the six topics in a second navigation row, with no
   category landing page or breadcrumbs.
-- Six comparisons, each covering eight products and who handles what.
+- Six comparisons, each covering ten products and who handles what.
 - Monochrome design, colored logos and a locally hosted Inter font.
 - Blue ≠ marks identify less-common responsibility labels, not better products.
 - Labels stay visible while scrolling; jump to a provider or use a compact view.
@@ -33,8 +33,9 @@ One React app serves all pages. Navigation is defined in `src/data/categories.ts
 comparison content lives in JSON files, separate from display code.
 Vercel serves the app for page addresses. Unknown pages show a not-found message;
 missing files and server-request paths return a 404 response.
-The database comparison is based on a November 2026 PDF. Its wording has been
-simplified, but its technical claims have not been independently revalidated.
+The database comparison preserves the original eight products from a November 2026
+PDF and adds DynamoDB and Firestore from official documentation. The original
+wording has been simplified, but those technical claims have not been independently revalidated.
 Other comparisons summarize official documentation and billing information reviewed
 in November 2026. Check official sources before choosing or configuring a product.
 
