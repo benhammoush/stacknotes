@@ -16,14 +16,14 @@ const categories = [
     title: "Hosting",
     path: "/hosting/",
     rows: 6,
-    term: "Managed runtime",
+    term: "Hosting infrastructure",
   },
   {
-    label: "Authentication",
-    title: "Authentication",
+    label: "Sign-in & accounts",
+    title: "Sign-in & accounts",
     path: "/authentication/",
     rows: 7,
-    term: "Identity service",
+    term: "Hosted sign-in service",
   },
   {
     label: "Storage",
@@ -33,18 +33,18 @@ const categories = [
     term: "Storage infrastructure",
   },
   {
-    label: "Jobs & queues",
-    title: "Jobs & queues",
+    label: "Background tasks & queues",
+    title: "Background tasks & queues",
     path: "/jobs/",
     rows: 7,
-    term: "Service infrastructure",
+    term: "Hosted task or queue service",
   },
   {
     label: "Monitoring",
     title: "Monitoring",
     path: "/monitoring/",
     rows: 7,
-    term: "Telemetry backend",
+    term: "Hosted monitoring service",
   },
 ];
 
@@ -82,8 +82,45 @@ for (const category of categories) {
     await expect(page.locator('nav a[aria-current="page"]')).toHaveText(
       category.label,
     );
+    const categoryNav = page.getByRole("navigation", {
+      name: "Categories",
+      exact: true,
+    });
+    await expect(categoryNav.getByRole("link")).toHaveCount(1);
+    await expect(
+      categoryNav.getByRole("link", { name: "Cloud services" }),
+    ).toHaveAttribute("aria-current", "true");
+    await expect(
+      page
+        .getByRole("navigation", { name: "Cloud services topics" })
+        .getByRole("link"),
+    ).toHaveCount(6);
     await expect(page.locator("#technical-rows")).toBeHidden();
     await expect(page.getByRole("cell")).toHaveCount(32);
+    const purpose = page.getByRole("row", { name: /^Primary purpose / });
+    await expect(purpose.getByRole("cell")).toHaveCount(8);
+    await expect(
+      page.getByRole("rowheader", { name: "What you get" }),
+    ).toHaveCount(0);
+    if (category.path === "/hosting/") {
+      await page.getByLabel("Jump to").selectOption("6");
+      const ecs = page.getByRole("link", {
+        name: "ECS Express Mode",
+        exact: true,
+      });
+      await expect(ecs).toBeInViewport();
+      await expect(ecs).toHaveAttribute(
+        "href",
+        "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-overview.html",
+      );
+      await expect(purpose.getByRole("cell").nth(6)).toContainText(
+        "automated server, network and traffic-routing setup",
+      );
+      await expect(
+        page.getByText(/App Runner|Existing customers only/),
+      ).toHaveCount(0);
+      await page.getByLabel("Jump to").selectOption("0");
+    }
     for (const logo of await page.locator(".provider-logo").all()) {
       await expect
         .poll(() =>
@@ -121,7 +158,7 @@ for (const category of categories) {
     await page.getByLabel("Jump to").selectOption("0");
     await expect(page.locator("#provider-0")).toBeInViewport();
     const toggle = page.getByRole("button", {
-      name: "Technical responsibilities",
+      name: "Who handles what",
       exact: true,
     });
     await toggle.focus();
@@ -143,7 +180,7 @@ for (const category of categories) {
     await page.keyboard.press("Space");
     await expect(page.locator("#technical-rows")).toBeHidden();
     if (category.path !== "/") {
-      await page.getByText("Billing sources", { exact: true }).click();
+      await page.getByText("Pricing sources", { exact: true }).click();
       await expect(page.locator(".sources li a")).toHaveCount(8);
     }
     expect(errors).toEqual([]);
@@ -158,7 +195,7 @@ test("navigates across all six categories and back", async ({ page }) => {
   });
   for (const category of categories.slice(1)) {
     await page
-      .getByRole("navigation", { name: "Categories" })
+      .getByRole("navigation", { name: "Cloud services topics" })
       .getByRole("link", { name: category.label, exact: true })
       .click();
     await expect(page).toHaveURL(new RegExp(`${category.path}$`));
@@ -175,7 +212,7 @@ test("navigates across all six categories and back", async ({ page }) => {
   }
   await page.goBack();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Jobs & queues",
+    "Background tasks & queues",
   );
   await page.getByRole("link", { name: "Stacknotes home" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
@@ -186,6 +223,27 @@ test("navigates across all six categories and back", async ({ page }) => {
     "content",
     "A growing knowledge base for ideas, clear explanations, practical notes and useful comparisons.",
   );
+});
+
+test("opens Cloud services at its first topic without a landing page", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/hosting/");
+  await page
+    .getByRole("navigation", { name: "Categories", exact: true })
+    .getByRole("link", { name: "Cloud services", exact: true })
+    .click();
+  await expect(page).toHaveURL("http://127.0.0.1:4178/");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Managed databases",
+  );
+  await expect(
+    page.getByRole("link", { name: "Databases", exact: true }),
+  ).toHaveAttribute("aria-current", "page");
+  await expect(
+    page.getByRole("navigation", { name: "Cloud services topics" }),
+  ).toBeVisible();
 });
 
 test("serves the knowledge-base favicon and broad HTML metadata before JavaScript", async ({
@@ -222,14 +280,17 @@ test("resets route state, closes old explanations and handles unknown pages", as
   await page.goto("/jobs/");
   await page.getByRole("button", { name: "Compact view" }).click();
   await page
-    .getByRole("button", { name: "Technical responsibilities", exact: true })
+    .getByRole("button", { name: "Who handles what", exact: true })
     .click();
   await page
-    .getByRole("button", { name: "About Service infrastructure", exact: true })
+    .getByRole("button", {
+      name: "About Hosted task or queue service",
+      exact: true,
+    })
     .click();
   await expect(page.locator("#term-0")).toBeVisible();
   await page
-    .getByRole("navigation")
+    .getByRole("navigation", { name: "Cloud services topics" })
     .getByRole("link", { name: "Hosting", exact: true })
     .click();
   await expect(page.locator("#technical-rows")).toBeHidden();
@@ -240,7 +301,7 @@ test("resets route state, closes old explanations and handles unknown pages", as
   await expect(page.locator("main")).toBeFocused();
   await page.goBack();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Jobs & queues",
+    "Background tasks & queues",
   );
   await expect(page.locator("#technical-rows")).toBeHidden();
   await page.goto("/this-page-does-not-exist");

@@ -48,9 +48,12 @@ h1 {
   border-bottom: 2px solid transparent;
   font-size: 0.875rem;
 }
-.category-nav a[aria-current="page"] {
+.category-nav a[aria-current] {
   color: var(--foreground);
   border-bottom-color: var(--foreground);
+}
+.topic-nav {
+  background: var(--surface);
 }
 @media (max-width: 600px) {
   .site-header {

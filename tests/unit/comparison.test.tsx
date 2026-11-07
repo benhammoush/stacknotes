@@ -61,8 +61,8 @@ describe("database comparison", () => {
       expect(root.querySelector(`#${id}`)?.hasAttribute("popover")).toBe(true);
       expect(button.getAttribute("aria-label")).toMatch(/^About /);
     }
-    expect(root.textContent).toContain("not independently revalidated");
-    expect(root.textContent).toContain("Replicas are not backups");
+    expect(root.textContent).toContain("not been independently revalidated");
+    expect(root.textContent).toContain("copies are not backups");
   });
 
   it("keeps the page free of decorative taglines and repeated navigation", () => {

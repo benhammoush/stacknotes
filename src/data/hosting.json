@@ -43,12 +43,11 @@
       "pricing": "https://fly.io/docs/about/pricing/"
     },
     {
-      "name": "App Runner",
+      "name": "ECS Express Mode",
       "company": "AWS",
       "logo": "/providers/aws.svg",
-      "url": "https://docs.aws.amazon.com/apprunner/latest/dg/what-is-apprunner.html",
-      "pricing": "https://aws.amazon.com/apprunner/pricing/",
-      "caveat": "Existing customers only"
+      "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-overview.html",
+      "pricing": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-overview.html#express-service-pricing"
     },
     {
       "name": "Cloud Run",
@@ -60,141 +59,144 @@
   ],
   "overview": [
     {
-      "label": "What you get",
+      "label": "Primary purpose",
       "values": [
-        "Frontend hosting, functions and deployment tools",
-        "Web hosting, builds and serverless functions",
-        "Global isolate runtime and static assets",
-        "Web services, workers and static sites",
-        "Application services and infrastructure tooling",
-        "Applications running on Fly Machines",
-        "Managed source/image web service",
-        "Managed container services, jobs and functions"
+        "Publish web apps with built-in support for popular frameworks and previews of changes",
+        "Publish web apps with built-in support for popular frameworks and previews of changes",
+        "Run server code and host browser files, with direct access to Cloudflare's data and background-task tools",
+        "Publish web apps, run server code and process background tasks without managing servers",
+        "Publish web apps, run server code and process background tasks without managing servers",
+        "Run apps in containers on virtual machines, with control over locations and machine settings",
+        "Run web apps in containers on AWS, with automated server, network and traffic-routing setup",
+        "Run server code and background tasks in containers without managing servers, using Google Cloud tools"
       ]
     },
     {
-      "label": "Pros",
+      "label": "Strengths",
       "values": [
-        "Frontend previews and framework integration",
-        "Git workflow and web-platform primitives",
-        "Worker integration with edge services",
-        "Several service types in one platform",
-        "Service composition and deployment workflow",
-        "Machine and region control",
-        "AWS-integrated deployment and scaling",
-        "Container model and Google Cloud integration"
+        "Framework support and previews of changes",
+        "Publishing from Git and previews of changes",
+        "Direct connections to Cloudflare tools",
+        "Separate options for browser files, server code and background tasks",
+        "Connected apps and databases in one project",
+        "Control over machines and hosting locations",
+        "Automated Fargate setup; you can inspect and adjust the AWS resources",
+        "Runs containers and connects to Google Cloud tools"
       ]
     },
     {
-      "label": "Cons",
+      "label": "Limitations",
       "values": [
-        "Runtime-specific limits; product usage adds up",
-        "Credit metering; runtime-specific limits",
-        "Not an arbitrary Linux process; compatibility limits",
-        "Compute sizing and plan choices",
-        "Resource usage, volumes and scaling need decisions",
-        "More machine, network and volume decisions",
-        "Closed to new customers; existing users only",
-        "Container, concurrency and instance settings"
+        "Server code has platform limits; each product can add usage charges",
+        "Usage consumes plan credits; server code has platform limits",
+        "Server code must work in Workers; it cannot run any Linux program unchanged",
+        "You choose server capacity and a plan",
+        "You choose server capacity, disk storage and how to handle growth",
+        "More machine, network and disk-storage settings to manage",
+        "Requires a container image and AWS permission roles; several resources are billed separately",
+        "You choose container settings, request limits and the number of running copies"
       ]
     },
     {
-      "label": "Billing",
+      "label": "How billing works",
       "values": [
-        "Plan + metered resources",
-        "Plan + usage credits",
-        "Plan + requests / CPU",
-        "Workspace + service compute / usage",
-        "Plan minimum + resource usage",
-        "Machine runtime + storage / network",
-        "Provisioned memory + active compute / deployment fees",
-        "Compute + requests / network; billing mode matters"
+        "Plan and resource usage",
+        "Plan and usage credits",
+        "Plan, requests and processor time",
+        "Workspace plan, server capacity and usage",
+        "Plan minimum and resource usage",
+        "Machine running time, storage and data transfer",
+        "Fargate, traffic routing, logs and data transfer; no extra Express Mode fee",
+        "Processing, requests and data transfer; depends on billing mode"
       ]
     }
   ],
   "responsibilities": [
     {
-      "label": "Managed runtime",
-      "explanation": "Auto means the platform operates the hosting infrastructure. Your application, dependencies, container image and security updates remain your responsibility.",
+      "label": "Hosting infrastructure",
+      "explanation": "The provider operates the machines that run your app. You still maintain your code and its libraries. A container packages code and its required software; if you supply one, you also maintain that software and its security updates. A virtual machine is a software-defined computer running on shared physical hardware.",
       "values": [
-        ["Auto", "Platform runtime"],
-        ["Auto", "Platform runtime"],
-        ["Auto", "Isolate runtime"],
-        ["Auto", "Managed services"],
-        ["Auto", "Managed services"],
-        ["Auto", "Machine infrastructure"],
-        ["Auto", "Managed web service"],
-        ["Auto", "Managed containers"]
+        ["Auto", "Provider runs the servers"],
+        ["Auto", "Provider runs the servers"],
+        ["Auto", "Cloudflare runs Workers"],
+        ["Auto", "Provider runs the servers"],
+        ["Auto", "Provider runs the servers"],
+        ["Auto", "Provider runs the underlying machines"],
+        ["Auto", "AWS runs Fargate"],
+        ["Auto", "Google runs the containers"]
       ]
     },
     {
-      "label": "Release setup",
-      "explanation": "Connect source or images and configure builds, environment variables, checks and promotion. A platform that deploys automatically still needs a release policy.",
+      "label": "Publishing changes",
+      "explanation": "Connect your code or a container image, which is the packaged version of a container. Set build commands, app settings and checks before making changes public. Automatic publishing does not decide which changes are safe to release.",
       "values": [
-        ["Manual", "Git / CI settings"],
-        ["Manual", "Git / CI settings"],
-        ["Manual", "Builds / CI settings"],
-        ["Manual", "Git / image settings"],
-        ["Manual", "Git / image settings"],
-        ["Manual", "CLI / CI configuration"],
-        ["Manual", "Source / image settings"],
-        ["Manual", "Source / image pipeline"]
+        ["Manual", "Connect code and set publishing checks"],
+        ["Manual", "Connect code and set publishing checks"],
+        ["Manual", "Set build and publishing commands"],
+        ["Manual", "Connect code or a container image"],
+        ["Manual", "Connect code or a container image"],
+        ["Manual", "Set publishing commands and checks"],
+        ["Manual", "Build a container image and set AWS permission roles"],
+        ["Manual", "Set up code or container publishing"]
       ]
     },
     {
-      "label": "Scaling policy",
-      "explanation": "Choose a runtime and configure the settings it exposes. Managed request scaling is not unlimited capacity; quotas, instance counts and downstream bottlenecks still apply.",
+      "label": "Handling more traffic",
+      "explanation": "Choose how much processing capacity your app needs and set any automatic growth limits the platform offers. Automatic growth is not unlimited: account limits, the number of running app copies and database capacity still matter.",
       "values": [
-        ["Manual", "Runtime / concurrency limits"],
-        ["Manual", "Function / plan limits"],
-        ["Manual", "CPU / account limits"],
-        ["Manual", "Service sizing / autoscaling"],
-        ["Manual", "Resources / replicas"],
-        ["Manual", "Machines / autostop policy"],
-        ["Manual", "Autoscaling settings"],
-        ["Manual", "Concurrency / instance bounds"]
+        ["Manual", "Set limits for server code and simultaneous requests"],
+        ["Manual", "Choose function settings and plan limits"],
+        ["Manual", "Set processor-time and account limits"],
+        ["Manual", "Choose capacity and automatic growth settings"],
+        ["Manual", "Choose capacity and number of app copies"],
+        ["Manual", "Choose machine count and idle-stop settings"],
+        ["Manual", "Choose task capacity and growth limits"],
+        ["Manual", "Set simultaneous-request and app-copy limits"]
       ]
     },
     {
-      "label": "Durable storage",
-      "explanation": "The classification concerns durable application storage, not deployment files or temporary runtime disks. A separate database or object-store product is Excluded even if sold by the same provider.",
+      "label": "Keeping app data",
+      "explanation": "This row concerns data that must survive an app restart or replacement, not browser files or temporary working files. A separate database or file-storage product is marked Excluded, even if the same provider sells it. An attached disk must be configured and protected against data loss.",
       "values": [
-        ["Excluded", "Separate storage product"],
-        ["Excluded", "Separate storage product"],
-        ["Excluded", "R2 / D1 / other service"],
-        ["Manual", "Persistent disk / datastore"],
-        ["Manual", "Volume / datastore"],
-        ["Manual", "Volume / datastore"],
-        ["Excluded", "External durable storage"],
-        ["Excluded", "External store / mounted service"]
+        ["Excluded", "Use a separate storage product"],
+        ["Excluded", "Use a separate storage product"],
+        ["Excluded", "Use R2, D1 or another data service"],
+        ["Manual", "Set up an attached disk or database"],
+        ["Manual", "Set up an attached disk or database"],
+        ["Manual", "Set up an attached disk or database"],
+        ["Excluded", "Use a separate storage product"],
+        ["Excluded", "Use separate storage, with a connection or mounted drive"]
       ]
     },
     {
-      "label": "Domains / secrets",
-      "explanation": "You configure custom domains, DNS and environment-scoped secrets. Managed certificates do not eliminate domain ownership or credential isolation work.",
+      "label": "Domains and secrets",
+      "explanation": "Connect a domain name to your app and store secrets such as passwords and access keys safely. Domain Name System (DNS) settings direct visitors to the right server. Even with automatic security certificates, you must prove domain ownership and keep development and production secrets separate.",
       "values": [
-        ["Manual", "Project configuration"],
-        ["Manual", "Project configuration"],
-        ["Manual", "Routes / secret bindings"],
-        ["Manual", "Service configuration"],
-        ["Manual", "Service configuration"],
-        ["Manual", "App configuration"],
-        ["Manual", "Service / IAM configuration"],
-        ["Manual", "Service / IAM configuration"]
+        ["Manual", "Set project domains and secrets"],
+        ["Manual", "Set project domains and secrets"],
+        ["Manual", "Set request routes and connect secrets"],
+        ["Manual", "Set app domains and secrets"],
+        ["Manual", "Set app domains and secrets"],
+        ["Manual", "Set app domains and secrets"],
+        [
+          "Manual",
+          "Set domain records, certificates, secrets and AWS permissions"
+        ],
+        ["Manual", "Set app domains, secrets and Google Cloud permissions"]
       ]
     },
     {
-      "label": "Release recovery",
-      "explanation": "Select an eligible prior release, verify configuration compatibility and test recovery. Reverting code does not revert a database migration or restore lost data.",
+      "label": "Restoring an app version",
+      "explanation": "Choose a previous app version that still works with the current settings and data, then test it. Restoring old code does not undo database structure changes or recover lost data.",
       "values": [
-        ["Manual", "Prior deployment"],
-        ["Manual", "Prior deployment"],
-        ["Manual", "Prior version"],
-        ["Manual", "Prior deployment / image"],
-        ["Manual", "Prior deployment"],
-        ["Manual", "Prior image / configuration"],
-        ["Manual", "Prior source / image"],
-        ["Manual", "Prior revision / traffic"]
+        ["Manual", "Select a previous published version"],
+        ["Manual", "Select a previous published version"],
+        ["Manual", "Select a previous published version"],
+        ["Manual", "Select a previous version or container image"],
+        ["Manual", "Select a previous published version"],
+        ["Manual", "Restore a previous container image and settings"],
+        ["Manual", "Restore a previous container image and settings"],
+        ["Manual", "Select a previous version and direct traffic to it"]
       ]
     }
   ]

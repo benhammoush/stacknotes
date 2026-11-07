@@ -6,7 +6,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { categories } from "../../src/data/categories";
+import { categories, categoryGroups } from "../../src/data/categories";
 import { differences } from "../../src/utils/comparison";
 import { fireEvent } from "@testing-library/react";
 import { renderApp } from "./render";
@@ -30,6 +30,10 @@ describe("status differences", () => {
 describe("six category pages", () => {
   it("owns six registry-driven routes, one HTML entry and local font assets", () => {
     expect(categories).toHaveLength(6);
+    expect(categoryGroups.map(({ label }) => label)).toEqual([
+      "Cloud services",
+    ]);
+    expect(categoryGroups[0].topics).toEqual(categories);
     expect(new Set(categories.map(({ path }) => path)).size).toBe(6);
     const html = readFileSync(
       resolve(import.meta.dirname, "../../index.html"),
@@ -60,8 +64,24 @@ describe("six category pages", () => {
       const { data } = category;
       expect(data.providers).toHaveLength(8);
       expect(data.overview).toHaveLength(4);
-      for (const row of [...data.overview, ...data.responsibilities])
+      expect(data.overview.map(({ label }) => label)).toEqual([
+        "Primary purpose",
+        "Strengths",
+        "Limitations",
+        "How billing works",
+      ]);
+      expect(data.overview.some(({ label }) => label === "What you get")).toBe(
+        false,
+      );
+      for (const purpose of data.overview[0].values)
+        expect(purpose.trim().length).toBeGreaterThan(30);
+      for (const row of [...data.overview, ...data.responsibilities]) {
         expect(row.values).toHaveLength(8);
+        const visibleCopy = [row.label, ...row.values.flat()].join(" ");
+        expect(visibleCopy).not.toMatch(
+          /\b(frontend|backend|full-stack|runtime|workload|SDK|RLS|IAM|B2B|egress|ingest|orchestration|telemetry|idempotency)\b| \/ /i,
+        );
+      }
       for (const row of data.responsibilities) {
         expect(row.explanation.length).toBeGreaterThan(60);
         for (const value of row.values) {
@@ -81,12 +101,23 @@ describe("six category pages", () => {
       }
       const { container: root } = renderApp(category.path);
       expect(
-        root.querySelectorAll('nav[aria-label="Categories"] a'),
+        root.querySelectorAll('nav[aria-label="Cloud services topics"] a'),
       ).toHaveLength(6);
+      expect(
+        root.querySelectorAll('nav[aria-label="Categories"] a'),
+      ).toHaveLength(1);
+      expect(
+        root.querySelector(
+          'nav[aria-label="Categories"] a[aria-current="true"]',
+        )?.textContent,
+      ).toBe("Cloud services");
       expect(
         root.querySelector('nav a[aria-current="page"]')?.getAttribute("href"),
       ).toBe(category.path);
       expect(root.querySelector("h1")?.textContent).toBe(category.title);
+      expect(root.querySelector("tbody th[scope='row']")?.textContent).toBe(
+        "Primary purpose",
+      );
       const rows =
         root.querySelector<HTMLTableSectionElement>("#technical-rows")!;
       expect(rows.hidden).toBe(true);
@@ -122,17 +153,54 @@ describe("six category pages", () => {
     });
   }
 
+  it("uses shared descriptions for shared purposes and explains necessary terms", () => {
+    const hosting = categories.find(({ path }) => path === "/hosting/")!.data;
+    expect(hosting.overview[0].values[0]).toBe(hosting.overview[0].values[1]);
+    expect(hosting.overview[0].values[3]).toBe(hosting.overview[0].values[4]);
+    expect(hosting.responsibilities[0].explanation).toContain(
+      "A container packages code and its required software",
+    );
+    const signIn = categories.find(
+      ({ path }) => path === "/authentication/",
+    )!.data;
+    expect(
+      signIn.responsibilities.find(
+        ({ label }) => label === "Account recovery and extra checks",
+      )?.explanation,
+    ).toContain("at least two different kinds of proof");
+    const { container } = renderApp("/hosting/");
+    expect(container.textContent).toContain(
+      "A web app is used through a browser",
+    );
+  });
+
   it("keeps consequential product boundaries visible", () => {
     const hosting = categories.find(({ path }) => path === "/hosting/")!;
+    const ecs = hosting.data.providers.findIndex(
+      ({ name }) => name === "ECS Express Mode",
+    );
+    expect(ecs).toBe(6);
+    expect(hosting.data.providers[ecs].url).toContain(
+      "/AmazonECS/latest/developerguide/express-service-overview.html",
+    );
     expect(
-      hosting.data.providers.find(({ name }) => name === "App Runner")?.caveat,
-    ).toBe("Existing customers only");
+      hosting.data.providers.some(({ name }) => name === "App Runner"),
+    ).toBe(false);
+    expect(JSON.stringify(hosting.data)).not.toMatch(
+      /apprunner|existing customers/i,
+    );
+    expect(hosting.data.overview[3].values[ecs]).toContain("Fargate");
+    expect(hosting.data.overview[3].values[ecs]).toContain("traffic routing");
+    expect(hosting.data.responsibilities[1].values[ecs]).toEqual([
+      "Manual",
+      "Build a container image and set AWS permission roles",
+    ]);
     const jobs = categories.find(({ path }) => path === "/jobs/")!.data;
     expect(
-      jobs.responsibilities.find(({ label }) => label === "Application runtime")
+      jobs.responsibilities.find(({ label }) => label === "Running task code")
         ?.values[7],
-    ).toEqual(["Excluded", "Host application workers"]);
-    expect(jobs.overview[0].values[6]).toContain("HTTP pull");
+    ).toEqual(["Excluded", "Host background workers separately"]);
+    expect(jobs.overview[0].values[6]).toContain("fetch them over the web");
     expect(
       categories
         .find(({ path }) => path === "/monitoring/")!

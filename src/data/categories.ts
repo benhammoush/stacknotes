@@ -1,5 +1,5 @@
 /**
- * Owns comparison datasets and the registry used for routes and navigation.
+ * Groups comparison topics into categories and derives the shared route registry.
  * @packageDocumentation
  */
 import databases from "./databases.json";
@@ -9,7 +9,7 @@ import storage from "./storage.json";
 import jobs from "./jobs.json";
 import monitoring from "./monitoring.json";
 
-/** Editorial content shared by each comparison page. */
+/** Editorial content and route identity for one comparison topic. */
 export interface Category {
   label: string;
   title: string;
@@ -32,31 +32,40 @@ export interface Category {
   };
 }
 
-export const categories: Category[] = [
+export const categoryGroups: { label: string; topics: Category[] }[] = [
   {
-    label: "Databases",
-    title: "Managed databases",
-    path: "/",
-    data: databases,
-  },
-  { label: "Hosting", title: "Hosting", path: "/hosting/", data: hosting },
-  {
-    label: "Authentication",
-    title: "Authentication",
-    path: "/authentication/",
-    data: authentication,
-  },
-  { label: "Storage", title: "Storage", path: "/storage/", data: storage },
-  {
-    label: "Jobs & queues",
-    title: "Jobs & queues",
-    path: "/jobs/",
-    data: jobs,
-  },
-  {
-    label: "Monitoring",
-    title: "Monitoring",
-    path: "/monitoring/",
-    data: monitoring,
+    label: "Cloud services",
+    topics: [
+      {
+        label: "Databases",
+        title: "Managed databases",
+        path: "/",
+        data: databases,
+      },
+      { label: "Hosting", title: "Hosting", path: "/hosting/", data: hosting },
+      {
+        label: "Sign-in & accounts",
+        title: "Sign-in & accounts",
+        path: "/authentication/",
+        data: authentication,
+      },
+      { label: "Storage", title: "Storage", path: "/storage/", data: storage },
+      {
+        label: "Background tasks & queues",
+        title: "Background tasks & queues",
+        path: "/jobs/",
+        data: jobs,
+      },
+      {
+        label: "Monitoring",
+        title: "Monitoring",
+        path: "/monitoring/",
+        data: monitoring,
+      },
+    ],
   },
 ];
+
+export const categories: Category[] = categoryGroups.flatMap(
+  ({ topics }) => topics,
+);

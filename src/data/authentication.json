@@ -59,155 +59,155 @@
   ],
   "overview": [
     {
-      "label": "What you get",
+      "label": "Primary purpose",
       "values": [
-        "Hosted identity, account UI and SDKs",
-        "Customer identity platform",
-        "Managed authentication with client SDKs",
-        "Hosted Auth integrated with Postgres",
-        "User pools, managed login and federation",
-        "Hosted identity and enterprise integrations",
-        "Consumer / B2B identity APIs and SDKs",
-        "Hosted authentication with visual flows"
+        "Add sign-in and account management to web apps with ready-made screens and code libraries",
+        "Manage sign-in across apps and connect users' existing accounts",
+        "Add sign-in to web and mobile apps with Firebase code libraries",
+        "Add sign-in and use each user's identity to control access to PostgreSQL data",
+        "Manage app sign-in and connect existing accounts using AWS tools",
+        "Add sign-in and account management to apps used by businesses",
+        "Build sign-in for consumer or business apps using code libraries and service connections",
+        "Design sign-in steps visually and add the resulting screens to your app"
       ]
     },
     {
-      "label": "Pros",
+      "label": "Strengths",
       "values": [
-        "Prebuilt account components",
-        "Connections and identity customization",
-        "Firebase client integration",
-        "Auth tokens integrate with RLS policies",
-        "AWS IAM and federation integration",
-        "AuthKit plus SSO / directory products",
-        "API-driven integration and B2B tooling",
-        "Visual flow builder and embedded UI"
+        "Ready-made sign-in and account screens",
+        "Many account connections and sign-in settings",
+        "Works with Firebase app tools",
+        "User identities connect to database access rules",
+        "Connects to AWS permissions and existing accounts",
+        "Connects sign-in to company accounts and employee directories",
+        "Code-based setup and tools for business accounts",
+        "Visual sign-in editor and ready-made screens"
       ]
     },
     {
-      "label": "Cons",
+      "label": "Limitations",
       "values": [
-        "SDK / component dependency; add-on dimensions",
-        "Plan and tenant configuration complexity",
-        "Method, quota and Identity Platform differences",
-        "RLS, SMTP and app permission design",
-        "Pool, token and IAM configuration",
-        "Different products have different billing units",
-        "Consumer / B2B model and integration decisions",
-        "Flow configuration and plan-specific limits"
+        "Depends on Clerk libraries and screens; extras are billed separately",
+        "Plan choices and separate customer-account settings can be complex",
+        "Methods and limits differ between Firebase Auth and Identity Platform",
+        "You design database access rules, email delivery and app permissions",
+        "You configure user groups, sign-in credentials and AWS permissions",
+        "Sign-in, company-account connections and directory tools are billed differently",
+        "You choose a consumer or business account model and connect it to the app",
+        "You configure sign-in steps and work within plan limits"
       ]
     },
     {
-      "label": "Billing",
+      "label": "How billing works",
       "values": [
-        "Plan + retained users / add-ons",
-        "Plan + active users / features",
-        "Method-dependent; SMS and Identity Platform usage",
-        "Plan + active users / SSO / add-ons",
-        "Tier + active users / extra features",
-        "AuthKit users; SSO / directory connections separately",
-        "Active users + connections / usage",
-        "Plan + users / tenants / usage"
+        "Plan, returning users and extras",
+        "Plan, active users and features",
+        "Depends on sign-in method; text messages and Identity Platform usage can cost extra",
+        "Plan, active users, company sign-in connections and extras",
+        "Pricing level, active users and extra features",
+        "AuthKit users; company sign-in and directory connections billed separately",
+        "Active users, account connections and usage",
+        "Plan, users, separate customer accounts and usage"
       ]
     }
   ],
   "responsibilities": [
     {
-      "label": "Identity service",
-      "explanation": "The hosted service operates the identity backend and token issuance. You must integrate it correctly, validate access on your backend and handle outages safely.",
+      "label": "Hosted sign-in service",
+      "explanation": "The provider runs the sign-in system and issues credentials that prove who signed in. This is authentication. You still connect the service to your app, check credentials in server code and handle sign-in outages safely.",
       "values": [
-        ["Auto", "Hosted identity"],
-        ["Auto", "Hosted identity"],
-        ["Auto", "Hosted identity"],
-        ["Auto", "Hosted Auth"],
-        ["Auto", "Managed user pool"],
-        ["Auto", "Hosted AuthKit"],
-        ["Auto", "Hosted identity"],
-        ["Auto", "Hosted identity"]
+        ["Auto", "Provider runs sign-in"],
+        ["Auto", "Provider runs sign-in"],
+        ["Auto", "Provider runs sign-in"],
+        ["Auto", "Provider runs sign-in"],
+        ["Auto", "Provider manages the user directory"],
+        ["Auto", "Provider runs AuthKit"],
+        ["Auto", "Provider runs sign-in"],
+        ["Auto", "Provider runs sign-in"]
       ]
     },
     {
       "label": "Sign-in setup",
-      "explanation": "Choose sign-in methods, configure identity providers and redirect URLs, and implement an accessible client flow. Support and charges vary by method and plan.",
+      "explanation": "Choose how users sign in, connect any external accounts and set where users return after sign-in. Build screens that work with keyboards and assistive tools. Available methods and charges vary by plan.",
       "values": [
-        ["Manual", "Components / methods"],
-        ["Manual", "Connections / login"],
-        ["Manual", "Providers / UI"],
-        ["Manual", "Providers / redirects"],
-        ["Manual", "Pool / app client"],
-        ["Manual", "Methods / AuthKit UI"],
-        ["Manual", "Project / SDK / UI"],
-        ["Manual", "Flows / SDK"]
+        ["Manual", "Choose methods and sign-in screens"],
+        ["Manual", "Connect accounts and configure sign-in"],
+        ["Manual", "Choose account providers and screens"],
+        ["Manual", "Connect accounts and set return addresses"],
+        ["Manual", "Configure the user directory and app connection"],
+        ["Manual", "Choose methods and AuthKit screens"],
+        ["Manual", "Connect the project, code library and screens"],
+        ["Manual", "Design sign-in steps and connect the code library"]
       ]
     },
     {
-      "label": "Session policy",
-      "explanation": "Provider session tooling does not choose your cookie protections, duration, revocation checks, cross-device policy or sensitive-operation reauthentication for you.",
+      "label": "Staying signed in",
+      "explanation": "A session is the period during which an app remembers a signed-in user. You choose its duration, protect browser cookies, check whether access was cancelled and decide when sensitive actions require another sign-in. Provider tools do not choose these rules for you.",
       "values": [
-        ["Manual", "Session / backend policy"],
-        ["Manual", "Token / session settings"],
-        ["Manual", "Persistence / revocation checks"],
-        ["Manual", "Session / refresh policy"],
-        ["Manual", "Token / app settings"],
-        ["Manual", "Session / backend policy"],
-        ["Manual", "Session / backend policy"],
-        ["Manual", "Flow / session policy"]
+        ["Manual", "Set session rules and server checks"],
+        ["Manual", "Set credential and session rules"],
+        ["Manual", "Choose sign-in duration and check cancelled access"],
+        ["Manual", "Set session and credential-renewal rules"],
+        ["Manual", "Set credential and app rules"],
+        ["Manual", "Set session rules and server checks"],
+        ["Manual", "Set session rules and server checks"],
+        ["Manual", "Set sign-in steps and session rules"]
       ]
     },
     {
-      "label": "App authorization",
-      "explanation": "Authentication identifies a user. Your application still decides which records, tenants and actions that identity may access, even when the provider offers role or permission tools.",
+      "label": "Access rules",
+      "explanation": "Sign-in tells your app who a user is. Access rules decide what that user can see or change; this is authorization. Your app still checks access to records, customer accounts and actions, even if the provider offers user roles and permission tools.",
       "values": [
-        ["Manual", "App checks / roles"],
-        ["Manual", "App checks / roles"],
-        ["Manual", "App / Security Rules"],
-        ["Manual", "App / RLS policies"],
-        ["Manual", "App / IAM policies"],
-        ["Manual", "App checks / roles"],
-        ["Manual", "App checks / roles"],
-        ["Manual", "App checks / roles"]
+        ["Manual", "Add app access checks and user roles"],
+        ["Manual", "Add app access checks and user roles"],
+        ["Manual", "Add app checks and Firebase Security Rules"],
+        ["Manual", "Add app checks and database row-access rules"],
+        ["Manual", "Add app checks and AWS permission rules"],
+        ["Manual", "Add app access checks and user roles"],
+        ["Manual", "Add app access checks and user roles"],
+        ["Manual", "Add app access checks and user roles"]
       ]
     },
     {
-      "label": "Application database",
-      "explanation": "This row concerns a database for your application's records, not the provider's identity directory. Firebase Auth and Cognito do not by themselves include their vendors' separate database services.",
+      "label": "App database",
+      "explanation": "This row concerns the database for your app's records, not the provider's list of users. Firebase Auth and Cognito do not include their providers' separate database products.",
       "values": [
         ["Excluded", "Connect your database"],
         ["Excluded", "Connect your database"],
-        ["Excluded", "Separate database service"],
-        ["Manual", "Configure project Postgres"],
-        ["Excluded", "Separate database service"],
+        ["Excluded", "Use a separate database product"],
+        ["Manual", "Configure the project's PostgreSQL database"],
+        ["Excluded", "Use a separate database product"],
         ["Excluded", "Connect your database"],
         ["Excluded", "Connect your database"],
         ["Excluded", "Connect your database"]
       ]
     },
     {
-      "label": "Recovery / MFA",
-      "explanation": "Configure recovery and extra factors as supported by the chosen method and plan. Test lost-device, failed-delivery and reauthentication paths rather than assuming a feature checkbox proves safety.",
+      "label": "Account recovery and extra checks",
+      "explanation": "Set up account recovery and additional sign-in checks. Multi-factor authentication uses at least two different kinds of proof, such as a password and a code from your phone. Availability depends on method and plan. Test lost devices, undelivered codes and repeat sign-in rather than assuming an enabled feature proves safety.",
       "values": [
-        ["Manual", "Methods / policies"],
-        ["Manual", "Methods / policies"],
-        ["Manual", "Methods / product tier"],
-        ["Manual", "Methods / sender"],
-        ["Manual", "Pool / method policy"],
-        ["Manual", "Methods / policy"],
-        ["Manual", "Methods / policy"],
-        ["Manual", "Flows / policy"]
+        ["Manual", "Choose methods and recovery rules"],
+        ["Manual", "Choose methods and recovery rules"],
+        ["Manual", "Choose methods and the required pricing level"],
+        ["Manual", "Choose methods and configure message delivery"],
+        ["Manual", "Set user-directory and sign-in rules"],
+        ["Manual", "Choose methods and recovery rules"],
+        ["Manual", "Choose methods and recovery rules"],
+        ["Manual", "Design recovery steps and rules"]
       ]
     },
     {
-      "label": "Deletion / export",
-      "explanation": "Deleting an identity does not automatically remove every application record, uploaded file, external account or retained backup. Coordinate and validate that lifecycle yourself.",
+      "label": "Deleting and exporting accounts",
+      "explanation": "Deleting a user account does not automatically remove all related app records, uploaded files, external accounts or saved backups. Coordinate the cleanup and check it. When exporting an account, decide which related app data must be included too.",
       "values": [
-        ["Manual", "Coordinate app cleanup"],
-        ["Manual", "Coordinate app cleanup"],
-        ["Manual", "Coordinate app cleanup"],
-        ["Manual", "Coordinate app cleanup"],
-        ["Manual", "Coordinate app cleanup"],
-        ["Manual", "Coordinate app cleanup"],
-        ["Manual", "Coordinate app cleanup"],
-        ["Manual", "Coordinate app cleanup"]
+        ["Manual", "Coordinate account and app-data cleanup"],
+        ["Manual", "Coordinate account and app-data cleanup"],
+        ["Manual", "Coordinate account and app-data cleanup"],
+        ["Manual", "Coordinate account and app-data cleanup"],
+        ["Manual", "Coordinate account and app-data cleanup"],
+        ["Manual", "Coordinate account and app-data cleanup"],
+        ["Manual", "Coordinate account and app-data cleanup"],
+        ["Manual", "Coordinate account and app-data cleanup"]
       ]
     }
   ]
