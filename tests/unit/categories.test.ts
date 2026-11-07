@@ -32,6 +32,7 @@ describe("six category pages", () => {
     expect(categories).toHaveLength(6);
     expect(categoryGroups.map(({ label }) => label)).toEqual([
       "Cloud services",
+      "Self-hosted services",
     ]);
     expect(categoryGroups[0].topics.slice(1)).toEqual(categories);
     expect(categoryGroups[0].topics[0].path).toBe("/combinations/");
@@ -110,7 +111,7 @@ describe("six category pages", () => {
       ).toHaveLength(7);
       expect(
         root.querySelectorAll('nav[aria-label="Categories"] a'),
-      ).toHaveLength(1);
+      ).toHaveLength(2);
       expect(
         root.querySelector(
           'nav[aria-label="Categories"] a[aria-current="true"]',

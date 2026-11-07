@@ -316,7 +316,12 @@ tbody tr:nth-child(even) td.different {
   font-size: 0.75rem;
 }
 .provider-logo[src$="sentry.svg"],
-.provider-logo[src$="heroku.svg"] {
+.provider-logo[src$="heroku.svg"],
+.provider-logo[src$="versity.png"],
+.provider-logo[src$="dramatiq.png"],
+.provider-logo[src$="huey.png"],
+.provider-logo[src$="artemis.png"],
+.provider-logo[src$="victoriametrics.ico"] {
   background: #eeeeee;
   border-radius: 4px;
   padding: 3px;

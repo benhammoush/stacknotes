@@ -86,7 +86,7 @@ for (const category of categories) {
       name: "Categories",
       exact: true,
     });
-    await expect(categoryNav.getByRole("link")).toHaveCount(1);
+    await expect(categoryNav.getByRole("link")).toHaveCount(2);
     await expect(
       categoryNav.getByRole("link", { name: "Cloud services" }),
     ).toHaveAttribute("aria-current", "true");

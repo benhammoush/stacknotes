@@ -5,10 +5,15 @@
 import { useEffect, useRef } from "react";
 import { Link, matchPath, Route, Routes, useLocation } from "react-router-dom";
 import {
-  categories,
+  comparisonCategories,
   categoryGroups,
   combinationsTopic,
+  selfHostedCombinationsTopic,
 } from "./data/categories";
+import {
+  selfHostedCombinations,
+  selfHostedRoles,
+} from "./data/selfHostedCombinations";
 import ComparisonPage from "./components/ComparisonPage";
 import CombinationsPage from "./components/CombinationsPage";
 import NotFound from "./components/NotFound";
@@ -90,7 +95,17 @@ export default function App() {
       </nav>
       <Routes>
         <Route path={combinationsTopic.path} element={<CombinationsPage />} />
-        {categories.map((category) => (
+        <Route
+          path={selfHostedCombinationsTopic.path}
+          element={
+            <CombinationsPage
+              combinations={selfHostedCombinations}
+              roles={selfHostedRoles}
+              selfHosted
+            />
+          }
+        />
+        {comparisonCategories.map((category) => (
           <Route
             key={category.path}
             path={category.path}

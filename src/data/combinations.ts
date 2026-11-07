@@ -16,13 +16,13 @@ interface CompanyExample {
 }
 
 /** A combination's summary, ordered services, configuration boundary and example. */
-interface Combination {
+export interface Combination {
   id: string;
   name: string;
   description: string;
   services: [name: string, logo: string, url: string][];
   note: string;
-  example: CompanyExample;
+  example?: CompanyExample;
 }
 
 export const combinationRoles = [
@@ -35,7 +35,9 @@ export const combinationRoles = [
 ];
 
 // Editorial order uses broad platform adoption, not measured combination usage.
-export const combinations: Combination[] = [
+export const combinations: (Combination & {
+  example: CompanyExample;
+})[] = [
   {
     id: "aws",
     name: "AWS",
