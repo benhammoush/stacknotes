@@ -32,40 +32,45 @@ export interface Category {
   };
 }
 
-export const categoryGroups: { label: string; topics: Category[] }[] = [
+export const categories: Category[] = [
   {
-    label: "Cloud services",
-    topics: [
-      {
-        label: "Databases",
-        title: "Managed databases",
-        path: "/",
-        data: databases,
-      },
-      { label: "Hosting", title: "Hosting", path: "/hosting/", data: hosting },
-      {
-        label: "Sign-in & accounts",
-        title: "Sign-in & accounts",
-        path: "/authentication/",
-        data: authentication,
-      },
-      { label: "Storage", title: "Storage", path: "/storage/", data: storage },
-      {
-        label: "Background tasks & queues",
-        title: "Background tasks & queues",
-        path: "/jobs/",
-        data: jobs,
-      },
-      {
-        label: "Monitoring",
-        title: "Monitoring",
-        path: "/monitoring/",
-        data: monitoring,
-      },
-    ],
+    label: "Databases",
+    title: "Managed databases",
+    path: "/",
+    data: databases,
+  },
+  { label: "Hosting", title: "Hosting", path: "/hosting/", data: hosting },
+  {
+    label: "Sign-in & accounts",
+    title: "Sign-in & accounts",
+    path: "/authentication/",
+    data: authentication,
+  },
+  { label: "Storage", title: "Storage", path: "/storage/", data: storage },
+  {
+    label: "Background tasks & queues",
+    title: "Background tasks & queues",
+    path: "/jobs/",
+    data: jobs,
+  },
+  {
+    label: "Monitoring",
+    title: "Monitoring",
+    path: "/monitoring/",
+    data: monitoring,
   },
 ];
 
-export const categories: Category[] = categoryGroups.flatMap(
-  ({ topics }) => topics,
-);
+export const combinationsTopic = {
+  label: "Common combinations",
+  title: "Common combinations",
+  path: "/combinations/",
+};
+
+export const categoryGroups = [
+  {
+    label: "Cloud services",
+    path: "/",
+    topics: [combinationsTopic, ...categories],
+  },
+];

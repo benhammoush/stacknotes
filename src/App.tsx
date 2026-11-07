@@ -4,8 +4,13 @@
  */
 import { useEffect, useRef } from "react";
 import { Link, matchPath, Route, Routes, useLocation } from "react-router-dom";
-import { categories, categoryGroups } from "./data/categories";
+import {
+  categories,
+  categoryGroups,
+  combinationsTopic,
+} from "./data/categories";
 import ComparisonPage from "./components/ComparisonPage";
+import CombinationsPage from "./components/CombinationsPage";
 import NotFound from "./components/NotFound";
 
 /**
@@ -20,7 +25,9 @@ export default function App() {
   const topicGroup = activeGroup ?? categoryGroups[0];
   const previousPath = useRef(pathname);
   useEffect(() => {
-    const category = categories.find((item) => matchPath(item.path, pathname));
+    const category = categoryGroups
+      .flatMap(({ topics }) => topics)
+      .find((item) => matchPath(item.path, pathname));
     document.title =
       category?.path === "/"
         ? "Stacknotes · Knowledge base"
@@ -58,7 +65,7 @@ export default function App() {
         {categoryGroups.map((group) => (
           <Link
             key={group.label}
-            to={group.topics[0].path}
+            to={group.path}
             aria-current={activeGroup === group ? "true" : undefined}
           >
             {group.label}
@@ -82,6 +89,7 @@ export default function App() {
         ))}
       </nav>
       <Routes>
+        <Route path={combinationsTopic.path} element={<CombinationsPage />} />
         {categories.map((category) => (
           <Route
             key={category.path}

@@ -94,7 +94,7 @@ for (const category of categories) {
       page
         .getByRole("navigation", { name: "Cloud services topics" })
         .getByRole("link"),
-    ).toHaveCount(6);
+    ).toHaveCount(7);
     await expect(page.locator("#technical-rows")).toBeHidden();
     await expect(page.getByRole("cell")).toHaveCount(40);
     const purpose = page.getByRole("row", { name: /^Primary purpose / });
@@ -231,7 +231,7 @@ test("navigates across all six categories and back", async ({ page }) => {
   );
 });
 
-test("opens Cloud services at its first topic without a landing page", async ({
+test("opens Cloud services at Databases without a landing page", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });

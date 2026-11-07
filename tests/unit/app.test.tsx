@@ -74,7 +74,7 @@ describe("application routing", () => {
     scroll.mockRestore();
   });
 
-  it("opens a category's first topic directly without a landing page", () => {
+  it("opens Cloud services at Databases without a landing page", () => {
     const scroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
     const { getByRole, container } = renderApp("/hosting/");
     const cloud = getByRole("link", { name: "Cloud services" });
