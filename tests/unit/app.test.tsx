@@ -92,7 +92,7 @@ describe("application routing", () => {
       getByRole("link", { name: "Databases" }).getAttribute("aria-current"),
     ).toBe("page");
     expect(getByRole("navigation", { name: "Categories" }).textContent).toBe(
-      "Cloud services",
+      "Cloud servicesSelf-hosted services",
     );
     scroll.mockRestore();
   });

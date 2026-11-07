@@ -2,7 +2,7 @@
 
 A growing knowledge base for ideas, clear explanations, practical notes and useful
 comparisons. Current topics cover databases, hosting, sign-in and accounts,
-storage, background tasks and queues, and monitoring: what each product is for,
+storage, background tasks and queues, and monitoring for cloud and self-hosted services: what each product is for,
 its strengths and limitations, and what you still need to manage.
 
 ## Tech stack
@@ -18,8 +18,12 @@ its strengths and limitations, and what you still need to manage.
 
 - Cloud services groups six comparisons and Common combinations in a second navigation row, with no
   category landing page or breadcrumbs.
-- Six comparisons, each covering ten products and who handles what.
-- Ten suggested service combinations show how hosting, data, accounts, files, background
+- Six cloud comparisons, each covering ten products and who handles what.
+- Self-hosted services mirrors the seven cloud topics with six ten-product
+  comparisons and four suggested combinations. License and operating costs replace
+  provider billing; operator responsibilities stay explicit. Every product has a
+  locally hosted logo or official favicon, with sources in the third-party notices.
+- Ten suggested cloud service combinations show how hosting, data, accounts, files, background
   tasks and monitoring fit together, with official source links and setup caveats.
   Common combinations is the first topic; its compact table has combinations
   as rows and service types as columns, with extra details collapsed by default.
@@ -36,7 +40,8 @@ its strengths and limitations, and what you still need to manage.
 Comparison content is written in advance, not fetched live from providers.
 Stacknotes has no server code, user accounts or tracking.
 One React app serves all pages. Navigation is defined in `src/data/categories.ts`;
-comparison content lives in JSON files, separate from display code.
+cloud comparison content lives in JSON files, while self-hosted comparisons and
+combination suggestions live in typed data modules, separate from display code.
 Vercel serves the app for page addresses. Unknown pages show a not-found message;
 missing files and server-request paths return a 404 response.
 The database comparison preserves the original eight products from a November 2026

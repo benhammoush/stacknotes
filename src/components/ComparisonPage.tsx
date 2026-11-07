@@ -29,15 +29,22 @@ export default function ComparisonPage(props: ComparisonPageProps) {
         <div className="page-heading">
           <h1>{category.title}</h1>
           <span className="provider-count">
-            {data.providers.length} providers
+            {data.providers.length}{" "}
+            {category.selfHosted ? "products" : "providers"}
           </span>
         </div>
         <div className="legend" aria-label="Responsibility legend">
           <span>
-            <strong className="status auto">Auto</strong> Provider handles it
+            <strong className="status auto">Auto</strong>{" "}
+            {category.selfHosted
+              ? "Software handles it after setup"
+              : "Provider handles it"}
           </span>
           <span>
-            <strong className="status manual">Manual</strong> You set it up
+            <strong className="status manual">Manual</strong>{" "}
+            {category.selfHosted
+              ? "You configure and operate it"
+              : "You set it up"}
           </span>
           <span>
             <strong className="status excluded">Excluded</strong> Handle
@@ -235,7 +242,39 @@ export default function ComparisonPage(props: ComparisonPageProps) {
           </table>
         </div>
         <section className="reading-notes" aria-label="Comparison notes">
-          {category.path === "/" ? (
+          {category.selfHosted ? (
+            <>
+              <p>
+                <strong>You operate the service:</strong> provide the servers,
+                network and disks; maintain the operating system and software;
+                configure access rules, monitoring, backups and recovery.
+                Renting a cloud server does not transfer those responsibilities
+                to the software project.
+              </p>
+              <p>
+                Auto means a software feature works after setup, not that a
+                provider operates it for you. Manual means you configure and
+                maintain it. Excluded means use a separate product or app code.
+                Replication is not a backup.
+              </p>
+              <p className="provenance">
+                Based on official documentation and license files reviewed in
+                November 2026. These are starting points, not installation or
+                security instructions. Editions and license terms differ; check
+                the linked sources.
+              </p>
+              <details className="sources">
+                <summary>License sources</summary>
+                <ul>
+                  {data.providers.map((provider) => (
+                    <li key={provider.name}>
+                      <a href={provider.license}>{provider.name} license</a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            </>
+          ) : category.path === "/" ? (
             <>
               <p>
                 <strong>You manage:</strong> data structure and validation,

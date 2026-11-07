@@ -10,6 +10,11 @@ Additional local mappings: vercel = vercel_dark; render = render_white;
 railway = railway_dark; clerk = clerk-icon-dark; inngest = inngest-dark;
 axiom = axiom-dark (all .svg). Other SVGL filenames match upstream.
 heroku.svg and ibm.svg were added from the same pinned source on November 7, 2026.
+Self-hosted additions from that same pinned source, retrieved November 7, 2026:
+postgresql.svg, mariadb.svg, sqlite.svg, redis.svg, nginx.svg, keycloak.svg;
+mysql.svg = mysql-icon-dark.svg; kafka.svg = apache-kafka-dark.svg.
+Existing microsoft.svg and grafana.svg are reused from that same pinned source;
+mongodb.svg retains its mapping above, and temporal.svg its official source below.
 
 InterVariable.woff2 is the unmodified Inter v4.1 variable font from
 https://raw.githubusercontent.com/rsms/inter/v4.1/docs/font-files/InterVariable.woff2
@@ -31,6 +36,60 @@ elastic.svg: https://www.elastic.co/favicon.svg
 Additional official provider images, retrieved November 7, 2026, unchanged:
 fusionauth.png: https://cdn.prod.website-files.com/617b1b1f42c1da41aeae3413/63ed72f489abde69118f4631_favicon.png
 wasabi.png: https://a-us.storyblok.com/f/1019449/1148x270/00676e941d/secondary-logo-knockout-rgb.png
+
+Self-hosted official project logos/favicons, retrieved November 7, 2026, unchanged.
+Sources were verified against the project's site metadata, documentation, README
+or foundation artwork. These identify the project or its publisher; e.g. OpenStack
+identifies Swift, Ory identifies Kratos/Hydra, and Grafana identifies combined
+monitoring setups. They are not covered by SVGL's MIT license. Trademark rights
+remain with their respective owners; no endorsement or additional rights implied.
+couchdb.ico: https://docs.couchdb.org/en/stable/_static/favicon.ico
+valkey.png: https://valkey.io/img/favicon/favicon-32x32.png
+clickhouse.png: https://clickhouse.com/docs/mintlify-assets/_mintlify/favicons/private-7c7dfe99/4UShO1VxIGDRhyfj/_generated/favicon/favicon-32x32.png
+cassandra.ico: https://cassandra.apache.org/assets/img/favicon.ico
+apache.ico: https://httpd.apache.org/favicon.ico
+caddy.png: https://caddyserver.com/resources/images/favicon.png?v=6b06285
+openlitespeed.png: https://openlitespeed.org/wp-content/uploads/2018/05/cropped-openlitespeed-favicon-2-32x32.png
+tomcat.png: https://tomcat.apache.org/res/images/tomcat.png
+jetty.ico: https://jetty.org/_/img/favicon.ico
+lighttpd.png: https://www.lighttpd.net/light_logo_icon.png
+haproxy.png: unchanged embedded data:image/png favicon in https://www.haproxy.org/
+traefik.svg: https://traefik.io/favicon.svg
+authentik.png: https://goauthentik.io/img/icon.png
+zitadel.png: https://zitadel.com/docs/zitadel-192x192.png
+authelia.svg: https://www.authelia.com/favicon.svg
+ory.svg: https://www.ory.com/icon.svg?c4370a965aac90e8
+dex.ico: https://dexidp.io/favicons/favicon.ico
+logto.ico: https://logto.io/assets/favicon-Al2JfVNp.ico
+casdoor.png: https://casdoor.ai/img/casdoor.png
+kanidm.png: https://kanidm.com/favicon.png
+ceph.ico: https://docs.ceph.com/en/latest/_static/favicon.ico
+seaweedfs.ico: https://seaweedfs.com/favicon.ico
+garage.svg: https://garagehq.deuxfleurs.fr/icons/favicon.svg
+openstack.ico: https://www.openstack.org/favicon.ico
+aistor.png: https://cdn.prod.website-files.com/681c8426519d8db8f867c1e8/681c8426519d8db8f867c1f2_favicon-32x32.png
+rustfs.png: https://rustfs.com/favicon-32x32.png
+ozone.svg: https://ozone.apache.org/favicon.svg
+cloudserver.png: https://www.zenko.io/wp-content/uploads/2019/08/zenkologo.png
+juicefs.ico: https://static1.juicefs.com/images/favicon.d6e4afae8198.ico
+versity.png: https://www.versity.com/wp-content/uploads/2022/12/cropped-android-chrome-512x512-1-32x32.png
+rabbitmq.svg: https://www.rabbitmq.com/img/rabbitmq-logo.svg
+nats.svg: https://raw.githubusercontent.com/cncf/artwork/main/projects/nats/icon/color/nats-icon-color.svg
+bullmq.ico: https://bullmq.io/images/favicon.ico
+celery.ico: https://docs.celeryq.dev/en/stable/_static/favicon.ico
+dramatiq.png: https://dramatiq.io/_static/logo.png
+huey.png: https://media.charlesleifer.com/blog/photos/huey3-logo.png (linked in the official coleifer/huey README and docs)
+sidekiq.svg: https://sidekiq.org/img/red-kicker.svg (site stylesheet's brand image)
+artemis.png: https://artemis.apache.org/assets/img/favicon.png
+prometheus.svg: https://prometheus.io/icon.svg
+loki.png: https://raw.githubusercontent.com/grafana/loki/main/docs/sources/logo.png
+opentelemetry.svg: https://opentelemetry.io/favicon.svg
+zabbix.png: https://www.zabbix.com/favicon_48x48.png
+victoriametrics.ico: https://docs.victoriametrics.com/icons/favicon.ico
+netdata.png: https://www.netdata.cloud/favicon-32x32.png
+icinga.png: https://icinga.com/wp-content/uploads/2020/11/cropped-icinga-favicon-512x512px-32x32.png
+uptime-kuma.svg: https://raw.githubusercontent.com/louislam/uptime-kuma/master/public/icon.svg
+jaeger.svg: https://www.jaegertracing.io/img/jaeger-vector.svg
 
 MIT License
 

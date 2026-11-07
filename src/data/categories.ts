@@ -8,12 +8,14 @@ import authentication from "./authentication.json";
 import storage from "./storage.json";
 import jobs from "./jobs.json";
 import monitoring from "./monitoring.json";
+import { selfHostedCategories } from "./selfHosted";
 
 /** Editorial content and route identity for one comparison topic. */
 export interface Category {
   label: string;
   title: string;
   path: string;
+  selfHosted?: boolean;
   data: {
     providers: {
       name: string;
@@ -21,6 +23,7 @@ export interface Category {
       logo: string;
       url: string;
       pricing?: string;
+      license?: string;
       caveat?: string;
     }[];
     overview: { label: string; values: string[] }[];
@@ -67,10 +70,23 @@ export const combinationsTopic = {
   path: "/combinations/",
 };
 
+export const selfHostedCombinationsTopic = {
+  label: "Common combinations",
+  title: "Self-hosted combinations",
+  path: "/self-hosted/combinations/",
+};
+
+export const comparisonCategories = [...categories, ...selfHostedCategories];
+
 export const categoryGroups = [
   {
     label: "Cloud services",
     path: "/",
     topics: [combinationsTopic, ...categories],
+  },
+  {
+    label: "Self-hosted services",
+    path: "/self-hosted/databases/",
+    topics: [selfHostedCombinationsTopic, ...selfHostedCategories],
   },
 ];
