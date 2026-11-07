@@ -33,6 +33,22 @@ const categories = [
     term: "Storage infrastructure",
   },
   {
+    label: "Caching",
+    title: "Managed caching",
+    path: "/caching/",
+    rows: 5,
+    term: "Hosted cache service",
+    count: 4,
+  },
+  {
+    label: "Search",
+    title: "Managed search",
+    path: "/search/",
+    rows: 5,
+    term: "Hosted search service",
+    count: 4,
+  },
+  {
     label: "Background tasks & queues",
     title: "Background tasks & queues",
     path: "/jobs/",
@@ -53,6 +69,7 @@ for (const category of categories) {
     page,
   }) => {
     const errors: string[] = [];
+    const count = category.count ?? 10;
     page.on("pageerror", (error) => errors.push(error.message));
     await page.setViewportSize({ width: 390, height: 844 });
     const response = await page.goto(category.path);
@@ -94,11 +111,11 @@ for (const category of categories) {
       page
         .getByRole("navigation", { name: "Cloud services topics" })
         .getByRole("link"),
-    ).toHaveCount(7);
+    ).toHaveCount(9);
     await expect(page.locator("#technical-rows")).toBeHidden();
-    await expect(page.getByRole("cell")).toHaveCount(40);
+    await expect(page.getByRole("cell")).toHaveCount(count * 4);
     const purpose = page.getByRole("row", { name: /^Primary purpose / });
-    await expect(purpose.getByRole("cell")).toHaveCount(10);
+    await expect(purpose.getByRole("cell")).toHaveCount(count);
     await expect(
       page.getByRole("rowheader", { name: "What you get" }),
     ).toHaveCount(0);
@@ -156,8 +173,8 @@ for (const category of categories) {
       await region.evaluate((element) => element.scrollWidth),
     ).toBeGreaterThan(compactWidth);
     await page.getByRole("button", { name: "Compact view" }).click();
-    await page.getByLabel("Jump to").selectOption("9");
-    await expect(page.locator("#provider-9")).toBeInViewport();
+    await page.getByLabel("Jump to").selectOption(String(count - 1));
+    await expect(page.locator(`#provider-${count - 1}`)).toBeInViewport();
     await expect(
       page.getByRole("columnheader", { name: "Characteristic" }),
     ).toBeInViewport();
@@ -187,13 +204,13 @@ for (const category of categories) {
     await expect(page.locator("#technical-rows")).toBeHidden();
     if (category.path !== "/") {
       await page.getByText("Pricing sources", { exact: true }).click();
-      await expect(page.locator(".sources li a")).toHaveCount(10);
+      await expect(page.locator(".sources li a")).toHaveCount(count);
     }
     expect(errors).toEqual([]);
   });
 }
 
-test("navigates across all six categories and back", async ({ page }) => {
+test("navigates across all cloud categories and back", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => {
     (window as Window & { navigationMarker?: string }).navigationMarker =
@@ -231,7 +248,7 @@ test("navigates across all six categories and back", async ({ page }) => {
   );
 });
 
-test("opens Cloud services at Databases without a landing page", async ({
+test("opens Cloud services at Common combinations without a landing page", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -240,12 +257,12 @@ test("opens Cloud services at Databases without a landing page", async ({
     .getByRole("navigation", { name: "Categories", exact: true })
     .getByRole("link", { name: "Cloud services", exact: true })
     .click();
-  await expect(page).toHaveURL("http://127.0.0.1:4178/");
+  await expect(page).toHaveURL("http://127.0.0.1:4178/combinations/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Managed databases",
+    "Common combinations",
   );
   await expect(
-    page.getByRole("link", { name: "Databases", exact: true }),
+    page.getByRole("link", { name: "Common combinations", exact: true }),
   ).toHaveAttribute("aria-current", "page");
   await expect(
     page.getByRole("navigation", { name: "Cloud services topics" }),

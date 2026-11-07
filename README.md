@@ -2,7 +2,7 @@
 
 A growing knowledge base for ideas, clear explanations, practical notes and useful
 comparisons. Current topics cover databases, hosting, sign-in and accounts,
-storage, background tasks and queues, and monitoring for cloud and self-hosted services: what each product is for,
+storage, caching, search, background tasks and queues, and monitoring for cloud and self-hosted services: what each product is for,
 its strengths and limitations, and what you still need to manage.
 
 ## Tech stack
@@ -16,19 +16,36 @@ its strengths and limitations, and what you still need to manage.
 
 ## Features
 
-- Cloud services groups six comparisons and Common combinations in a second navigation row, with no
+- Cloud services groups eight comparisons and Common combinations in a second navigation row, with no
   category landing page or breadcrumbs.
-- Six cloud comparisons, each covering ten products and who handles what.
-- Self-hosted services mirrors the seven cloud topics with six ten-product
-  comparisons and four suggested combinations. License and operating costs replace
+- Eight cloud comparisons covering focused product choices and who handles what.
+- Self-hosted services mirrors the nine cloud topics with eight software
+  comparisons and ten example-backed associations. License and operating costs replace
   provider billing; operator responsibilities stay explicit. Every product has a
   locally hosted logo or official favicon, with sources in the third-party notices.
+- Caching compares shared application data caches, including Redis and Valkey,
+  separately from databases. Sessions and rate limiting are use cases, not automatic
+  sign-in features. Search explains indexing, data synchronization and private results;
+  small apps may only need their database's built-in search.
 - Ten suggested cloud service combinations show how hosting, data, accounts, files, background
-  tasks and monitoring fit together, with official source links and setup caveats.
-  Common combinations is the first topic; its compact table has combinations
-  as rows and service types as columns, with extra details collapsed by default.
-  “What to know” includes a product example and its source, marked as a partial
-  match rather than proof of the entire suggested combination.
+  tasks, monitoring, caching and search fit together, with official source links and setup caveats.
+  Cloud combinations suggest dedicated caching and search services; self-hosted
+  associations also identify app-managed or database search. A dash means no
+  separate service is suggested. Pick only the services your app needs.
+  Comparable choices share a cell with equal styling, not a ranking or a list of
+  services to install together. Features, costs and integration work still differ.
+  All cloud supporting-service choices show their platform context; hosting itself
+  and self-hosted rows do not need relationship labels.
+  “Within Azure” means the same hosting platform; “External · Upstash” means another
+  provider. Neither implies free service, bundled pricing or automatic connections.
+  Common combinations is the entry topic when switching between Cloud services
+  and Self-hosted services. Each row has an ⓘ button that opens a centered dialog
+  combining plain-English benefits and trade-offs. Names and hover do not open it;
+  keyboard activation, tap, Escape and backdrop dismissal are supported. Rows stay
+  compact, without separate “What to know” disclosures. Cloud product examples stay in the editorial
+  data, not the page. Self-hosted examples link documented core associations,
+  without implying complete deployments or company adoption; built-in and separate
+  roles are explicit rather than filled with arbitrary products.
 - Monochrome design, colored logos and a locally hosted Inter font.
 - Blue ≠ marks identify less-common responsibility labels, not better products.
 - Labels stay visible while scrolling; jump to a provider or use a compact view.

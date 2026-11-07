@@ -106,6 +106,8 @@ for (const width of [360, 768, 1440]) {
     await expect(
       page.getByRole("columnheader", { name: "Characteristic" }),
     ).toBeInViewport();
+    // Focus scrolls the rows; keep hover from opening another explanation.
+    await page.mouse.move(0, 0);
     await page
       .getByRole("button", { name: "About Maintenance", exact: true })
       .focus();

@@ -1,0 +1,124 @@
+{
+  "providers": [
+    {
+      "name": "Algolia",
+      "company": "Algolia",
+      "logo": "/providers/algolia.svg",
+      "url": "https://www.algolia.com/doc/guides/getting-started/what-is-algolia/",
+      "pricing": "https://www.algolia.com/pricing/"
+    },
+    {
+      "name": "Typesense Cloud",
+      "company": "Typesense",
+      "logo": "/providers/typesense.png",
+      "url": "https://typesense.org/docs/guide/install-typesense.html",
+      "pricing": "https://cloud.typesense.org/pricing"
+    },
+    {
+      "name": "Elastic Cloud",
+      "company": "Elastic",
+      "logo": "/providers/elastic.svg",
+      "url": "https://www.elastic.co/docs/deploy-manage/deploy/elastic-cloud",
+      "pricing": "https://www.elastic.co/pricing/",
+      "caveat": "Hosted or Serverless"
+    },
+    {
+      "name": "OpenSearch Service",
+      "company": "AWS",
+      "logo": "/providers/aws.svg",
+      "url": "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html",
+      "pricing": "https://aws.amazon.com/opensearch-service/pricing/",
+      "caveat": "Provisioned OpenSearch domains"
+    }
+  ],
+  "overview": [
+    {
+      "label": "Primary purpose",
+      "values": [
+        "Let users search indexed copies of your app's products, documents or other records.",
+        "Let users search indexed copies of your app's products, documents or other records.",
+        "Search and analyze indexed documents using managed Elasticsearch services.",
+        "Search and analyze indexed documents using managed OpenSearch clusters."
+      ]
+    },
+    {
+      "label": "Strengths",
+      "values": [
+        "Hosted search APIs, interface libraries and tools for tuning result relevance.",
+        "Typo-tolerant search, filters and autocomplete with managed Typesense infrastructure.",
+        "Flexible text queries, analysis and connected tools for large search projects.",
+        "OpenSearch queries and analysis with AWS network and access integrations."
+      ]
+    },
+    {
+      "label": "Limitations",
+      "values": [
+        "Plan-specific limits and features; you still send records and build the search experience.",
+        "Searchable fields consume memory; size capacity and enable high availability when needed.",
+        "More query and data-model choices to learn; Hosted and Serverless features differ.",
+        "You still size the domain, design indexes and plan major upgrades."
+      ]
+    },
+    {
+      "label": "How billing works",
+      "values": [
+        "Plan, search requests and stored records; advanced features can cost extra.",
+        "Allocated cluster capacity and selected availability or distribution options.",
+        "Hosted deployment size and subscription, or Serverless project usage.",
+        "Allocated instances, storage and applicable transfer; extended support can add charges."
+      ]
+    }
+  ],
+  "responsibilities": [
+    {
+      "label": "Hosted search service",
+      "explanation": "The provider operates the search infrastructure. A search index is an organized copy of content for fast matching and ranking, not a replacement for your primary database or a search interface automatically added to your app.",
+      "values": [
+        ["Auto", "Provider operates the search service"],
+        ["Auto", "Provider operates the Typesense infrastructure"],
+        ["Auto", "Provider operates the selected hosted service"],
+        ["Auto", "AWS operates the domain infrastructure"]
+      ]
+    },
+    {
+      "label": "Keeping records in sync",
+      "explanation": "Send new and changed records to the search index and remove deleted records. Unless you configure a suitable connector, your app must maintain this copy. Updates can take time to appear; plan how to rebuild the index.",
+      "values": [
+        ["Manual", "Send records and propagate changes and deletions"],
+        ["Manual", "Send records and propagate changes and deletions"],
+        ["Manual", "Configure a data connection or send record updates"],
+        ["Manual", "Configure a data connection or send record updates"]
+      ]
+    },
+    {
+      "label": "Search interface and relevance",
+      "explanation": "Your app needs a search box and a way to display results. You choose searchable fields, filters, synonyms and ranking rules, then test real queries. Typo tolerance and matching behavior vary by engine and settings.",
+      "values": [
+        ["Manual", "Build the interface and tune matching and ranking"],
+        ["Manual", "Build the interface and tune fields and ranking"],
+        ["Manual", "Build the interface and configure queries and analysis"],
+        ["Manual", "Build the interface and configure queries and analysis"]
+      ]
+    },
+    {
+      "label": "Private search results",
+      "explanation": "Search must respect the same record permissions as the original app. Protect administrative keys and enforce user-specific filters or server-side checks. Hiding a result in the interface does not prevent someone from querying an exposed index.",
+      "values": [
+        ["Manual", "Restrict search keys and enforce record permissions"],
+        ["Manual", "Use scoped search keys and enforce record permissions"],
+        ["Manual", "Configure access rules and enforce record permissions"],
+        ["Manual", "Configure access rules and enforce record permissions"]
+      ]
+    },
+    {
+      "label": "Capacity and recovery",
+      "explanation": "Index size, query traffic and availability requirements affect cost and performance. Check the selected plan's capacity and backup arrangements. Keep original records and a tested way to rebuild search; an index is not a backup of your database.",
+      "values": [
+        ["Manual", "Check plan limits and keep a rebuild path"],
+        ["Manual", "Size memory, choose availability and plan recovery"],
+        ["Manual", "Check deployment limits and recovery arrangements"],
+        ["Manual", "Size the domain and test snapshot or rebuild recovery"]
+      ]
+    }
+  ]
+}

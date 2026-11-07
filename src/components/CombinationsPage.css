@@ -3,6 +3,7 @@
 }
 .combinations-table.compact {
   --label-width: 180px;
+  --provider-width: 150px;
 }
 .combinations-table td a {
   color: var(--foreground);
@@ -11,23 +12,97 @@
 .combinations-table td a:hover {
   text-decoration: underline;
 }
+.combination-options {
+  display: grid;
+  gap: 0.5rem;
+}
+.combination-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
 .combination-name {
-  display: block;
-  margin-bottom: 0.5rem;
+  flex: 1;
 }
-.combination-note summary {
+.combination-info {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
   color: var(--accent);
-  cursor: pointer;
+  font-size: 1rem;
+}
+.combination-info:hover {
+  background: var(--surface-raised);
+}
+.combination-built-in {
   font-weight: 400;
 }
-.combination-note p {
+.combination-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(32rem, calc(100% - 2rem));
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-raised);
   color: var(--foreground);
-  font-size: 0.875rem;
-  font-weight: 400;
-  margin: 0.625rem 0 0;
+  box-shadow: 0 20px 70px #0009;
 }
-.combination-product-example > span {
+.combination-dialog::backdrop {
+  background: #000a;
+}
+.combination-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 0;
+}
+.combination-dialog-kicker {
   display: block;
+  margin-bottom: 0.25rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.combination-dialog h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+.combination-dialog-header .close-button {
+  margin: -0.5rem -0.5rem 0 0;
+}
+.combination-dialog-body {
+  padding: 0.875rem 1.25rem 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+.combination-dialog-body p {
+  margin: 0 0 0.75rem;
+}
+.combination-dialog-body p:last-child {
+  margin-bottom: 0;
+}
+.combination-tradeoff {
+  color: var(--muted);
+}
+.combination-dialog-footer {
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+}
+.combination-dialog-footer > span {
+  display: block;
+  margin-top: 0.25rem;
   color: var(--muted);
 }
 .combinations-footer {

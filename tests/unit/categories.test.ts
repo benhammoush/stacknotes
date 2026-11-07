@@ -6,7 +6,11 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { categories, categoryGroups } from "../../src/data/categories";
+import {
+  categories,
+  categoryGroups,
+  comparisonCategories,
+} from "../../src/data/categories";
 import { differences } from "../../src/utils/comparison";
 import { fireEvent } from "@testing-library/react";
 import { renderApp } from "./render";
@@ -27,16 +31,16 @@ describe("status differences", () => {
   });
 });
 
-describe("six category pages", () => {
-  it("owns six registry-driven routes, one HTML entry and local font assets", () => {
-    expect(categories).toHaveLength(6);
+describe("cloud category pages", () => {
+  it("owns eight registry-driven routes, one HTML entry and local font assets", () => {
+    expect(categories).toHaveLength(8);
     expect(categoryGroups.map(({ label }) => label)).toEqual([
       "Cloud services",
       "Self-hosted services",
     ]);
     expect(categoryGroups[0].topics.slice(1)).toEqual(categories);
     expect(categoryGroups[0].topics[0].path).toBe("/combinations/");
-    expect(new Set(categories.map(({ path }) => path)).size).toBe(6);
+    expect(new Set(categories.map(({ path }) => path)).size).toBe(8);
     const html = readFileSync(
       resolve(import.meta.dirname, "../../index.html"),
       "utf8",
@@ -64,11 +68,12 @@ describe("six category pages", () => {
   for (const category of categories) {
     it(`${category.label} has complete matrices, sources and semantic disclosure`, () => {
       const { data } = category;
-      expect(data.providers).toHaveLength(10);
+      const count = ["/caching/", "/search/"].includes(category.path) ? 4 : 10;
+      expect(data.providers).toHaveLength(count);
       expect(
         new Set(data.providers.map(({ company, name }) => `${company}:${name}`))
           .size,
-      ).toBe(10);
+      ).toBe(count);
       expect(data.overview).toHaveLength(4);
       expect(data.overview.map(({ label }) => label)).toEqual([
         "Primary purpose",
@@ -82,7 +87,7 @@ describe("six category pages", () => {
       for (const purpose of data.overview[0].values)
         expect(purpose.trim().length).toBeGreaterThan(30);
       for (const row of [...data.overview, ...data.responsibilities]) {
-        expect(row.values).toHaveLength(10);
+        expect(row.values).toHaveLength(count);
         const visibleCopy = [row.label, ...row.values.flat()].join(" ");
         expect(visibleCopy).not.toMatch(
           /\b(frontend|backend|full-stack|runtime|workload|SDK|RLS|IAM|B2B|egress|ingest|orchestration|telemetry|idempotency)\b| \/ /i,
@@ -108,7 +113,7 @@ describe("six category pages", () => {
       const { container: root } = renderApp(category.path);
       expect(
         root.querySelectorAll('nav[aria-label="Cloud services topics"] a'),
-      ).toHaveLength(7);
+      ).toHaveLength(9);
       expect(
         root.querySelectorAll('nav[aria-label="Categories"] a'),
       ).toHaveLength(2);
@@ -144,7 +149,7 @@ describe("six category pages", () => {
         );
       }
       expect(root.querySelectorAll(".sources a")).toHaveLength(
-        category.path === "/" ? 0 : 10,
+        category.path === "/" ? 0 : count,
       );
       const compact = root.querySelector<HTMLButtonElement>("#compact-toggle")!;
       expect(compact.getAttribute("aria-pressed")).toBe("true");
@@ -326,5 +331,30 @@ describe("six category pages", () => {
           ),
         ),
     ).toBe(true);
+  });
+
+  it("separates caching from databases and makes search copies and permissions explicit", () => {
+    for (const selfHosted of [false, true]) {
+      const topics = comparisonCategories.filter(
+        (category) => !!category.selfHosted === selfHosted,
+      );
+      const database = topics.find(({ label }) => label === "Databases")!;
+      const cache = topics.find(({ label }) => label === "Caching")!;
+      const search = topics.find(({ label }) => label === "Search")!;
+      expect(
+        database.data.providers.some(({ name }) =>
+          /^(Redis|Valkey)$/.test(name),
+        ),
+      ).toBe(false);
+      expect(
+        cache.data.responsibilities.some(
+          ({ label }) => label === "Sessions and rate limiting",
+        ),
+      ).toBe(true);
+      const searchCopy = JSON.stringify(search.data);
+      expect(searchCopy).toContain("primary database");
+      expect(searchCopy).toContain("deletions");
+      expect(searchCopy).toContain("record permissions");
+    }
   });
 });

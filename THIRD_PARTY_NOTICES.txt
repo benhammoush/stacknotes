@@ -13,7 +13,7 @@ heroku.svg and ibm.svg were added from the same pinned source on November 7, 202
 Self-hosted additions from that same pinned source, retrieved November 7, 2026:
 postgresql.svg, mariadb.svg, sqlite.svg, redis.svg, nginx.svg, keycloak.svg;
 mysql.svg = mysql-icon-dark.svg; kafka.svg = apache-kafka-dark.svg.
-Existing microsoft.svg and grafana.svg are reused from that same pinned source;
+Existing microsoft.svg, grafana.svg and supabase.svg are reused from that same pinned source;
 mongodb.svg retains its mapping above, and temporal.svg its official source below.
 
 InterVariable.woff2 is the unmodified Inter v4.1 variable font from
@@ -112,3 +112,20 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+Caching and search product identifiers
+--------------------------------------
+The following official-site identifiers are locally hosted for product identification,
+not endorsement. Their trademarks remain with their respective owners; software
+licenses do not grant trademark rights. Existing aws.svg, google-cloud.svg,
+microsoft.svg, upstash.svg, redis.svg, valkey.png and elastic.svg are reused unchanged.
+
+- algolia.svg — Algolia official favicon:
+  https://www.algolia.com/files/live/sites/algolia-assets/files/icons/algolia-logo-for-favicon.svg
+- typesense.png — Typesense official favicon:
+  https://typesense.org/favicon.png
+- memcached.png — Memcached documentation's official project image:
+  https://docs.memcached.org/images/memcached_link_125.png
+- meilisearch.png — Meilisearch documentation's official favicon:
+  https://www.meilisearch.com/docs/mintlify-assets/_mintlify/favicons/meilisearch-6b28dec2/6t6RePI0bXwGcKSs/_generated/favicon/favicon-32x32.png
+- opensearch.png — OpenSearch documentation's official core product icon:
+  https://docs.opensearch.org/latest/images/icons/OpenSearch-Core.png

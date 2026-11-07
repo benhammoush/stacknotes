@@ -20,21 +20,21 @@ import {
 import { renderApp } from "./render";
 
 describe("self-hosted services", () => {
-  it("mirrors seven topics without changing the six cloud datasets or entry paths", () => {
-    expect(categories).toHaveLength(6);
-    expect(selfHostedCategories).toHaveLength(6);
-    expect(comparisonCategories).toHaveLength(12);
-    expect(new Set(comparisonCategories.map(({ path }) => path)).size).toBe(12);
+  it("mirrors nine topics with focused product sets and unchanged entry paths", () => {
+    expect(categories).toHaveLength(8);
+    expect(selfHostedCategories).toHaveLength(8);
+    expect(comparisonCategories).toHaveLength(16);
+    expect(new Set(comparisonCategories.map(({ path }) => path)).size).toBe(16);
     expect(categoryGroups[1].topics.map(({ label }) => label)).toEqual(
       categoryGroups[0].topics.map(({ label }) => label),
     );
     expect(categoryGroups.map(({ path }) => path)).toEqual([
-      "/",
-      "/self-hosted/databases/",
+      "/combinations/",
+      "/self-hosted/combinations/",
     ]);
     expect(
       selfHostedCategories.map(({ data }) => data.providers.length),
-    ).toEqual([10, 10, 10, 10, 10, 10]);
+    ).toEqual([8, 10, 10, 10, 3, 4, 10, 10]);
   });
 
   for (const category of selfHostedCategories) {
@@ -82,13 +82,13 @@ describe("self-hosted services", () => {
         getByRole("navigation", {
           name: "Self-hosted services topics",
         }).querySelectorAll("a"),
-      ).toHaveLength(7);
+      ).toHaveLength(9);
       expect(
         container.querySelectorAll("thead .provider-heading"),
       ).toHaveLength(data.providers.length);
       expect(
         container.querySelectorAll("thead img.provider-logo"),
-      ).toHaveLength(10);
+      ).toHaveLength(data.providers.length);
       expect(container.querySelector(".provider-monogram")).toBeNull();
       expect(container.querySelectorAll(".sources a")).toHaveLength(
         data.providers.length,
@@ -149,7 +149,7 @@ describe("self-hosted services", () => {
     expect(all).toContain("Icinga 2.16+ uses GPLv3-or-later");
   });
 
-  it("requires existing, documented logos for all 60 products and all suggested services", () => {
+  it("requires existing, documented logos for all software and suggested services", () => {
     const notices = readFileSync(
       resolve(import.meta.dirname, "../../THIRD_PARTY_NOTICES.txt"),
       "utf8",
@@ -157,10 +157,10 @@ describe("self-hosted services", () => {
     const logos = selfHostedCategories.flatMap(({ data }) =>
       data.providers.map(({ logo }) => logo),
     );
-    expect(logos).toHaveLength(60);
+    expect(logos).toHaveLength(65);
     logos.push(
       ...selfHostedCombinations.flatMap(({ services }) =>
-        services.map(([, logo]) => `/providers/${logo}`),
+        services.flatMap(([, logo]) => (logo ? [`/providers/${logo}`] : [])),
       ),
     );
     for (const logo of logos) {
@@ -172,11 +172,25 @@ describe("self-hosted services", () => {
     }
   });
 
-  it("offers four complete suggestions without fabricating company examples", () => {
-    expect(selfHostedCombinations).toHaveLength(4);
+  it("offers ten distinct associations with choice guidance and scoped documentation examples", () => {
+    expect(selfHostedCombinations).toHaveLength(10);
+    expect(new Set(selfHostedCombinations.map(({ id }) => id)).size).toBe(10);
     for (const combination of selfHostedCombinations) {
-      expect(combination.services).toHaveLength(6);
-      expect(combination.example).toBeUndefined();
+      expect(combination.services).toHaveLength(8);
+      expect(combination.whenToChoose.length).toBeGreaterThan(20);
+      expect(combination.whenToChoose.length).toBeLessThanOrEqual(280);
+      expect(
+        `${combination.whenToChoose} ${combination.note}`.split(/\s+/).length,
+      ).toBeLessThanOrEqual(100);
+      expect(combination.whenToChoose).not.toMatch(/choose this over/i);
+      expect(new URL(combination.example.url).protocol).toBe("https:");
+      expect(combination.example.confirmed.length).toBeGreaterThan(60);
+      expect(combination.example.limitation.length).toBeGreaterThan(60);
+      for (const [name, logo, url] of combination.services) {
+        expect(name.trim()).not.toBe("");
+        if (url) expect(new URL(url).protocol).toBe("https:");
+        if (logo) expect(url).not.toBeNull();
+      }
       expect(combination.note.length).toBeGreaterThan(100);
     }
     expect(selfHostedRoles.map(({ path }) => path)).toEqual([
@@ -186,24 +200,76 @@ describe("self-hosted services", () => {
       "/self-hosted/storage/",
       "/self-hosted/jobs/",
       "/self-hosted/monitoring/",
+      "/self-hosted/caching/",
+      "/self-hosted/search/",
     ]);
     const { getByRole, container } = renderApp("/self-hosted/combinations/");
     expect(getByRole("heading", { level: 1 }).textContent).toBe(
       "Self-hosted combinations",
     );
-    expect(getByRole("table").querySelectorAll("tbody tr")).toHaveLength(4);
-    expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(24);
+    expect(getByRole("table").querySelectorAll("tbody tr")).toHaveLength(10);
+    expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(80);
     expect(container.querySelectorAll("tbody img.provider-logo")).toHaveLength(
-      24,
+      selfHostedCombinations.flatMap(({ services }) =>
+        services.filter(([, logo]) => logo),
+      ).length,
     );
     expect(container.querySelector(".provider-monogram")).toBeNull();
     expect(
       container.querySelectorAll(".combination-product-example"),
-    ).toHaveLength(0);
+    ).toHaveLength(10);
     expect(container.textContent).toContain(
-      "not ready-made integrations or claims about a company",
+      "not every service choice or a company's live deployment",
     );
     expect(container.textContent).not.toContain("product examples");
+    const rows = getByRole("table").querySelectorAll("tbody tr");
+    rows.forEach((row, index) => {
+      const combination = selfHostedCombinations[index];
+      expect(row.querySelector(".combination-choice")).toBeNull();
+      expect(
+        container.querySelector(`#choice-${combination.id} p`)?.textContent,
+      ).toBe(combination.whenToChoose);
+      expect(
+        row
+          .querySelector("button.combination-info")
+          ?.getAttribute("aria-controls"),
+      ).toBe(`choice-${combination.id}`);
+      expect(row.querySelector("details")).toBeNull();
+      const dialog = container.querySelector(`#choice-${combination.id}`)!;
+      expect(dialog.tagName).toBe("DIALOG");
+      expect(dialog.hasAttribute("open")).toBe(false);
+      const example = dialog.querySelector(".combination-product-example")!;
+      expect(example.textContent).toContain(combination.example.product);
+      expect(example.textContent).toContain(
+        "Core association, not a complete deployment",
+      );
+      expect(dialog.textContent).toContain(combination.note);
+      expect(
+        example
+          .querySelector(
+            `a[aria-label="Source for ${combination.example.product}"]`,
+          )
+          ?.getAttribute("href"),
+      ).toBe(combination.example.url);
+    });
+    expect(container.textContent).toContain("Local files");
+    expect(container.textContent).toContain("Built-in app accounts");
+    expect(container.textContent).toContain("Redis for multi-worker");
+    expect(container.textContent).toContain(
+      "— means no separate service is suggested",
+    );
+    expect(container.textContent).not.toMatch(
+      /\boptional\b|not needed by default|no extra cache service/i,
+    );
+    expect(container.textContent).toContain("App-managed search");
+    expect(container.querySelectorAll("tbody .company")).toHaveLength(0);
+    const gitlab = selfHostedCombinations.find(
+      ({ id }) => id === "rails-sidekiq",
+    )!;
+    expect(gitlab.services[7][0]).toBe("Basic search");
+    expect(gitlab.note).toContain("Elasticsearch or OpenSearch");
+    expect(gitlab.note).toContain("Premium or Ultimate");
+    expect(gitlab.note).toContain("administrator setup");
   });
 
   it("switches groups and follows self-hosted role links without losing route focus", () => {
@@ -212,7 +278,7 @@ describe("self-hosted services", () => {
       const { getByRole } = renderApp("/hosting/");
       fireEvent.click(getByRole("link", { name: "Self-hosted services" }));
       expect(getByRole("heading", { level: 1 }).textContent).toBe(
-        "Self-hosted databases",
+        "Self-hosted combinations",
       );
       expect(getByRole("main")).toBe(document.activeElement);
       fireEvent.click(
@@ -228,7 +294,7 @@ describe("self-hosted services", () => {
       );
       fireEvent.click(getByRole("link", { name: "Cloud services" }));
       expect(getByRole("heading", { level: 1 }).textContent).toBe(
-        "Managed databases",
+        "Common combinations",
       );
       expect(
         getByRole("navigation", { name: "Cloud services topics" }),

@@ -243,44 +243,6 @@ export const selfHostedCategories: Category[] = [
         ],
       },
       {
-        name: "Redis",
-        company: "Redis",
-        logo: "/providers/redis.svg",
-        url: "https://redis.io/docs/latest/",
-        license: "https://github.com/redis/redis/blob/unstable/LICENSE.txt",
-        purpose:
-          "Store in-memory data structures for caching, counters, sessions and other fast-access workloads.",
-        strengths:
-          "Rich data structures, expiration and configurable persistence and replication.",
-        limitations:
-          "Memory capacity and persistence settings shape cost and durability. A cache is not automatically your durable system of record.",
-        costs:
-          "Redis 8 offers AGPLv3, SSPLv1 or RSALv2; older versions differ. Review your chosen license; pay memory, disks and operations.",
-        capabilities: [
-          ["Auto", "Executes supported data-structure commands after setup"],
-          ["Excluded", "Run application logic and app servers separately"],
-        ],
-      },
-      {
-        name: "Valkey",
-        company: "Valkey project",
-        logo: "/providers/valkey.png",
-        url: "https://valkey.io/",
-        license: "https://github.com/valkey-io/valkey/blob/unstable/COPYING",
-        purpose:
-          "Provide an in-memory key-value and data-structure server for caches and fast-access data.",
-        strengths:
-          "Redis-derived command model with configurable persistence, replication and clustering.",
-        limitations:
-          "Not every Redis version, module or feature is interchangeable. Test clients and durability settings before migrating.",
-        costs:
-          "BSD-3-Clause core; no core license fee. Pay memory capacity, persistence storage and operations.",
-        capabilities: [
-          ["Auto", "Executes supported key-value and data-structure commands"],
-          ["Excluded", "Run your app and its business rules separately"],
-        ],
-      },
-      {
         name: "ClickHouse",
         company: "ClickHouse",
         logo: "/providers/clickhouse.png",
@@ -322,7 +284,7 @@ export const selfHostedCategories: Category[] = [
       {
         label: "Database engine",
         explanation:
-          "Database engines execute supported queries or data commands after configuration; SQLite runs inside your app rather than on a separate server. Relational, document, in-memory and analytical databases solve different needs. Auto does not include hosting or backups.",
+          "Database engines execute supported queries or data commands after configuration; SQLite runs inside your app rather than on a separate server. Relational, document and analytical databases solve different needs. Redis and Valkey are compared under Caching. Auto does not include hosting or backups.",
       },
       {
         label: "App server code",
@@ -1085,6 +1047,214 @@ export const selfHostedCategories: Category[] = [
         label: "App user accounts",
         explanation:
           "Storage services can authenticate keys and authorize file operations without providing your application's customer registration and account-management experience. Connect identity and check each user's file permissions separately.",
+      },
+    ],
+  ),
+  comparison(
+    "Caching",
+    "Self-hosted caching",
+    [
+      {
+        name: "Redis",
+        company: "Redis",
+        logo: "/providers/redis.svg",
+        url: "https://redis.io/docs/latest/",
+        license: "https://github.com/redis/redis/blob/unstable/LICENSE.txt",
+        purpose:
+          "Keep frequently used data, session records and counters in an in-memory data-structure server.",
+        strengths:
+          "Rich data structures, key expiration and configurable persistence and replication.",
+        limitations:
+          "Memory capacity and persistence settings shape cost and durability. A cache is not automatically your durable system of record.",
+        costs:
+          "Redis 8 offers AGPLv3, SSPLv1 or RSALv2; older versions differ. Review your chosen license; pay memory, disks and operations.",
+        capabilities: [
+          [
+            "Auto",
+            "Expires keys and evicts data according to your configuration",
+          ],
+          ["Manual", "Connect session or rate-limit code and set retention"],
+        ],
+      },
+      {
+        name: "Valkey",
+        company: "Valkey project",
+        logo: "/providers/valkey.png",
+        url: "https://valkey.io/topics/",
+        license: "https://github.com/valkey-io/valkey/blob/unstable/COPYING",
+        purpose:
+          "Keep frequently used data, session records and counters in an in-memory data-structure server.",
+        strengths:
+          "Redis-derived command model with key expiration, persistence, replication and clustering.",
+        limitations:
+          "Not every Redis version, module or feature is interchangeable. Test clients and durability settings before migrating.",
+        costs:
+          "BSD-3-Clause core; no core license fee. Pay memory capacity, persistence storage and operations.",
+        capabilities: [
+          [
+            "Auto",
+            "Expires keys and evicts data according to your configuration",
+          ],
+          ["Manual", "Connect session or rate-limit code and set retention"],
+        ],
+      },
+      {
+        name: "Memcached",
+        company: "Memcached project",
+        logo: "/providers/memcached.png",
+        url: "https://docs.memcached.org/",
+        license: "https://github.com/memcached/memcached/blob/master/LICENSE",
+        purpose:
+          "Cache temporary copies of query results, page fragments and other small values in memory.",
+        strengths:
+          "Simple key-value caching with expiration and memory reclamation.",
+        limitations:
+          "Servers do not replicate records between themselves. Treat values as disposable; lost session data can sign users out.",
+        costs:
+          "BSD-3-Clause; no core license fee. Pay memory, servers, network and operations.",
+        capabilities: [
+          [
+            "Auto",
+            "Expires values and reclaims cache memory after configuration",
+          ],
+          [
+            "Manual",
+            "Connect compatible app code and tolerate missing records",
+          ],
+        ],
+      },
+    ],
+    [
+      {
+        label: "Expiration and eviction",
+        explanation:
+          "These are shared application data caches, not CDN page caches. Expiration removes values after a chosen time; eviction can remove them when memory fills. You choose settings and update or remove stale copies when original data changes. Plan fallback and rebuilding after cache loss.",
+      },
+      {
+        label: "Sessions and rate limiting",
+        explanation:
+          "A cache can hold temporary user state or counters for request limits. Your app or connected tooling implements those policies, chooses retention and handles missing records. None of these servers is a complete sign-in service; persistence and failover must be deliberately configured where supported.",
+      },
+    ],
+  ),
+  comparison(
+    "Search",
+    "Self-hosted search",
+    [
+      {
+        name: "Meilisearch",
+        company: "Meilisearch",
+        logo: "/providers/meilisearch.png",
+        url: "https://www.meilisearch.com/docs/learn/getting_started/what_is_meilisearch",
+        license: "https://github.com/meilisearch/meilisearch/blob/main/LICENSE",
+        purpose:
+          "Let users search indexed copies of your app's products, documents or other records.",
+        strengths:
+          "Typo-tolerant search with default ranking, filters and a document-oriented interface.",
+        limitations:
+          "You maintain indexing capacity, data synchronization and access rules. Enterprise and Cloud features are not all included in the community engine.",
+        costs:
+          "MIT community code; enterprise portions use Business Source License 1.1. Check the chosen edition; pay servers, disks and operations.",
+        capabilities: [
+          [
+            "Auto",
+            "Indexes submitted records and runs configured search queries",
+          ],
+          [
+            "Manual",
+            "Send changes and deletions; build and secure the search UI",
+          ],
+        ],
+      },
+      {
+        name: "Typesense",
+        company: "Typesense",
+        logo: "/providers/typesense.png",
+        url: "https://typesense.org/docs/guide/running-in-production.html",
+        license:
+          "https://github.com/typesense/typesense/blob/master/LICENSE.txt",
+        purpose:
+          "Let users search indexed copies of your app's products, documents or other records.",
+        strengths:
+          "Typo-tolerant search, autocomplete and filters in a single server binary, with optional clustering.",
+        limitations:
+          "Searchable fields consume memory. You size servers, configure any high availability and protect scoped search keys.",
+        costs:
+          "GPLv3 server; hosted Typesense Cloud is separate. Pay memory, servers, disks and operations.",
+        capabilities: [
+          [
+            "Auto",
+            "Indexes submitted records and runs configured search queries",
+          ],
+          [
+            "Manual",
+            "Send changes and deletions; build and secure the search UI",
+          ],
+        ],
+      },
+      {
+        name: "OpenSearch",
+        company: "OpenSearch project",
+        logo: "/providers/opensearch.png",
+        url: "https://docs.opensearch.org/latest/",
+        license:
+          "https://github.com/opensearch-project/OpenSearch/blob/main/LICENSE.txt",
+        purpose:
+          "Search and analyze indexed documents with an extensible search engine.",
+        strengths:
+          "Flexible text queries, aggregations and tools for distributed search and analysis.",
+        limitations:
+          "Cluster sizing, indexes, plugins and upgrades require operational work. Not every Elasticsearch client or feature is interchangeable.",
+        costs:
+          "Apache 2.0 core; check plugin licenses. AWS-managed OpenSearch is separate; pay servers, disks and operations.",
+        capabilities: [
+          [
+            "Auto",
+            "Indexes submitted records and runs configured search queries",
+          ],
+          [
+            "Manual",
+            "Connect data updates; build queries and enforce permissions",
+          ],
+        ],
+      },
+      {
+        name: "Elasticsearch",
+        company: "Elastic",
+        logo: "/providers/elastic.svg",
+        url: "https://www.elastic.co/docs/deploy-manage/deploy/self-managed",
+        license:
+          "https://github.com/elastic/elasticsearch/blob/main/LICENSE.txt",
+        purpose:
+          "Search and analyze indexed documents with an extensible search engine.",
+        strengths:
+          "Flexible text analysis, queries and aggregations with a broad integration ecosystem.",
+        limitations:
+          "You operate the cluster, tune indexes and plan upgrades. Features depend on distribution and subscription; self-hosting does not include every paid feature.",
+        costs:
+          "Source licenses vary: AGPLv3, SSPLv1 or Elastic License 2.0; some code is ELv2-only. Distribution and paid-feature terms differ. Pay infrastructure and operations.",
+        capabilities: [
+          [
+            "Auto",
+            "Indexes submitted records and runs configured search queries",
+          ],
+          [
+            "Manual",
+            "Connect data updates; build queries and enforce permissions",
+          ],
+        ],
+      },
+    ],
+    [
+      {
+        label: "Indexing and queries",
+        explanation:
+          "A search index is an organized copy of content for fast matching and ranking. These engines process submitted records and configured queries; they do not replace your primary database. You choose fields, filters and relevance rules. Small apps may only need their database's built-in search.",
+      },
+      {
+        label: "Data sync and search integration",
+        explanation:
+          "Send new and changed records, propagate deletions and build a search interface. Keep administrative keys private and enforce the same record permissions as your app. Search updates can be delayed; preserve original records and test rebuilding the index. An index is not a database backup.",
       },
     ],
   ),

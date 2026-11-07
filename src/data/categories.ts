@@ -8,6 +8,8 @@ import authentication from "./authentication.json";
 import storage from "./storage.json";
 import jobs from "./jobs.json";
 import monitoring from "./monitoring.json";
+import caching from "./caching.json";
+import search from "./search.json";
 import { selfHostedCategories } from "./selfHosted";
 
 /** Editorial content and route identity for one comparison topic. */
@@ -51,6 +53,13 @@ export const categories: Category[] = [
   },
   { label: "Storage", title: "Storage", path: "/storage/", data: storage },
   {
+    label: "Caching",
+    title: "Managed caching",
+    path: "/caching/",
+    data: caching,
+  },
+  { label: "Search", title: "Managed search", path: "/search/", data: search },
+  {
     label: "Background tasks & queues",
     title: "Background tasks & queues",
     path: "/jobs/",
@@ -81,12 +90,12 @@ export const comparisonCategories = [...categories, ...selfHostedCategories];
 export const categoryGroups = [
   {
     label: "Cloud services",
-    path: "/",
+    path: combinationsTopic.path,
     topics: [combinationsTopic, ...categories],
   },
   {
     label: "Self-hosted services",
-    path: "/self-hosted/databases/",
+    path: selfHostedCombinationsTopic.path,
     topics: [selfHostedCombinationsTopic, ...selfHostedCategories],
   },
 ];

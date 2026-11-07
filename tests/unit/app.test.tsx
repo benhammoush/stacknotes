@@ -74,11 +74,11 @@ describe("application routing", () => {
     scroll.mockRestore();
   });
 
-  it("opens Cloud services at Databases without a landing page", () => {
+  it("opens Cloud services at Common combinations without a landing page", () => {
     const scroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
     const { getByRole, container } = renderApp("/hosting/");
     const cloud = getByRole("link", { name: "Cloud services" });
-    expect(cloud.getAttribute("href")).toBe("/");
+    expect(cloud.getAttribute("href")).toBe("/combinations/");
     expect(cloud.getAttribute("aria-current")).toBe("true");
     expect(
       getByRole("navigation", { name: "Cloud services topics" }),
@@ -86,10 +86,12 @@ describe("application routing", () => {
     expect(container.querySelectorAll("nav")).toHaveLength(2);
     fireEvent.click(cloud);
     expect(getByRole("heading", { level: 1 }).textContent).toBe(
-      "Managed databases",
+      "Common combinations",
     );
     expect(
-      getByRole("link", { name: "Databases" }).getAttribute("aria-current"),
+      getByRole("link", { name: "Common combinations" }).getAttribute(
+        "aria-current",
+      ),
     ).toBe("page");
     expect(getByRole("navigation", { name: "Categories" }).textContent).toBe(
       "Cloud servicesSelf-hosted services",

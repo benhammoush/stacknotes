@@ -94,11 +94,15 @@ export default function App() {
         ))}
       </nav>
       <Routes>
-        <Route path={combinationsTopic.path} element={<CombinationsPage />} />
+        <Route
+          path={combinationsTopic.path}
+          element={<CombinationsPage key={combinationsTopic.path} />}
+        />
         <Route
           path={selfHostedCombinationsTopic.path}
           element={
             <CombinationsPage
+              key={selfHostedCombinationsTopic.path}
               combinations={selfHostedCombinations}
               roles={selfHostedRoles}
               selfHosted
