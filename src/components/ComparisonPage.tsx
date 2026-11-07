@@ -2,7 +2,7 @@
  * Renders shared comparison tables with local disclosure state and native explanations.
  * @packageDocumentation
  */
-import { useRef, useState } from "react";
+import { type CSSProperties, useRef, useState } from "react";
 import type { Category } from "../data/categories";
 import { differences } from "../utils/comparison";
 
@@ -20,7 +20,7 @@ export default function ComparisonPage(props: ComparisonPageProps) {
   const { category } = props;
   const { data } = category;
   const [expanded, setExpanded] = useState(false);
-  const [compact, setCompact] = useState(false);
+  const [compact, setCompact] = useState(true);
   const scroll = useRef<HTMLDivElement>(null);
 
   return (
@@ -96,7 +96,11 @@ export default function ComparisonPage(props: ComparisonPageProps) {
           aria-describedby="table-help"
           tabIndex={0}
         >
-          <table>
+          <table
+            style={
+              { "--provider-count": data.providers.length } as CSSProperties
+            }
+          >
             <caption className="sr-only">
               {category.path === "/"
                 ? "Managed database providers"
@@ -246,9 +250,10 @@ export default function ComparisonPage(props: ComparisonPageProps) {
                 PostgreSQL examples.
               </p>
               <p className="provenance">
-                Based on the November 2026 PDF; technical claims have not been
-                independently revalidated. Wording has been simplified. Check
-                provider documentation.
+                The original eight products are based on the November 2026 PDF;
+                their technical claims have not been independently revalidated.
+                DynamoDB and Firestore were added from official documentation.
+                Wording has been simplified. Check provider documentation.
               </p>
             </>
           ) : (

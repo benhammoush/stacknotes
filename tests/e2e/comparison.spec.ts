@@ -10,7 +10,7 @@ test("reads the complete table and opens a keyboard explanation", async ({
   await page.goto("/");
   await expect(page.locator("#root")).toBeVisible();
   const logos = page.locator("thead img.provider-logo");
-  await expect(logos).toHaveCount(8);
+  await expect(logos).toHaveCount(10);
   for (const logo of await logos.all()) {
     await expect
       .poll(() =>
@@ -21,12 +21,12 @@ test("reads the complete table and opens a keyboard explanation", async ({
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Managed databases",
   );
-  await expect(page.getByRole("columnheader")).toHaveCount(9);
+  await expect(page.getByRole("columnheader")).toHaveCount(11);
   await page
     .getByRole("button", { name: "Who handles what", exact: true })
     .click();
   await expect(page.getByRole("rowheader")).toHaveCount(17);
-  await expect(page.getByRole("cell")).toHaveCount(120);
+  await expect(page.getByRole("cell")).toHaveCount(150);
   await expect(page.getByRole("link", { name: "D1" })).toHaveAttribute(
     "href",
     "https://developers.cloudflare.com/d1/",
@@ -75,20 +75,28 @@ for (const width of [360, 768, 1440]) {
     const region = page.getByRole("region", {
       name: "Managed database comparison",
     });
+    await region.scrollIntoViewIfNeeded();
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,
       ),
     ).toBe(true);
-    await region.focus();
-    await page.keyboard.press("ArrowRight");
-    await expect
-      .poll(async () => region.evaluate((element) => element.scrollLeft))
-      .toBeGreaterThan(0);
+    const hasOverflow = await region.evaluate(
+      (element) => element.scrollWidth > element.clientWidth,
+    );
+    if (hasOverflow) {
+      await region.focus();
+      await page.keyboard.press("ArrowRight");
+      await expect
+        .poll(async () => region.evaluate((element) => element.scrollLeft))
+        .toBeGreaterThan(0);
+    }
     await region.evaluate((element) => {
       element.scrollLeft = element.scrollWidth;
     });
-    await expect(page.getByRole("link", { name: "Atlas" })).toBeInViewport();
+    await expect(
+      page.getByRole("link", { name: "D1", exact: true }),
+    ).toBeInViewport();
     await expect(
       page.getByRole("button", {
         name: "Who handles what",
@@ -107,6 +115,44 @@ for (const width of [360, 768, 1440]) {
     expect(panel).not.toBeNull();
     expect(panel!.x).toBeGreaterThanOrEqual(0);
     expect(panel!.x + panel!.width).toBeLessThanOrEqual(width);
+  });
+}
+
+for (const width of [390, 1440, 1920]) {
+  test(`keeps the real ten-product table readable at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const table = page.locator("table");
+    await expect(page.getByRole("columnheader")).toHaveCount(11);
+    expect(
+      await table.evaluate((element) => element.getBoundingClientRect().width),
+    ).toBeGreaterThanOrEqual(1688);
+    expect(
+      await table.evaluate((element) =>
+        parseFloat(getComputedStyle(element).fontSize),
+      ),
+    ).toBeGreaterThanOrEqual(14);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await page.getByLabel("Jump to").selectOption("9");
+    await expect(page.locator("#provider-9")).toBeInViewport();
+    await expect(
+      page.getByRole("columnheader", { name: "Characteristic" }),
+    ).toBeInViewport();
+    const compact = page.getByRole("button", { name: "Compact view" });
+    await expect(compact).toHaveAttribute("aria-pressed", "true");
+    const compactWidth = await table.evaluate(
+      (element) => element.getBoundingClientRect().width,
+    );
+    await compact.click();
+    expect(
+      await table.evaluate((element) => element.getBoundingClientRect().width),
+    ).toBeGreaterThan(compactWidth);
   });
 }
 
@@ -142,16 +188,16 @@ test("expands and collapses the entire technical section by keyboard", async ({
   });
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
   await expect(page.locator("#technical-rows")).toBeHidden();
-  await expect(page.getByRole("cell")).toHaveCount(32);
+  await expect(page.getByRole("cell")).toHaveCount(40);
   await toggle.focus();
   await page.keyboard.press("Enter");
   await expect(toggle).toHaveAttribute("aria-expanded", "true");
   await expect(page.locator("#technical-rows")).toBeVisible();
-  await expect(page.getByRole("cell")).toHaveCount(120);
+  await expect(page.getByRole("cell")).toHaveCount(150);
   await expect(page.locator("#technical-rows > tr")).toHaveCount(11);
   await page.keyboard.press("Space");
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
   await expect(page.locator("#technical-rows")).toBeHidden();
-  await expect(page.getByRole("cell")).toHaveCount(32);
+  await expect(page.getByRole("cell")).toHaveCount(40);
   await expect(toggle).toBeFocused();
 });

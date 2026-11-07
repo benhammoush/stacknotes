@@ -1,22 +1,29 @@
 {
   "providers": [
     {
-      "name": "D1",
-      "company": "Cloudflare",
-      "logo": "/providers/cloudflare.svg",
-      "url": "https://developers.cloudflare.com/d1/"
-    },
-    {
       "name": "RDS",
       "company": "AWS",
       "logo": "/providers/aws.svg",
       "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html"
     },
     {
-      "name": "Aurora",
+      "name": "DynamoDB",
       "company": "AWS",
       "logo": "/providers/aws.svg",
-      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html"
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+      "pricing": "https://aws.amazon.com/dynamodb/pricing/"
+    },
+    {
+      "name": "Atlas",
+      "company": "MongoDB",
+      "logo": "/providers/mongodb.svg",
+      "url": "https://www.mongodb.com/docs/atlas/"
+    },
+    {
+      "name": "Azure SQL",
+      "company": "Microsoft",
+      "logo": "/providers/microsoft.svg",
+      "url": "https://learn.microsoft.com/en-us/azure/azure-sql/database/"
     },
     {
       "name": "Cloud SQL",
@@ -25,10 +32,18 @@
       "url": "https://cloud.google.com/sql/docs"
     },
     {
-      "name": "Azure SQL",
-      "company": "Microsoft",
-      "logo": "/providers/microsoft.svg",
-      "url": "https://learn.microsoft.com/en-us/azure/azure-sql/database/"
+      "name": "Aurora",
+      "company": "AWS",
+      "logo": "/providers/aws.svg",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html"
+    },
+    {
+      "name": "Firestore",
+      "company": "Google",
+      "logo": "/providers/firebase.svg",
+      "url": "https://firebase.google.com/docs/firestore",
+      "pricing": "https://firebase.google.com/docs/firestore/pricing",
+      "caveat": "Standard edition"
     },
     {
       "name": "Supabase",
@@ -43,63 +58,71 @@
       "url": "https://neon.com/docs"
     },
     {
-      "name": "Atlas",
-      "company": "MongoDB",
-      "logo": "/providers/mongodb.svg",
-      "url": "https://www.mongodb.com/docs/atlas/"
+      "name": "D1",
+      "company": "Cloudflare",
+      "logo": "/providers/cloudflare.svg",
+      "url": "https://developers.cloudflare.com/d1/"
     }
   ],
   "overview": [
     {
       "label": "Primary purpose",
       "values": [
-        "Store data in tables and query it directly from Cloudflare Workers",
         "Use MySQL, PostgreSQL or other supported database systems without managing their servers on AWS",
-        "Store data in an AWS-built database compatible with MySQL or PostgreSQL",
-        "Use MySQL, PostgreSQL or SQL Server without managing their servers on Google Cloud",
+        "Store data as named records or documents in an AWS-managed database that grows with demand",
+        "Store data as flexible documents in a managed MongoDB database",
         "Use a SQL Server-based database without managing its servers on Azure",
+        "Use MySQL, PostgreSQL or SQL Server without managing their servers on Google Cloud",
+        "Store data in an AWS-built database compatible with MySQL or PostgreSQL",
+        "Store documents and keep data in sync across devices using Firebase and Google Cloud tools",
         "Store data in PostgreSQL, with connected sign-in, file storage and data access tools",
         "Use PostgreSQL with adjustable processing capacity and separate database copies for development",
-        "Store data as flexible documents in a managed MongoDB database"
+        "Store data in tables and query it directly from Cloudflare Workers"
       ]
     },
     {
       "label": "Strengths",
       "values": [
-        "Direct connection from Workers; usage-based billing",
         "Many settings and familiar database software",
-        "Storage spread across machines; several processing options",
-        "Google Cloud tools and familiar database software",
+        "Automatic storage growth and connections to AWS tools",
+        "Flexible data structure and search tools",
         "Azure tools and built-in local failure recovery",
+        "Google Cloud tools and familiar database software",
+        "Storage spread across machines; several processing options",
+        "Live data updates, offline support and Firebase access rules",
         "Database, sign-in and file tools together",
         "Separate development copies and adjustable processing capacity",
-        "Flexible data structure and search tools"
+        "Direct connection from Workers; usage-based billing"
       ]
     },
     {
       "label": "Limitations",
       "values": [
-        "Limited size per database; each database processes queries one at a time",
+        "More setup; you pay for allocated server capacity",
+        "Queries depend on record keys and indexes; no joins between tables",
+        "Document data differs from tables; search indexes and data distribution need planning",
+        "Several pricing levels; designed around SQL Server",
         "More setup; you pay for allocated server capacity",
         "AWS-specific features and several billing factors",
-        "More setup; you pay for allocated server capacity",
-        "Several pricing levels; designed around SQL Server",
+        "Document structure, indexes and repeated reads affect limits and costs",
         "Moving platform-specific features takes work; extras cost more",
         "May take time to wake after inactivity; plan limits apply",
-        "Document data differs from tables; search indexes and data distribution need planning"
+        "Limited size per database; each database processes queries one at a time"
       ]
     },
     {
       "label": "How billing works",
       "values": [
-        "Rows read or written and data storage",
+        "Database server and usage",
+        "Reads, writes, storage and optional features; capacity mode matters",
+        "Pricing level and usage",
+        "Pricing level and usage",
         "Database server and usage",
         "Processing capacity and usage",
-        "Database server and usage",
-        "Pricing level and usage",
+        "Document and index reads, writes, storage and data transfer",
         "Plan and usage",
         "Usage",
-        "Pricing level and usage"
+        "Rows read or written and data storage"
       ]
     }
   ],
@@ -108,11 +131,13 @@
       "label": "Maintenance",
       "explanation": "Keeping database software and its servers updated. The provider handles routine work, but you may still need to choose maintenance times or plan upgrades to a new major software version.",
       "values": [
+        ["Auto", "Plan major software upgrades"],
+        ["Auto", "Provider handles software updates"],
         ["Auto", ""],
-        ["Auto", "Plan major software upgrades"],
-        ["Auto", "Plan major software upgrades"],
+        ["Auto", ""],
         ["Auto", "Choose maintenance times"],
-        ["Auto", ""],
+        ["Auto", "Plan major software upgrades"],
+        ["Auto", "Provider handles software updates"],
         ["Auto", "Plan major software upgrades"],
         ["Auto", ""],
         ["Auto", ""]
@@ -120,142 +145,162 @@
     },
     {
       "label": "Connection pooling",
-      "explanation": "Connection pooling means reusing database connections instead of opening a new one for every request. You usually configure this in your app or use a connection-sharing tool. D1 connects directly to Worker code without a traditional pool. Supavisor and PgBouncer are connection-pooling tools.",
+      "explanation": "Connection pooling means reusing database connections instead of opening a new one for every request. You usually configure this in your app or use a connection-sharing tool. D1 connects directly to Worker code. DynamoDB and Firestore Standard use request-based connections rather than traditional database pools. Supavisor and PgBouncer are connection-pooling tools.",
       "values": [
-        ["Auto", "Direct Worker connection; no pool"],
         ["Manual", "Configure the app or RDS Proxy"],
-        ["Manual", "Configure the app or RDS Proxy"],
-        ["Manual", "Configure the app or a supported pooling tool"],
+        ["Auto", "Request-based connection; no database pool"],
+        ["Manual", "Configure pooling in the database library"],
         ["Manual", "Configure pooling in the app"],
+        ["Manual", "Configure the app or a supported pooling tool"],
+        ["Manual", "Configure the app or RDS Proxy"],
+        ["Auto", "Request-based connection; no database pool"],
         ["Manual", "Configure Supavisor"],
         ["Manual", "Configure PgBouncer"],
-        ["Manual", "Configure pooling in the database library"]
+        ["Auto", "Direct Worker connection; no pool"]
       ]
     },
     {
       "label": "Simultaneous requests",
       "explanation": "Handling requests that arrive at the same time. A provider-run database still limits connections, simultaneous work and processing speed. D1 processes queries one at a time within each database copy.",
       "values": [
-        ["Auto", "One query at a time per database copy"],
+        ["Auto", "Several at once, within limits"],
+        ["Auto", "Several at once, within capacity limits"],
         ["Auto", "Several at once, within limits"],
         ["Auto", "Several at once, within limits"],
         ["Auto", "Several at once, within limits"],
         ["Auto", "Several at once, within limits"],
         ["Auto", "Several at once, within limits"],
         ["Auto", "Several at once, within limits"],
-        ["Auto", "Several at once, within limits"]
+        ["Auto", "Several at once, within limits"],
+        ["Auto", "One query at a time per database copy"]
       ]
     },
     {
       "label": "Backups and recovery history",
       "explanation": "Backups keep copies that can be restored. Point-in-time recovery lets you return data to a chosen moment within the saved history. Available features, history length and charges depend on the plan. Having backups does not prove that recovery will be fast or complete enough for your app.",
       "values": [
-        ["Auto", "7 days on Free; 30 days on Paid"],
         ["Manual", "Enable and choose how long to keep backups"],
-        ["Auto", "Choose how long to keep recovery history"],
-        ["Manual", "Set backups and point-in-time recovery"],
+        ["Manual", "Enable backups and point-in-time recovery"],
+        ["Manual", "Choose pricing level and backup rules"],
         ["Auto", "Depends on pricing level"],
+        ["Manual", "Set backups and point-in-time recovery"],
+        ["Auto", "Choose how long to keep recovery history"],
+        ["Manual", "Enable paid backup schedules and recovery history"],
         ["Manual", "Paid backups; point-in-time recovery costs extra"],
         ["Manual", "Choose how much recovery history to keep"],
-        ["Manual", "Choose pricing level and backup rules"]
+        ["Auto", "7 days on Free; 30 days on Paid"]
       ]
     },
     {
       "label": "Restoring data",
       "explanation": "Recovering data from a backup or saved history. You choose the recovery point, start the restore and check the result. Some products create a new database server or group of servers, so you may need to reconnect your app after recovery.",
       "values": [
-        ["Manual", "Use Time Travel on the existing database"],
         ["Manual", "Restore to a new database server"],
-        ["Manual", "Restore to a new database group"],
-        ["Manual", "Choose the backup or recovery destination"],
+        ["Manual", "Restore to a new table"],
+        ["Manual", "Choose the database group to restore to"],
         ["Manual", "Restore to a new database"],
+        ["Manual", "Choose the backup or recovery destination"],
+        ["Manual", "Restore to a new database group"],
+        ["Manual", "Restore or copy recovery history to a new database"],
         ["Manual", "Start recovery in the dashboard or through code"],
         ["Manual", "Restore or create a separate database copy"],
-        ["Manual", "Choose the database group to restore to"]
+        ["Manual", "Use Time Travel on the existing database"]
       ]
     },
     {
       "label": "Processing capacity",
       "explanation": "Changing how much processing power the database has. Manual includes enabling automatic capacity changes and setting their limits: after setup, those changes can happen automatically. D1 does not offer a database server-size setting.",
       "values": [
-        ["Excluded", "Usage limits; no server-size setting"],
         ["Manual", "Choose server capacity"],
-        ["Manual", "Choose capacity or Serverless v2 settings"],
-        ["Manual", "Choose server capacity"],
+        ["Manual", "Choose usage-based or allocated request capacity"],
+        ["Manual", "Set automatic capacity limits"],
         ["Manual", "Choose pricing level or automatic capacity settings"],
         ["Manual", "Choose server capacity"],
+        ["Manual", "Choose capacity or Serverless v2 settings"],
+        ["Auto", "Provider adjusts capacity within usage limits"],
+        ["Manual", "Choose server capacity"],
         ["Manual", "Set automatic capacity limits"],
-        ["Manual", "Set automatic capacity limits"]
+        ["Excluded", "Usage limits; no server-size setting"]
       ]
     },
     {
       "label": "Storage growth",
       "explanation": "Increasing the room available for data. Some products grow storage automatically within limits; others require settings or a plan change. At a database's size limit you may need to split data across several databases.",
       "values": [
-        ["Manual", "Split data across databases at the size limit"],
         ["Manual", "Choose storage size or automatic growth"],
-        ["Auto", "Within limits"],
-        ["Manual", "Enable automatic storage growth"],
+        ["Auto", "Storage grows with records"],
+        ["Manual", "Configure automatic storage growth"],
         ["Manual", "Choose pricing level and maximum size"],
+        ["Manual", "Enable automatic storage growth"],
+        ["Auto", "Within limits"],
+        ["Auto", "Storage grows with documents"],
         ["Manual", "Choose disk size and plan"],
         ["Auto", "Within plan limits"],
-        ["Manual", "Configure automatic storage growth"]
+        ["Manual", "Split data across databases at the size limit"]
       ]
     },
     {
       "label": "Read-only copies",
       "explanation": "Read replicas are database copies used to answer read requests. You may need to create them and direct reads to them. Copies can be behind the latest writes, so choose how up-to-date reads must be. A read-only copy is not a historical backup.",
       "values": [
-        ["Manual", "Enable copies and use the Sessions connection tools"],
+        ["Manual", "Add read-only copies"],
+        ["Excluded", "No conventional read-only copies; caching is separate"],
+        ["Manual", "Choose which database copies answer reads"],
+        ["Manual", "Choose pricing level and location options"],
         ["Manual", "Add read-only copies"],
         ["Manual", "Add read-only database servers"],
-        ["Manual", "Add read-only copies"],
-        ["Manual", "Choose pricing level and location options"],
+        ["Excluded", "Provider manages copies; no separate read-only servers"],
         ["Manual", "Available on paid plans"],
         ["Manual", "Add processing capacity for reads"],
-        ["Manual", "Choose which database copies answer reads"]
+        ["Manual", "Enable copies and use the Sessions connection tools"]
       ]
     },
     {
       "label": "Staying online after failures",
       "explanation": "High availability means reducing downtime when machines fail. Failover means switching to a working replacement. Recovery on one site, across separate sites and across regions offers different protection. Check the service and plan: Auto does not mean there can be no downtime.",
       "values": [
-        ["Auto", "Provider handles recovery"],
         ["Manual", "Enable copies across separate AWS sites"],
-        ["Manual", "Storage is copied; add replacement database servers"],
-        ["Manual", "Enable recovery across sites in the same region"],
+        ["Auto", "Copies across AWS sites; configure extra regions separately"],
+        ["Auto", "A database copy is chosen as the replacement"],
         ["Auto", "Configure protection across sites or regions"],
+        ["Manual", "Enable recovery across sites in the same region"],
+        ["Manual", "Storage is copied; add replacement database servers"],
+        ["Auto", "Provider manages copies within the chosen location"],
         ["Manual", "Check the plan's failure protection"],
         ["Auto", "Provider handles service recovery"],
-        ["Auto", "A database copy is chosen as the replacement"]
+        ["Auto", "Provider handles recovery"]
       ]
     },
     {
       "label": "Long-term backups",
       "explanation": "Keeping recoverable data beyond the normal backup or recovery-history period. Choose how long to keep copies, where exported files go and who can access them, then test recovery. Storing exports may require separate storage and tools.",
       "values": [
-        ["Excluded", "Export data to separate storage"],
         ["Manual", "Keep full database copies called snapshots"],
-        ["Manual", "Keep full database copies called snapshots"],
-        ["Manual", "Choose how long to keep backups or exports"],
+        ["Manual", "Keep on-demand backups or use AWS Backup"],
+        ["Manual", "Set backup rules or keep exports"],
         ["Manual", "Choose how long to keep backups"],
+        ["Manual", "Choose how long to keep backups or exports"],
+        ["Manual", "Keep full database copies called snapshots"],
+        ["Manual", "Keep scheduled backups or export to separate storage"],
         ["Manual", "Retain exports"],
         ["Manual", "Retain exports"],
-        ["Manual", "Set backup rules or keep exports"]
+        ["Excluded", "Export data to separate storage"]
       ]
     },
     {
       "label": "Monitoring and alerts",
       "explanation": "Watching database health, usage and failures. Providers supply measurements, but you choose which values need attention, who receives alerts and how to respond. Collecting measurements alone does not notify anyone or fix a problem.",
       "values": [
-        ["Manual", "Set health measurements and alerts"],
         ["Manual", "CloudWatch"],
+        ["Manual", "CloudWatch"],
+        ["Manual", "Atlas alerts"],
+        ["Manual", "Azure Monitor"],
+        ["Manual", "Cloud Monitoring"],
         ["Manual", "CloudWatch"],
         ["Manual", "Cloud Monitoring"],
-        ["Manual", "Azure Monitor"],
         ["Manual", "Set health measurements and alerts"],
         ["Manual", "Set health measurements and alerts"],
-        ["Manual", "Atlas alerts"]
+        ["Manual", "Set health measurements and alerts"]
       ]
     }
   ]

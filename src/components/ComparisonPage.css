@@ -30,6 +30,8 @@
   margin: 0;
 }
 .table-scroll {
+  --label-width: 210px;
+  --provider-width: 210px;
   overflow: auto;
   position: relative;
   max-height: 76vh;
@@ -41,7 +43,9 @@ table {
   border-spacing: 0;
   table-layout: fixed;
   width: 100%;
-  min-width: 1880px;
+  min-width: calc(
+    var(--label-width) + var(--provider-count) * var(--provider-width)
+  );
   font-size: 0.875rem;
 }
 th,
@@ -96,7 +100,7 @@ thead a:hover {
   flex-shrink: 0;
 }
 tr > :first-child {
-  width: 210px;
+  width: var(--label-width);
   position: sticky;
   left: 0;
   background: var(--surface);
@@ -236,11 +240,9 @@ h2 {
     gap: 0.6rem;
     flex-direction: column;
   }
-  table {
-    min-width: 1710px;
-  }
-  tr > :first-child {
-    width: 180px;
+  .table-scroll {
+    --label-width: 180px;
+    --provider-width: 190px;
   }
   th,
   td {
@@ -313,23 +315,29 @@ tbody tr:nth-child(even) td.different {
   color: var(--accent);
   font-size: 0.75rem;
 }
-.provider-logo[src$="sentry.svg"] {
+.provider-logo[src$="sentry.svg"],
+.provider-logo[src$="heroku.svg"] {
   background: #eeeeee;
   border-radius: 4px;
   padding: 3px;
 }
-.compact table {
-  min-width: 1580px;
+.compact {
+  --label-width: 128px;
+  --provider-width: 156px;
 }
 .compact th,
 .compact td {
-  padding: 0.65rem;
-}
-.compact tr > :first-child {
-  width: 180px;
+  padding: 0.5rem;
 }
 .compact .provider-heading {
   gap: 0.5rem;
+}
+.compact .provider-logo {
+  width: 24px;
+  height: 24px;
+}
+.compact .provider-heading > div {
+  min-width: 0;
 }
 .sources summary {
   cursor: pointer;

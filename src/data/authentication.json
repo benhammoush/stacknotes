@@ -1,13 +1,6 @@
 {
   "providers": [
     {
-      "name": "Clerk",
-      "company": "Clerk",
-      "logo": "/providers/clerk.svg",
-      "url": "https://clerk.com/docs",
-      "pricing": "https://clerk.com/pricing"
-    },
-    {
       "name": "Auth0",
       "company": "Okta",
       "logo": "/providers/auth0.svg",
@@ -22,6 +15,28 @@
       "pricing": "https://firebase.google.com/pricing"
     },
     {
+      "name": "Cognito",
+      "company": "AWS",
+      "logo": "/providers/aws.svg",
+      "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html",
+      "pricing": "https://aws.amazon.com/cognito/pricing/"
+    },
+    {
+      "name": "Entra External ID",
+      "company": "Microsoft",
+      "logo": "/providers/microsoft.svg",
+      "url": "https://learn.microsoft.com/en-us/entra/external-id/customers/overview-customers-ciam",
+      "pricing": "https://learn.microsoft.com/en-us/entra/external-id/external-identities-pricing",
+      "caveat": "Customer sign-in offering"
+    },
+    {
+      "name": "Clerk",
+      "company": "Clerk",
+      "logo": "/providers/clerk.svg",
+      "url": "https://clerk.com/docs",
+      "pricing": "https://clerk.com/pricing"
+    },
+    {
       "name": "Supabase Auth",
       "company": "Supabase",
       "logo": "/providers/supabase.svg",
@@ -29,11 +44,12 @@
       "pricing": "https://supabase.com/pricing"
     },
     {
-      "name": "Cognito",
-      "company": "AWS",
-      "logo": "/providers/aws.svg",
-      "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html",
-      "pricing": "https://aws.amazon.com/cognito/pricing/"
+      "name": "FusionAuth Cloud",
+      "company": "FusionAuth",
+      "logo": "/providers/fusionauth.png",
+      "url": "https://fusionauth.io/docs/cloud",
+      "pricing": "https://fusionauth.io/pricing",
+      "caveat": "Provider-hosted offering"
     },
     {
       "name": "AuthKit",
@@ -61,11 +77,13 @@
     {
       "label": "Primary purpose",
       "values": [
-        "Add sign-in and account management to web apps with ready-made screens and code libraries",
         "Manage sign-in across apps and connect users' existing accounts",
         "Add sign-in to web and mobile apps with Firebase code libraries",
-        "Add sign-in and use each user's identity to control access to PostgreSQL data",
         "Manage app sign-in and connect existing accounts using AWS tools",
+        "Add customer sign-in and account management using Microsoft's hosted identity tools",
+        "Add sign-in and account management to web apps with ready-made screens and code libraries",
+        "Add sign-in and use each user's identity to control access to PostgreSQL data",
+        "Run a customizable sign-in system on dedicated hosting managed by FusionAuth",
         "Add sign-in and account management to apps used by businesses",
         "Build sign-in for consumer or business apps using code libraries and service connections",
         "Design sign-in steps visually and add the resulting screens to your app"
@@ -74,11 +92,13 @@
     {
       "label": "Strengths",
       "values": [
-        "Ready-made sign-in and account screens",
         "Many account connections and sign-in settings",
         "Works with Firebase app tools",
-        "User identities connect to database access rules",
         "Connects to AWS permissions and existing accounts",
+        "Microsoft account tools and customizable customer sign-in screens",
+        "Ready-made sign-in and account screens",
+        "User identities connect to database access rules",
+        "Dedicated hosting and detailed control over sign-in behavior",
         "Connects sign-in to company accounts and employee directories",
         "Code-based setup and tools for business accounts",
         "Visual sign-in editor and ready-made screens"
@@ -87,11 +107,13 @@
     {
       "label": "Limitations",
       "values": [
-        "Depends on Clerk libraries and screens; extras are billed separately",
         "Plan choices and separate customer-account settings can be complex",
         "Methods and limits differ between Firebase Auth and Identity Platform",
-        "You design database access rules, email delivery and app permissions",
         "You configure user groups, sign-in credentials and AWS permissions",
+        "Customer directories differ from employee accounts; feature and method limits apply",
+        "Depends on Clerk libraries and screens; extras are billed separately",
+        "You design database access rules, email delivery and app permissions",
+        "You choose hosting capacity and paid features; self-hosting is a separate option",
         "Sign-in, company-account connections and directory tools are billed differently",
         "You choose a consumer or business account model and connect it to the app",
         "You configure sign-in steps and work within plan limits"
@@ -100,11 +122,13 @@
     {
       "label": "How billing works",
       "values": [
-        "Plan, returning users and extras",
         "Plan, active users and features",
         "Depends on sign-in method; text messages and Identity Platform usage can cost extra",
-        "Plan, active users, company sign-in connections and extras",
         "Pricing level, active users and extra features",
+        "Monthly active users and optional features; text messages can cost extra",
+        "Plan, returning users and extras",
+        "Plan, active users, company sign-in connections and extras",
+        "Hosting capacity, plan features and active users; packaging depends on plan",
         "AuthKit users; company sign-in and directory connections billed separately",
         "Active users, account connections and usage",
         "Plan, users, separate customer accounts and usage"
@@ -118,9 +142,11 @@
       "values": [
         ["Auto", "Provider runs sign-in"],
         ["Auto", "Provider runs sign-in"],
-        ["Auto", "Provider runs sign-in"],
-        ["Auto", "Provider runs sign-in"],
         ["Auto", "Provider manages the user directory"],
+        ["Auto", "Microsoft runs customer sign-in"],
+        ["Auto", "Provider runs sign-in"],
+        ["Auto", "Provider runs sign-in"],
+        ["Auto", "FusionAuth manages dedicated hosting"],
         ["Auto", "Provider runs AuthKit"],
         ["Auto", "Provider runs sign-in"],
         ["Auto", "Provider runs sign-in"]
@@ -130,11 +156,16 @@
       "label": "Sign-in setup",
       "explanation": "Choose how users sign in, connect any external accounts and set where users return after sign-in. Build screens that work with keyboards and assistive tools. Available methods and charges vary by plan.",
       "values": [
-        ["Manual", "Choose methods and sign-in screens"],
         ["Manual", "Connect accounts and configure sign-in"],
         ["Manual", "Choose account providers and screens"],
-        ["Manual", "Connect accounts and set return addresses"],
         ["Manual", "Configure the user directory and app connection"],
+        [
+          "Manual",
+          "Set up a customer directory, app connection and sign-in steps"
+        ],
+        ["Manual", "Choose methods and sign-in screens"],
+        ["Manual", "Connect accounts and set return addresses"],
+        ["Manual", "Configure sign-in methods, screens and app connections"],
         ["Manual", "Choose methods and AuthKit screens"],
         ["Manual", "Connect the project, code library and screens"],
         ["Manual", "Design sign-in steps and connect the code library"]
@@ -144,11 +175,13 @@
       "label": "Staying signed in",
       "explanation": "A session is the period during which an app remembers a signed-in user. You choose its duration, protect browser cookies, check whether access was cancelled and decide when sensitive actions require another sign-in. Provider tools do not choose these rules for you.",
       "values": [
-        ["Manual", "Set session rules and server checks"],
         ["Manual", "Set credential and session rules"],
         ["Manual", "Choose sign-in duration and check cancelled access"],
-        ["Manual", "Set session and credential-renewal rules"],
         ["Manual", "Set credential and app rules"],
+        ["Manual", "Set sign-in duration, credential rules and server checks"],
+        ["Manual", "Set session rules and server checks"],
+        ["Manual", "Set session and credential-renewal rules"],
+        ["Manual", "Set session duration, renewal and cancellation rules"],
         ["Manual", "Set session rules and server checks"],
         ["Manual", "Set session rules and server checks"],
         ["Manual", "Set sign-in steps and session rules"]
@@ -159,10 +192,12 @@
       "explanation": "Sign-in tells your app who a user is. Access rules decide what that user can see or change; this is authorization. Your app still checks access to records, customer accounts and actions, even if the provider offers user roles and permission tools.",
       "values": [
         ["Manual", "Add app access checks and user roles"],
-        ["Manual", "Add app access checks and user roles"],
         ["Manual", "Add app checks and Firebase Security Rules"],
-        ["Manual", "Add app checks and database row-access rules"],
         ["Manual", "Add app checks and AWS permission rules"],
+        ["Manual", "Add app access checks and customer roles"],
+        ["Manual", "Add app access checks and user roles"],
+        ["Manual", "Add app checks and database row-access rules"],
+        ["Manual", "Add app access checks and user roles"],
         ["Manual", "Add app access checks and user roles"],
         ["Manual", "Add app access checks and user roles"],
         ["Manual", "Add app access checks and user roles"]
@@ -173,10 +208,15 @@
       "explanation": "This row concerns the database for your app's records, not the provider's list of users. Firebase Auth and Cognito do not include their providers' separate database products.",
       "values": [
         ["Excluded", "Connect your database"],
+        ["Excluded", "Use a separate database product"],
+        ["Excluded", "Use a separate database product"],
         ["Excluded", "Connect your database"],
-        ["Excluded", "Use a separate database product"],
+        ["Excluded", "Connect your database"],
         ["Manual", "Configure the project's PostgreSQL database"],
-        ["Excluded", "Use a separate database product"],
+        [
+          "Excluded",
+          "Connect your database; hosted storage is for sign-in records"
+        ],
         ["Excluded", "Connect your database"],
         ["Excluded", "Connect your database"],
         ["Excluded", "Connect your database"]
@@ -187,10 +227,12 @@
       "explanation": "Set up account recovery and additional sign-in checks. Multi-factor authentication uses at least two different kinds of proof, such as a password and a code from your phone. Availability depends on method and plan. Test lost devices, undelivered codes and repeat sign-in rather than assuming an enabled feature proves safety.",
       "values": [
         ["Manual", "Choose methods and recovery rules"],
-        ["Manual", "Choose methods and recovery rules"],
         ["Manual", "Choose methods and the required pricing level"],
-        ["Manual", "Choose methods and configure message delivery"],
         ["Manual", "Set user-directory and sign-in rules"],
+        ["Manual", "Choose supported methods and customer sign-in policies"],
+        ["Manual", "Choose methods and recovery rules"],
+        ["Manual", "Choose methods and configure message delivery"],
+        ["Manual", "Choose recovery methods and plan-supported extra checks"],
         ["Manual", "Choose methods and recovery rules"],
         ["Manual", "Choose methods and recovery rules"],
         ["Manual", "Design recovery steps and rules"]
@@ -200,6 +242,8 @@
       "label": "Deleting and exporting accounts",
       "explanation": "Deleting a user account does not automatically remove all related app records, uploaded files, external accounts or saved backups. Coordinate the cleanup and check it. When exporting an account, decide which related app data must be included too.",
       "values": [
+        ["Manual", "Coordinate account and app-data cleanup"],
+        ["Manual", "Coordinate account and app-data cleanup"],
         ["Manual", "Coordinate account and app-data cleanup"],
         ["Manual", "Coordinate account and app-data cleanup"],
         ["Manual", "Coordinate account and app-data cleanup"],

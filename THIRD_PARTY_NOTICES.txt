@@ -9,6 +9,7 @@ aws.svg = aws_dark.svg; mongodb.svg = mongodb-icon-dark.svg.
 Additional local mappings: vercel = vercel_dark; render = render_white;
 railway = railway_dark; clerk = clerk-icon-dark; inngest = inngest-dark;
 axiom = axiom-dark (all .svg). Other SVGL filenames match upstream.
+heroku.svg and ibm.svg were added from the same pinned source on November 7, 2026.
 
 InterVariable.woff2 is the unmodified Inter v4.1 variable font from
 https://raw.githubusercontent.com/rsms/inter/v4.1/docs/font-files/InterVariable.woff2
@@ -26,6 +27,10 @@ betterstack.png: https://betterstack.com/assets/favicon-64296699.png
 newrelic.png: https://newrelic.com/themes/custom/erno/assets/images/metadata/favicon-32x32.png
 honeycomb.png: https://www.honeycomb.io/favicon-32x32.png
 elastic.svg: https://www.elastic.co/favicon.svg
+
+Additional official provider images, retrieved November 7, 2026, unchanged:
+fusionauth.png: https://cdn.prod.website-files.com/617b1b1f42c1da41aeae3413/63ed72f489abde69118f4631_favicon.png
+wasabi.png: https://a-us.storyblok.com/f/1019449/1148x270/00676e941d/secondary-logo-knockout-rgb.png
 
 MIT License
 

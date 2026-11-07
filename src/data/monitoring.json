@@ -1,18 +1,18 @@
 {
   "providers": [
     {
-      "name": "Sentry",
-      "company": "Sentry",
-      "logo": "/providers/sentry.svg",
-      "url": "https://docs.sentry.io/",
-      "pricing": "https://sentry.io/pricing/"
+      "name": "CloudWatch",
+      "company": "AWS",
+      "logo": "/providers/aws.svg",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html",
+      "pricing": "https://aws.amazon.com/cloudwatch/pricing/"
     },
     {
-      "name": "Better Stack",
-      "company": "Better Stack",
-      "logo": "/providers/betterstack.png",
-      "url": "https://betterstack.com/docs/",
-      "pricing": "https://betterstack.com/pricing"
+      "name": "Azure Monitor",
+      "company": "Microsoft",
+      "logo": "/providers/microsoft.svg",
+      "url": "https://learn.microsoft.com/en-us/azure/azure-monitor/fundamentals/overview",
+      "pricing": "https://azure.microsoft.com/pricing/details/monitor/"
     },
     {
       "name": "Datadog",
@@ -36,6 +36,27 @@
       "pricing": "https://newrelic.com/pricing"
     },
     {
+      "name": "Sentry",
+      "company": "Sentry",
+      "logo": "/providers/sentry.svg",
+      "url": "https://docs.sentry.io/",
+      "pricing": "https://sentry.io/pricing/"
+    },
+    {
+      "name": "Elastic Cloud",
+      "company": "Elastic",
+      "logo": "/providers/elastic.svg",
+      "url": "https://www.elastic.co/docs/deploy-manage/deploy/elastic-cloud",
+      "pricing": "https://www.elastic.co/pricing/"
+    },
+    {
+      "name": "Better Stack",
+      "company": "Better Stack",
+      "logo": "/providers/betterstack.png",
+      "url": "https://betterstack.com/docs/",
+      "pricing": "https://betterstack.com/pricing"
+    },
+    {
       "name": "Honeycomb",
       "company": "Honeycomb",
       "logo": "/providers/honeycomb.png",
@@ -48,66 +69,67 @@
       "logo": "/providers/axiom.svg",
       "url": "https://axiom.co/docs",
       "pricing": "https://axiom.co/pricing"
-    },
-    {
-      "name": "Elastic Cloud",
-      "company": "Elastic",
-      "logo": "/providers/elastic.svg",
-      "url": "https://www.elastic.co/docs/deploy-manage/deploy/elastic-cloud",
-      "pricing": "https://www.elastic.co/pricing/"
     }
   ],
   "overview": [
     {
       "label": "Primary purpose",
       "values": [
-        "Find and fix app errors and slow code using details captured when problems happen",
-        "Check that apps stay online, collect monitoring data and alert the people who handle problems",
+        "Monitor AWS resources and app health using event records, measurements and alerts",
+        "Monitor Azure resources and app health using connected measurements, event records and request paths",
         "Monitor apps and servers together using a wide range of connected tools",
         "Collect, chart and set alerts on app measurements, event records and request paths using Grafana",
         "Investigate app and server health by collecting and searching monitoring data in one place",
+        "Find and fix app errors and slow code using details captured when problems happen",
+        "Search and analyze event records and request paths using Elastic's hosted tools",
+        "Check that apps stay online, collect monitoring data and alert the people who handle problems",
         "Investigate complex app behavior using detailed events and request paths across connected apps",
-        "Collect, store and search event records to understand app behavior and problems",
-        "Search and analyze event records and request paths using Elastic's hosted tools"
+        "Collect, store and search event records to understand app behavior and problems"
       ]
     },
     {
       "label": "Strengths",
       "values": [
-        "Error investigation with details from the app",
-        "Online checks, monitoring data and problem-response tools together",
+        "Direct connections to AWS resources and account-level monitoring",
+        "Azure connections, Application Insights and shared monitoring workspaces",
         "Many monitoring products and ready-made connections",
         "Grafana charts and support for open monitoring tools",
         "Connected monitoring data and search tools",
+        "Error investigation with details from the app",
+        "Search, event-record analysis and app-monitoring tools",
+        "Online checks, monitoring data and problem-response tools together",
         "Explore detailed events to find unexpected causes",
-        "Group and search monitoring records in data collections",
-        "Search, event-record analysis and app-monitoring tools"
+        "Group and search monitoring records in data collections"
       ]
     },
     {
       "label": "Limitations",
       "values": [
-        "You connect code libraries and manage product usage limits",
-        "You configure each product and how long it keeps data",
+        "Extra data collection, searches, alerts and storage each affect costs",
+        "You choose data-collection rules, workspaces, access and storage duration",
         "Several billing factors and data-collection settings",
         "You configure collection, unique data values and how long to keep records",
         "You choose data limits, team access and processing plans",
+        "You connect code libraries and manage product usage limits",
+        "Hosted and Serverless plans expose different settings",
+        "You configure each product and how long it keeps data",
         "Useful results depend on collecting enough app detail",
-        "You design incoming records, searches and cost controls",
-        "Hosted and Serverless plans expose different settings"
+        "You design incoming records, searches and cost controls"
       ]
     },
     {
       "label": "How billing works",
       "values": [
-        "Plan, recorded events and product usage",
-        "Selected products, response-team members and monitoring-data usage",
+        "Measurements, logs, searches, alerts and selected monitoring features",
+        "Data collection, storage, searches, alerts and selected features",
         "Depends on product: monitored machines, data or other usage",
         "Plan and usage for each type of monitoring data",
         "Data, users and processing options",
+        "Plan, recorded events and product usage",
+        "Allocated server capacity or Serverless usage",
+        "Selected products, response-team members and monitoring-data usage",
         "Plan and volume of events and measurements",
-        "Processing and storage",
-        "Allocated server capacity or Serverless usage"
+        "Processing and storage"
       ]
     }
   ],
@@ -116,45 +138,57 @@
       "label": "Hosted monitoring service",
       "explanation": "The provider runs the monitoring system. You still maintain the software that sends data from your app and servers, check that the data is useful and avoid slowing down your app. Monitoring data is also called telemetry.",
       "values": [
+        ["Auto", "AWS runs monitoring"],
+        ["Auto", "Microsoft runs monitoring"],
         ["Auto", "Provider runs monitoring"],
         ["Auto", "Provider runs monitoring"],
         ["Auto", "Provider runs monitoring"],
         ["Auto", "Provider runs monitoring"],
+        ["Auto", "Provider runs the selected hosting option"],
         ["Auto", "Provider runs monitoring"],
         ["Auto", "Provider runs monitoring"],
-        ["Auto", "Provider runs monitoring"],
-        ["Auto", "Provider runs the selected hosting option"]
+        ["Auto", "Provider runs monitoring"]
       ]
     },
     {
       "label": "Collecting monitoring data",
       "explanation": "Connect code libraries or collection programs to send monitoring data. Logs record events, metrics measure values over time and traces show a request's path through connected apps. Check for missing data and broken connections. Automatic collection still needs setup and testing.",
       "values": [
-        ["Manual", "Connect code libraries and collection tools"],
-        ["Manual", "Connect collection programs and tools"],
+        ["Manual", "Enable AWS data sources and connect collection programs"],
+        [
+          "Manual",
+          "Connect Azure data sources, collection rules and app libraries"
+        ],
         ["Manual", "Connect collection programs and code libraries"],
         ["Manual", "Connect Alloy or other collection libraries and programs"],
         ["Manual", "Connect collection programs and code libraries"],
-        ["Manual", "Connect OpenTelemetry tools or code libraries"],
-        ["Manual", "Connect code libraries or collection programs"],
+        ["Manual", "Connect code libraries and collection tools"],
         [
           "Manual",
           "Connect collection programs, app monitoring or OpenTelemetry tools"
-        ]
+        ],
+        ["Manual", "Connect collection programs and tools"],
+        ["Manual", "Connect OpenTelemetry tools or code libraries"],
+        ["Manual", "Connect code libraries or collection programs"]
       ]
     },
     {
       "label": "Protecting sensitive data",
       "explanation": "Keep secrets and personal data out of monitoring records. Set supported filters and access rules, then test that sensitive values are removed. Provider filtering tools do not replace your own rules about what data may be collected.",
       "values": [
-        ["Manual", "Set sensitive-value removal and code-library filters"],
-        ["Manual", "Filter data before or during collection"],
+        [
+          "Manual",
+          "Filter sensitive records and set log-data protection rules"
+        ],
+        ["Manual", "Filter data in app libraries and collection rules"],
         ["Manual", "Set collection and processing filters"],
         ["Manual", "Set collection and processing filters"],
         ["Manual", "Filter data during collection and import"],
+        ["Manual", "Set sensitive-value removal and code-library filters"],
+        ["Manual", "Filter data during collection and import"],
+        ["Manual", "Filter data before or during collection"],
         ["Manual", "Choose allowed fields and collection rules"],
-        ["Manual", "Filter data before or during import"],
-        ["Manual", "Filter data during collection and import"]
+        ["Manual", "Filter data before or during import"]
       ]
     },
     {
@@ -163,43 +197,52 @@
       "values": [
         [
           "Manual",
-          "Choose record selection and storage duration for each product"
+          "Choose log storage duration, data types and collection limits"
         ],
-        ["Manual", "Choose data sources and storage duration"],
+        ["Manual", "Choose workspace storage duration and record selection"],
         ["Manual", "Choose product and searchable-data settings"],
         ["Manual", "Choose data types and storage duration"],
         ["Manual", "Choose data settings and storage duration"],
+        [
+          "Manual",
+          "Choose record selection and storage duration for each product"
+        ],
+        ["Manual", "Set automatic data cleanup and project limits"],
+        ["Manual", "Choose data sources and storage duration"],
         ["Manual", "Choose record selection and data-collection settings"],
-        ["Manual", "Choose data collections and storage duration"],
-        ["Manual", "Set automatic data cleanup and project limits"]
+        ["Manual", "Choose data collections and storage duration"]
       ]
     },
     {
       "label": "Alerts and reliability goals",
       "explanation": "Choose which problems need attention, when to send alerts and who receives them. Set reliability goals, such as how often requests should succeed. The provider does not know the impact on your users or decide who should respond.",
       "values": [
-        ["Manual", "Set error and measurement alerts"],
-        ["Manual", "Set checks and alert rules"],
+        ["Manual", "Set alarms, reliability goals and notification recipients"],
+        ["Manual", "Set alert rules, reliability goals and response groups"],
         ["Manual", "Set checks and reliability goals"],
         ["Manual", "Set alert rules and reliability goals"],
         ["Manual", "Set alert rules and reliability goals"],
+        ["Manual", "Set error and measurement alerts"],
+        ["Manual", "Set alert rules and notification connections"],
+        ["Manual", "Set checks and alert rules"],
         ["Manual", "Set alert conditions and reliability goals"],
-        ["Manual", "Set checks and alert recipients"],
-        ["Manual", "Set alert rules and notification connections"]
+        ["Manual", "Set checks and alert recipients"]
       ]
     },
     {
       "label": "Access rules",
       "explanation": "Keep live-app monitoring data separate from development and test data. Protect access keys and give each person or program only the access it needs. Available team and permission features depend on the product and plan.",
       "values": [
-        ["Manual", "Set projects, team access and access keys"],
-        ["Manual", "Set team access, data sources and access keys"],
+        ["Manual", "Set AWS account access, permissions and shared monitoring"],
+        ["Manual", "Set subscriptions, workspace permissions and app access"],
         ["Manual", "Set permissions, data labels and access keys"],
         ["Manual", "Set monitoring groups, permissions and access keys"],
         ["Manual", "Set accounts, permissions and access keys"],
+        ["Manual", "Set projects, team access and access keys"],
+        ["Manual", "Set workspaces, projects and permissions"],
+        ["Manual", "Set team access, data sources and access keys"],
         ["Manual", "Separate live and test data; set team access and keys"],
-        ["Manual", "Set data collections, permissions and access keys"],
-        ["Manual", "Set workspaces, projects and permissions"]
+        ["Manual", "Set data collections, permissions and access keys"]
       ]
     },
     {
@@ -207,11 +250,13 @@
       "explanation": "The platform can detect problems, send alerts and help with investigation. Your team still works out the effect on users, coordinates the response, repairs the app and checks that it works again.",
       "values": [
         ["Manual", "Investigate, repair and check recovery"],
+        ["Manual", "Investigate, repair and check recovery"],
+        ["Manual", "Investigate, repair and check recovery"],
+        ["Manual", "Investigate, repair and check recovery"],
+        ["Manual", "Investigate, repair and check recovery"],
+        ["Manual", "Investigate, repair and check recovery"],
+        ["Manual", "Investigate, repair and check recovery"],
         ["Manual", "Respond, repair and check recovery"],
-        ["Manual", "Investigate, repair and check recovery"],
-        ["Manual", "Investigate, repair and check recovery"],
-        ["Manual", "Investigate, repair and check recovery"],
-        ["Manual", "Investigate, repair and check recovery"],
         ["Manual", "Investigate, repair and check recovery"],
         ["Manual", "Investigate, repair and check recovery"]
       ]
