@@ -99,6 +99,11 @@ thead a:hover {
   object-fit: contain;
   flex-shrink: 0;
 }
+.provider-logo[src*="/providers/js-"] {
+  background: #eeeeee;
+  border-radius: 4px;
+  padding: 2px;
+}
 tr > :first-child {
   width: var(--label-width);
   position: sticky;

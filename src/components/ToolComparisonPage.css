@@ -1,0 +1,27 @@
+.grouped-tool-table {
+  --group-header-height: 38px;
+}
+.grouped-tool-table .tool-group-headers th {
+  height: var(--group-header-height);
+  padding-block: 0.4rem;
+  white-space: nowrap;
+  text-align: center;
+  border-right: 2px solid var(--border);
+}
+.grouped-tool-table .tool-group-headers .tool-group-corner {
+  text-align: left;
+  vertical-align: middle;
+  z-index: 4;
+}
+.grouped-tool-table .tool-column-headers th {
+  top: var(--group-header-height);
+}
+.grouped-tool-table .tool-column-headers th:first-child {
+  left: auto;
+  width: var(--provider-width);
+  z-index: 2;
+}
+.tool-feature-status {
+  display: block;
+  font-weight: 650;
+}

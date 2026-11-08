@@ -3,15 +3,26 @@
  * @packageDocumentation
  */
 import { useEffect, useRef } from "react";
-import { Link, matchPath, Route, Routes, useLocation } from "react-router-dom";
+import {
+  Link,
+  matchPath,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import {
   comparisonCategories,
   categoryGroups,
   combinationsTopic,
 } from "./data/categories";
 import ComparisonPage from "./components/ComparisonPage";
+import CombinationsPage from "./components/CombinationsPage";
 import CloudServicesPage from "./components/CloudServicesPage";
 import NotFound from "./components/NotFound";
+import ToolComparisonPage from "./components/ToolComparisonPage";
+import { javascriptStacksTopic, javascriptTopics } from "./data/javascript";
+import { javascriptStackContent } from "./data/javascriptStacks";
 
 /**
  * Render registry-driven routes inside the shared workspace shell.
@@ -90,9 +101,26 @@ export default function App() {
       </nav>
       <Routes>
         <Route
-          path={combinationsTopic.path}
-          element={<CloudServicesPage />}
+          path="/javascript/app-frameworks/"
+          element={<Navigate to="/javascript/ui/" replace />}
         />
+        <Route
+          path={javascriptStacksTopic.path}
+          element={
+            <CombinationsPage
+              key={javascriptStacksTopic.path}
+              {...javascriptStackContent}
+            />
+          }
+        />
+        {javascriptTopics.map((topic) => (
+          <Route
+            key={topic.path}
+            path={topic.path}
+            element={<ToolComparisonPage key={topic.path} topic={topic} />}
+          />
+        ))}
+        <Route path={combinationsTopic.path} element={<CloudServicesPage />} />
         {comparisonCategories.map((category) => (
           <Route
             key={category.path}

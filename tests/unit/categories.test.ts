@@ -37,6 +37,7 @@ describe("cloud category pages", () => {
     expect(categoryGroups.map(({ label }) => label)).toEqual([
       "Cloud services",
       "Self-hosted services",
+      "JavaScript / TypeScript",
     ]);
     expect(categoryGroups[0].topics.slice(1)).toEqual(categories);
     expect(categoryGroups[0].topics[0].path).toBe("/combinations/");
@@ -116,7 +117,7 @@ describe("cloud category pages", () => {
       ).toHaveLength(9);
       expect(
         root.querySelectorAll('nav[aria-label="Categories"] a'),
-      ).toHaveLength(2);
+      ).toHaveLength(3);
       expect(
         root.querySelector(
           'nav[aria-label="Categories"] a[aria-current="true"]',

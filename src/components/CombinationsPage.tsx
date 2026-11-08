@@ -4,65 +4,47 @@
  */
 import { Link } from "react-router-dom";
 import type { CSSProperties } from "react";
-import {
-  combinationRoles,
-  combinations as cloudCombinations,
-  type Combination,
-} from "../data/combinations";
+import type { Combination } from "../data/combinations";
 import "./CombinationsPage.css";
 
-/** Data and navigation for cloud or self-operated combination matrices. */
+/** Editorial content for the application-stack guide. */
 interface CombinationsPageProps {
-  combinations?: Combination[];
-  roles?: typeof combinationRoles;
-  selfHosted?: boolean;
+  title: string;
+  roles: { label: string; path: string }[];
+  combinations: Combination[];
+  introduction: string;
+  notes: string[];
+  sourceLabel?: string;
+  orderSource?: { label: string; url: string; licenseUrl: string };
 }
 
 /**
  * Render suggested associations and their benefits and trade-offs without implying automatic integration.
- * @param props - Optional self-hosted content; cloud content is the default.
+ * @param props - Application-stack content and linked role categories.
  * @returns An accessible comparison table with centered, keyboard-dismissible dialogs.
  */
 export default function CombinationsPage(props: CombinationsPageProps) {
-  const combinations = props.combinations ?? cloudCombinations;
-  const roles = props.roles ?? combinationRoles;
+  const { roles, combinations, title } = props;
   return (
     <>
       <main tabIndex={-1} className="combinations-page">
-        <div className="page-heading">
-          <h1>
-            {props.selfHosted
-              ? "Self-hosted combinations"
-              : "Common combinations"}
-          </h1>
-          <span className="provider-count">
-            {combinations.length} combinations
-          </span>
-        </div>
-        <div className="table-tools">
-          <p className="table-hint" id="combinations-help">
-            Click ⓘ for what a combination is good for and what you still need
-            to manage. Pick only the services your app needs. Multiple choices
-            in a cell are alternatives, not a ranking.
-          </p>
-        </div>
+        <h1 className="sr-only">{title}</h1>
+        <p className="sr-only" id="combinations-help">
+          {props.introduction}
+        </p>
         <div
           id="comparison"
           className="table-scroll compact combinations-table"
           role="region"
-          aria-label={
-            props.selfHosted
-              ? "Self-hosted service combinations"
-              : "Common service combinations"
-          }
+          aria-label={title}
           aria-describedby="combinations-help"
           tabIndex={0}
           style={{ "--provider-count": roles.length } as CSSProperties}
         >
-          <table aria-label="Services by combination">
+          <table aria-label="Tools by application stack">
             <thead>
               <tr>
-                <th scope="col">Combination</th>
+                <th scope="col">Application stack</th>
                 {roles.map((role) => (
                   <th scope="col" key={role.label}>
                     <Link to={role.path}>{role.label}</Link>
@@ -158,20 +140,24 @@ export default function CombinationsPage(props: CombinationsPageProps) {
             </tbody>
           </table>
         </div>
-        <p className="combinations-footer">
-          {props.selfHosted
-            ? "Ten associations for different needs, not a popularity ranking. Examples document the core association, not every service choice or a company's live deployment. Built-in and separate roles are named rather than filled with extra products. You operate the servers, access rules, updates, backups and recovery. Follow release-specific installation and license terms; these rows are not complete deployment recipes."
-            : "Starting points, not ready-made integrations. Check the linked documentation for setup and limits; some supporting services are not in the comparisons. Choose by your app's needs, not a popularity ranking. Within means the row's hosting platform; external means another provider. Neither means free or automatically connected."}
-        </p>
-        <p className="combinations-footer">
-          — means no separate service is suggested. App-managed or database
-          search may be enough, but still needs configuration. Keep external
-          search records synchronized and enforce user permissions. Keep
-          disposable caches separate from queue and session stores that must not
-          lose records. A queue store is not automatically an app cache.
-          Alternatives can fit the same combination without having identical
-          features, costs or setup work.
-        </p>
+        <details className="sources reading-notes">
+          <summary>Notes & sources</summary>
+          <p>{props.introduction}</p>
+          {props.orderSource ? (
+            <p className="combinations-footer">
+              Ordering source:{" "}
+              <a href={props.orderSource.url}>{props.orderSource.label}</a>.
+              Usage is self-reported, not global market share or adoption of
+              these exact combinations. Source: Stack Exchange Inc. ·{" "}
+              <a href={props.orderSource.licenseUrl}>ODbL 1.0</a>.
+            </p>
+          ) : null}
+          {props.notes.map((note) => (
+            <p className="combinations-footer" key={note}>
+              {note}
+            </p>
+          ))}
+        </details>
       </main>
       {combinations.map((combination) => (
         <dialog
@@ -213,19 +199,11 @@ export default function CombinationsPage(props: CombinationsPageProps) {
               {combination.note}
             </p>
           </div>
-          {props.selfHosted && combination.example ? (
-            <footer className="combination-dialog-footer combination-product-example">
-              <a
-                href={combination.example.url}
-                aria-label={`Source for ${combination.example.product}`}
-              >
-                {combination.example.product} · documented example ↗
-              </a>
-              <span>Core association, not a complete deployment.</span>
-            </footer>
-          ) : combination.services[0][2] ? (
+          {combination.sourceUrl ? (
             <footer className="combination-dialog-footer">
-              <a href={combination.services[0][2]}>Hosting documentation ↗</a>
+              <a href={combination.sourceUrl}>
+                {props.sourceLabel ?? "Hosting documentation"} ↗
+              </a>
             </footer>
           ) : null}
         </dialog>

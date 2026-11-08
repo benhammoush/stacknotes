@@ -27,6 +27,7 @@ describe("self-hosted services", () => {
     expect(categoryGroups.map(({ path }) => path)).toEqual([
       "/combinations/",
       "/self-hosted/databases/",
+      "/javascript/stacks/",
     ]);
     expect(
       selfHostedCategories.map(({ data }) => data.providers.length),

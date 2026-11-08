@@ -132,17 +132,17 @@ test("touch navigation opens the inventory without combination popups", async ({
   });
   try {
     const page = await context.newPage();
-    await page.goto("/self-hosted/databases/");
+    await page.goto("/javascript/stacks/");
     await page.getByRole("link", { name: "Cloud services", exact: true }).tap();
     const table = page.getByRole("table", { name: "Services by provider" });
     await table.getByRole("rowheader", { name: "AWS", exact: true }).tap();
     await expect(page.locator("dialog")).toHaveCount(0);
     await expect(page).toHaveURL(/\/combinations\/$/);
     await page
-      .getByRole("link", { name: "Self-hosted services", exact: true })
+      .getByRole("link", { name: "JavaScript / TypeScript", exact: true })
       .tap();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-      "Self-hosted databases",
+      "JavaScript / TypeScript application stacks",
     );
   } finally {
     await context.close();

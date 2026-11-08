@@ -94,7 +94,7 @@ describe("application routing", () => {
       ),
     ).toBe("page");
     expect(getByRole("navigation", { name: "Categories" }).textContent).toBe(
-      "Cloud servicesSelf-hosted services",
+      "Cloud servicesSelf-hosted servicesJavaScript / TypeScript",
     );
     scroll.mockRestore();
   });

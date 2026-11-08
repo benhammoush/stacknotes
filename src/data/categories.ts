@@ -11,6 +11,7 @@ import monitoring from "./monitoring.json";
 import caching from "./caching.json";
 import search from "./search.json";
 import { selfHostedCategories } from "./selfHosted";
+import { javascriptStacksTopic, javascriptTopics } from "./javascript";
 
 /** Editorial content and route identity for one comparison topic. */
 export interface Category {
@@ -91,5 +92,10 @@ export const categoryGroups = [
     label: "Self-hosted services",
     path: selfHostedCategories[0].path,
     topics: selfHostedCategories,
+  },
+  {
+    label: "JavaScript / TypeScript",
+    path: javascriptStacksTopic.path,
+    topics: [javascriptStacksTopic, ...javascriptTopics],
   },
 ];
