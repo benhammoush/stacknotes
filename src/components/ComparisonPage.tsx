@@ -12,7 +12,7 @@ interface ComparisonPageProps {
 }
 
 /**
- * Render one compact category; route keys reset disclosure and popovers on navigation.
+ * Render one compact category; route keys reset disclosure and dialogs on navigation.
  * @param props - The category dataset and its public identity.
  * @returns Semantic comparison content with accessible table controls.
  */
@@ -129,17 +129,16 @@ export default function ComparisonPage(props: ComparisonPageProps) {
                       <span>{row.label}</span>
                       <button
                         className="info-button"
-                        {...{
-                          popovertarget: `term-${index}`,
-                          popovertargetaction: "show",
-                        }}
                         aria-label={`About ${row.label}`}
-                        onPointerEnter={(event) => {
-                          if (event.pointerType === "mouse")
-                            document
-                              .getElementById(`term-${index}`)
-                              ?.showPopover();
-                        }}
+                        aria-haspopup="dialog"
+                        aria-controls={`term-${index}`}
+                        onClick={() =>
+                          (
+                            document.getElementById(
+                              `term-${index}`,
+                            ) as HTMLDialogElement
+                          )?.showModal()
+                        }
                       >
                         ⓘ
                       </button>
@@ -281,28 +280,33 @@ export default function ComparisonPage(props: ComparisonPageProps) {
         </section>
       </main>
       {data.responsibilities.map((row, index) => (
-        <aside
+        <dialog
           key={row.label}
           id={`term-${index}`}
-          {...{ popover: "auto" }}
           aria-labelledby={`term-title-${index}`}
-          className="term-popover"
+          aria-describedby={`term-text-${index}`}
+          className="combination-dialog"
+          onClick={(event) => {
+            if (event.target === event.currentTarget)
+              event.currentTarget.close();
+          }}
         >
-          <div>
+          <div className="combination-dialog-header">
             <h2 id={`term-title-${index}`}>{row.label}</h2>
             <button
               className="close-button"
-              {...{
-                popovertarget: `term-${index}`,
-                popovertargetaction: "hide",
-              }}
               aria-label="Close explanation"
+              onClick={(event) =>
+                event.currentTarget.closest("dialog")?.close()
+              }
             >
               ×
             </button>
           </div>
-          <p>{row.explanation}</p>
-        </aside>
+          <div className="combination-dialog-body">
+            <p id={`term-text-${index}`}>{row.explanation}</p>
+          </div>
+        </dialog>
       ))}
     </>
   );

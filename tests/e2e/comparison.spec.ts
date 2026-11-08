@@ -44,7 +44,7 @@ test("reads the complete table and opens a keyboard explanation", async ({
   await expect(button).toBeFocused();
 });
 
-test("discovers explanations on hover and can dismiss them", async ({
+test("opens explanations only on activation and can dismiss them", async ({
   page,
 }) => {
   await page.goto("/");
@@ -54,12 +54,22 @@ test("discovers explanations on hover and can dismiss them", async ({
   await page
     .getByRole("button", { name: "About Maintenance", exact: true })
     .hover();
-  await expect(page.locator("#term-0")).toBeVisible();
+  await expect(page.locator("#term-0")).toBeHidden();
+  await page
+    .getByRole("button", { name: "About Maintenance", exact: true })
+    .focus();
+  await expect(page.locator("#term-0")).toBeHidden();
   await page
     .getByRole("button", { name: "About Maintenance", exact: true })
     .click();
   await expect(page.locator("#term-0")).toBeVisible();
+  await expect(page.locator("dialog:modal")).toHaveCount(1);
   await page.getByRole("button", { name: "Close explanation" }).click();
+  await expect(page.locator("#term-0")).toBeHidden();
+  await page
+    .getByRole("button", { name: "About Maintenance", exact: true })
+    .click();
+  await page.mouse.click(1, 1);
   await expect(page.locator("#term-0")).toBeHidden();
 });
 
@@ -106,8 +116,6 @@ for (const width of [360, 768, 1440]) {
     await expect(
       page.getByRole("columnheader", { name: "Characteristic" }),
     ).toBeInViewport();
-    // Focus scrolls the rows; keep hover from opening another explanation.
-    await page.mouse.move(0, 0);
     await page
       .getByRole("button", { name: "About Maintenance", exact: true })
       .focus();
@@ -117,6 +125,8 @@ for (const width of [360, 768, 1440]) {
     expect(panel).not.toBeNull();
     expect(panel!.x).toBeGreaterThanOrEqual(0);
     expect(panel!.x + panel!.width).toBeLessThanOrEqual(width);
+    expect(Math.abs(panel!.x + panel!.width / 2 - width / 2)).toBeLessThan(2);
+    expect(Math.abs(panel!.y + panel!.height / 2 - 450)).toBeLessThan(2);
   });
 }
 

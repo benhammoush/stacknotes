@@ -3,11 +3,11 @@
  * Protects the complete editorial baseline, escaping and semantic rendering.
  * @packageDocumentation
  */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import data from "../../src/data/databases.json";
 import { fireEvent, render } from "@testing-library/react";
 import ComparisonPage from "../../src/components/ComparisonPage";
-import { categories } from "../../src/data/categories";
+import { categories, comparisonCategories } from "../../src/data/categories";
 import { renderApp } from "./render";
 
 describe("database comparison", () => {
@@ -82,13 +82,50 @@ describe("database comparison", () => {
       "Managed database providers",
     );
     for (const button of root.querySelectorAll(".info-button")) {
-      const id = button.getAttribute("popovertarget");
-      expect(root.querySelector(`#${id}`)?.hasAttribute("popover")).toBe(true);
+      const id = button.getAttribute("aria-controls");
+      const dialog = root.querySelector<HTMLDialogElement>(`#${id}`)!;
+      expect(dialog.tagName).toBe("DIALOG");
+      expect(button.getAttribute("aria-haspopup")).toBe("dialog");
       expect(button.getAttribute("aria-label")).toMatch(/^About /);
+      expect(
+        root.querySelector(`#${dialog.getAttribute("aria-labelledby")}`)
+          ?.textContent,
+      ).toBe(button.getAttribute("aria-label")?.replace(/^About /, ""));
+      expect(
+        root.querySelector(`#${dialog.getAttribute("aria-describedby")}`)
+          ?.textContent,
+      ).toBeTruthy();
     }
     expect(root.textContent).toContain("not been independently revalidated");
     expect(root.textContent).toContain("copies are not backups");
   });
+
+  it.each(comparisonCategories)(
+    "opens $title explanations only on activation",
+    (category) => {
+      const { container } = render(<ComparisonPage category={category} />);
+      const button =
+        container.querySelector<HTMLButtonElement>(".info-button")!;
+      const dialog = container.querySelector<HTMLDialogElement>(
+        `#${button.getAttribute("aria-controls")}`,
+      )!;
+      const showModal = vi.fn();
+      const close = vi.fn();
+      dialog.showModal = showModal;
+      dialog.close = close;
+      fireEvent.pointerEnter(button, { pointerType: "mouse" });
+      fireEvent.focus(button);
+      expect(showModal).not.toHaveBeenCalled();
+      fireEvent.click(button);
+      expect(showModal).toHaveBeenCalledOnce();
+      fireEvent.click(dialog.querySelector("p")!);
+      expect(close).not.toHaveBeenCalled();
+      fireEvent.click(dialog.querySelector("button")!);
+      expect(close).toHaveBeenCalledOnce();
+      fireEvent.click(dialog);
+      expect(close).toHaveBeenCalledTimes(2);
+    },
+  );
 
   it("keeps the page free of decorative taglines and repeated navigation", () => {
     const { container: root } = renderApp();

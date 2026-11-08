@@ -5,7 +5,6 @@
 import { test, expect } from "@playwright/test";
 import {
   javascriptTopics,
-  javascriptTools,
   javascriptStacksTopic,
 } from "../../src/data/javascript";
 import { javascriptStacks } from "../../src/data/javascriptStacks";
@@ -281,11 +280,9 @@ for (const width of [390, 1440]) {
       ),
     ).toBe(true);
     for (const ui of ["React", "Vue", "Angular"]) {
-      const infoButton = page.getByRole("button", {
-        name: `About ${ui}`,
-        exact: true,
+      const row = table.getByRole("row").filter({
+        has: page.getByRole("rowheader", { name: ui, exact: true }),
       });
-      const row = table.getByRole("row").filter({ has: infoButton });
       const styling = row.getByRole("cell").nth(2);
       await expect(styling.getByRole("link").first()).toHaveText(
         "Tailwind CSS",
@@ -305,28 +302,8 @@ for (const width of [390, 1440]) {
       ).toBe(true);
     }
     await expect(page.getByText(/Within means/)).toHaveCount(0);
-    for (const stack of javascriptStacks) {
-      const info = table.getByRole("button", {
-        name: `About ${stack.name}`,
-        exact: true,
-      });
-      const dialog = page.getByRole("dialog", {
-        name: stack.name,
-        exact: true,
-      });
-      await info.hover();
-      await expect(dialog).toBeHidden();
-      await info.focus();
-      await expect(dialog).toBeHidden();
-      await page.keyboard.press("Enter");
-      await expect(dialog).toBeVisible();
-      await expect(dialog).toContainText(stack.note);
-      await expect(
-        dialog.getByRole("link", { name: "UI documentation ↗" }),
-      ).toHaveAttribute("href", javascriptTools[stack.name.toLowerCase()].url);
-      await page.keyboard.press("Escape");
-      await expect(info).toBeFocused();
-    }
+    await expect(table.getByRole("button")).toHaveCount(0);
+    await expect(page.locator("dialog")).toHaveCount(0);
     await page
       .getByRole("link", { name: "Cloud services", exact: true })
       .click();
@@ -357,18 +334,7 @@ test("JavaScript dialogs open by touch and close without navigating", async ({
     await page.goto("/javascript/stacks/");
     await page.locator(".combination-name").first().tap();
     await expect(page.locator("dialog:modal")).toHaveCount(0);
-    await page.getByRole("button", { name: "About React", exact: true }).tap();
-    const dialog = page.getByRole("dialog", {
-      name: "React",
-      exact: true,
-    });
-    await expect(dialog).toBeVisible();
-    const bounds = await dialog.boundingBox();
-    expect(Math.abs(bounds!.x + bounds!.width / 2 - 195)).toBeLessThanOrEqual(
-      2,
-    );
-    await dialog.getByRole("button", { name: "Close combination guide" }).tap();
-    await expect(dialog).toBeHidden();
+    await expect(page.getByRole("table").getByRole("button")).toHaveCount(0);
     await page.goto("/javascript/ui/");
     await page.getByRole("button", { name: "Features", exact: true }).tap();
     await page

@@ -263,7 +263,9 @@ describe("JavaScript / TypeScript", () => {
       "Application stack",
       ...javascriptStackRoles.map(({ label }) => label),
     ]);
-    expect(container.querySelectorAll("dialog")).toHaveLength(3);
+    expect(
+      container.querySelectorAll("dialog, .combination-info, .info-button"),
+    ).toHaveLength(0);
     expect(container.querySelector("h1")?.className).toBe("sr-only");
     expect(
       container.querySelector(".page-heading, .provider-count, select"),
@@ -274,12 +276,6 @@ describe("JavaScript / TypeScript", () => {
     expect(
       container.querySelector(".combinations-page > .combinations-footer"),
     ).toBeNull();
-    for (const stack of javascriptStacks) {
-      const dialog = container.querySelector(`#choice-${stack.id}`)!;
-      expect(dialog.querySelector("footer a")?.getAttribute("href")).toBe(
-        javascriptTools[stack.name.toLowerCase()].url,
-      );
-    }
     expect(container.textContent).not.toContain("Within means");
     expect(container.textContent).not.toContain("queue and session stores");
     expect(container.textContent).toContain("not installation recipes");

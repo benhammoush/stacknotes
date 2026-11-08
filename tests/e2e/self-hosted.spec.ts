@@ -103,13 +103,25 @@ for (const topic of topics) {
     await expect(page.locator("#technical-rows > tr")).toHaveCount(6);
     await page
       .getByRole("button", { name: "About Servers and network", exact: true })
+      .hover();
+    await expect(page.locator("#term-2")).toBeHidden();
+    await page
+      .getByRole("button", { name: "About Servers and network", exact: true })
       .focus();
     await page.keyboard.press("Enter");
     await expect(page.locator("#term-2")).toBeVisible();
+    await expect(page.locator("dialog:modal")).toHaveCount(1);
     await expect(page.locator("#term-2")).toContainText(
       "You supply the machines",
     );
     await page.keyboard.press("Escape");
+    await expect(page.locator("#term-2")).toBeHidden();
+    await expect(
+      page.getByRole("button", {
+        name: "About Servers and network",
+        exact: true,
+      }),
+    ).toBeFocused();
     await page
       .getByRole("button", { name: "Who handles what", exact: true })
       .click();
@@ -198,7 +210,7 @@ for (const width of [360, 1440]) {
     await expect(
       topics.getByRole("link", { name: "Services offered" }),
     ).toHaveCount(0);
-    await expect(page.locator("dialog")).toHaveCount(0);
+    await expect(page.locator("dialog:modal")).toHaveCount(0);
     await expect(page.getByRole("columnheader")).toHaveCount(9);
     expect(
       await page.evaluate(

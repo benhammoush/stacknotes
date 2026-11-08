@@ -24,20 +24,6 @@
 .combination-name {
   flex: 1;
 }
-.combination-info {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius);
-  background: transparent;
-  color: var(--accent);
-  font-size: 1rem;
-}
-.combination-info:hover {
-  background: var(--surface-raised);
-}
 .combination-built-in {
   font-weight: 400;
 }
@@ -65,14 +51,6 @@
   gap: 1rem;
   padding: 1.25rem 1.25rem 0;
 }
-.combination-dialog-kicker {
-  display: block;
-  margin-bottom: 0.25rem;
-  color: var(--muted);
-  font-size: 0.72rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
 .combination-dialog h2 {
   margin: 0;
   font-size: 1.125rem;
@@ -91,19 +69,6 @@
 }
 .combination-dialog-body p:last-child {
   margin-bottom: 0;
-}
-.combination-tradeoff {
-  color: var(--muted);
-}
-.combination-dialog-footer {
-  padding: 0.75rem 1.25rem;
-  border-top: 1px solid var(--border);
-  font-size: 0.8rem;
-}
-.combination-dialog-footer > span {
-  display: block;
-  margin-top: 0.25rem;
-  color: var(--muted);
 }
 .combinations-footer {
   color: var(--muted);

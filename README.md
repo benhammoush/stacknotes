@@ -58,8 +58,8 @@ its strengths and limitations, and what you still need to manage.
 - Application stacks is the JavaScript / TypeScript entry topic. Three rows—React,
   Angular and Vue—group framework and library alternatives and distinguish integrated server capabilities from separately deployed
   JavaScript backends. Choices are curated candidates, not exclusive pairings
-  or an exhaustive compatibility matrix. Every named tool links to documentation; ⓘ opens a centered
-  benefits/trade-offs dialog only on activation. Alternatives are not a ranking,
+  or an exhaustive compatibility matrix. Every named tool links to documentation;
+  stack rows have no explanation buttons. Alternatives are not a ranking,
   and the table covers application frameworks, components, styling, state, data
   fetching and forms, in that order. The Frameworks & libraries comparison
   explains build tooling by project setup rather than presenting it as an independent stack choice.
