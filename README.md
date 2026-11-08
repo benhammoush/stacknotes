@@ -19,8 +19,8 @@ its strengths and limitations, and what you still need to manage.
 - Cloud services groups eight comparisons and Common combinations in a second navigation row, with no
   category landing page or breadcrumbs.
 - Eight cloud comparisons covering focused product choices and who handles what.
-- Self-hosted services mirrors the nine cloud topics with eight software
-  comparisons and ten example-backed associations. License and operating costs replace
+- Self-hosted services offers eight software comparisons, opening at Databases.
+  Combination suggestions belong only to Cloud services. License and operating costs replace
   provider billing; operator responsibilities stay explicit. Every product has a
   locally hosted logo or official favicon, with sources in the third-party notices.
 - Caching compares shared application data caches, including Redis and Valkey,
@@ -29,8 +29,7 @@ its strengths and limitations, and what you still need to manage.
   small apps may only need their database's built-in search.
 - Ten suggested cloud service combinations show how hosting, data, accounts, files, background
   tasks, monitoring, caching and search fit together, with official source links and setup caveats.
-  Cloud combinations suggest dedicated caching and search services; self-hosted
-  associations also identify app-managed or database search. A dash means no
+  Cloud combinations suggest dedicated caching and search services. A dash means no
   separate service is suggested. Pick only the services your app needs.
   Comparable choices share a cell with equal styling, not a ranking or a list of
   services to install together. Features, costs and integration work still differ.
@@ -38,14 +37,11 @@ its strengths and limitations, and what you still need to manage.
   and self-hosted rows do not need relationship labels.
   “Within Azure” means the same hosting platform; “External · Upstash” means another
   provider. Neither implies free service, bundled pricing or automatic connections.
-  Common combinations is the entry topic when switching between Cloud services
-  and Self-hosted services. Each row has an ⓘ button that opens a centered dialog
+  Common combinations is the Cloud services entry topic. Each row has an ⓘ button that opens a centered dialog
   combining plain-English benefits and trade-offs. Names and hover do not open it;
   keyboard activation, tap, Escape and backdrop dismissal are supported. Rows stay
   compact, without separate “What to know” disclosures. Cloud product examples stay in the editorial
-  data, not the page. Self-hosted examples link documented core associations,
-  without implying complete deployments or company adoption; built-in and separate
-  roles are explicit rather than filled with arbitrary products.
+  data, not the page.
 - Monochrome design, colored logos and a locally hosted Inter font.
 - Blue ≠ marks identify less-common responsibility labels, not better products.
 - Labels stay visible while scrolling; jump to a provider or use a compact view.

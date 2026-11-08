@@ -8,12 +8,7 @@ import {
   comparisonCategories,
   categoryGroups,
   combinationsTopic,
-  selfHostedCombinationsTopic,
 } from "./data/categories";
-import {
-  selfHostedCombinations,
-  selfHostedRoles,
-} from "./data/selfHostedCombinations";
 import ComparisonPage from "./components/ComparisonPage";
 import CombinationsPage from "./components/CombinationsPage";
 import NotFound from "./components/NotFound";
@@ -97,17 +92,6 @@ export default function App() {
         <Route
           path={combinationsTopic.path}
           element={<CombinationsPage key={combinationsTopic.path} />}
-        />
-        <Route
-          path={selfHostedCombinationsTopic.path}
-          element={
-            <CombinationsPage
-              key={selfHostedCombinationsTopic.path}
-              combinations={selfHostedCombinations}
-              roles={selfHostedRoles}
-              selfHosted
-            />
-          }
         />
         {comparisonCategories.map((category) => (
           <Route

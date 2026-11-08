@@ -79,12 +79,6 @@ export const combinationsTopic = {
   path: "/combinations/",
 };
 
-export const selfHostedCombinationsTopic = {
-  label: "Common combinations",
-  title: "Self-hosted combinations",
-  path: "/self-hosted/combinations/",
-};
-
 export const comparisonCategories = [...categories, ...selfHostedCategories];
 
 export const categoryGroups = [
@@ -95,7 +89,7 @@ export const categoryGroups = [
   },
   {
     label: "Self-hosted services",
-    path: selfHostedCombinationsTopic.path,
-    topics: [selfHostedCombinationsTopic, ...selfHostedCategories],
+    path: selfHostedCategories[0].path,
+    topics: selfHostedCategories,
   },
 ];
