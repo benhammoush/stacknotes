@@ -141,20 +141,17 @@ for (const width of [390, 1440, 1920]) {
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
-    await page.getByLabel("Jump to").selectOption("9");
+    await page.locator("#comparison").evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
     await expect(page.locator("#provider-9")).toBeInViewport();
     await expect(
       page.getByRole("columnheader", { name: "Characteristic" }),
     ).toBeInViewport();
-    const compact = page.getByRole("button", { name: "Compact view" });
-    await expect(compact).toHaveAttribute("aria-pressed", "true");
-    const compactWidth = await table.evaluate(
-      (element) => element.getBoundingClientRect().width,
-    );
-    await compact.click();
-    expect(
-      await table.evaluate((element) => element.getBoundingClientRect().width),
-    ).toBeGreaterThan(compactWidth);
+    await expect(page.locator("#comparison")).toHaveClass(/compact/);
+    await expect(
+      page.getByRole("button", { name: "Compact view" }),
+    ).toHaveCount(0);
   });
 }
 

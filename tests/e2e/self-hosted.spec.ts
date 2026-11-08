@@ -90,9 +90,12 @@ for (const topic of topics) {
         exact: true,
       }),
     ).toBeVisible();
+    await expect(page.locator("#comparison")).toHaveClass(/compact/);
     await expect(
       page.getByRole("button", { name: "Compact view" }),
-    ).toHaveAttribute("aria-pressed", "true");
+    ).toHaveCount(0);
+    await expect(page.locator("h1")).toHaveClass("sr-only");
+    await expect(page.locator(".sources")).not.toHaveAttribute("open");
     await expect(page.locator("#technical-rows")).toBeHidden();
     await page
       .getByRole("button", { name: "Who handles what", exact: true })
@@ -110,9 +113,11 @@ for (const topic of topics) {
     await page
       .getByRole("button", { name: "Who handles what", exact: true })
       .click();
-    await page.getByText("License sources", { exact: true }).click();
+    await page.getByText("Notes & sources", { exact: true }).click();
     await expect(page.locator(".sources a")).toHaveCount(topic.count);
-    await page.getByLabel("Jump to").selectOption(String(topic.count - 1));
+    await page.locator("#comparison").evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
     await page.locator("#comparison").scrollIntoViewIfNeeded();
     await expect(page.locator(`#provider-${topic.count - 1}`)).toBeInViewport();
     await expect(

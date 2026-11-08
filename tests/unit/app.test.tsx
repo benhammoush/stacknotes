@@ -46,11 +46,10 @@ describe("application routing", () => {
       ).toBe("Hosting");
     },
   );
-  it("navigates without replacing the shell and resets comparison controls", async () => {
+  it("navigates without replacing the shell and resets comparison disclosure", async () => {
     const scroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
     const { container, getByRole } = renderApp();
     const header = container.querySelector("header");
-    fireEvent.click(getByRole("button", { name: "Compact view" }));
     fireEvent.click(getByRole("button", { name: "Who handles what" }));
     expect(
       container.querySelector("#technical-rows")?.hasAttribute("hidden"),

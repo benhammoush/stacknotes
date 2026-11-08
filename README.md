@@ -72,7 +72,9 @@ its strengths and limitations, and what you still need to manage.
   Stack choices and their matching tool headers use locally hosted project icons where available;
   equal alternatives stay equally styled and independently linked.
 - Blue ≠ marks identify less-common responsibility labels, not better products.
-- Labels stay visible while scrolling; jump to a provider or use a compact view.
+- All tables stay compact, with sticky labels and horizontal scrolling. Visible
+  page banners, view/jump selectors and instructional paragraphs are omitted;
+  caveats, status definitions and sources remain in collapsed Notes & sources.
 - Plain-English explanations available by hover, keyboard or tap.
 - Official documentation links and notes about plan-specific limits.
 

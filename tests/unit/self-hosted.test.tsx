@@ -91,17 +91,19 @@ describe("self-hosted services", () => {
         data.providers.length,
       );
       expect(
-        getByRole("button", { name: "Compact view" }).getAttribute(
-          "aria-pressed",
-        ),
-      ).toBe("true");
+        container.querySelector(".table-scroll")?.classList.contains("compact"),
+      ).toBe(true);
+      expect(container.querySelector("select")).toBeNull();
+      expect(container.querySelector(".sources")?.hasAttribute("open")).toBe(
+        false,
+      );
       expect(
         getByRole("button", { name: "Who handles what" }).getAttribute(
           "aria-expanded",
         ),
       ).toBe("false");
       expect(container.textContent).toContain(
-        "Software handles it after setup",
+        "software handles it after setup",
       );
       expect(container.textContent).toContain("You operate the service");
       expect(container.textContent).toContain("Replication is not a backup");

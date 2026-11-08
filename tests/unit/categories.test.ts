@@ -12,7 +12,6 @@ import {
   comparisonCategories,
 } from "../../src/data/categories";
 import { differences } from "../../src/utils/comparison";
-import { fireEvent } from "@testing-library/react";
 import { renderApp } from "./render";
 
 describe("status differences", () => {
@@ -152,14 +151,10 @@ describe("cloud category pages", () => {
       expect(root.querySelectorAll(".sources a")).toHaveLength(
         category.path === "/" ? 0 : count,
       );
-      const compact = root.querySelector<HTMLButtonElement>("#compact-toggle")!;
-      expect(compact.getAttribute("aria-pressed")).toBe("true");
-      fireEvent.click(compact);
-      expect(compact.getAttribute("aria-pressed")).toBe("false");
-      expect(
-        root.querySelector(".table-scroll")?.classList.contains("compact"),
-      ).toBe(false);
-      fireEvent.click(compact);
+      expect(root.querySelector("#compact-toggle")).toBeNull();
+      expect(root.querySelector("select")).toBeNull();
+      expect(root.querySelector("h1")?.className).toBe("sr-only");
+      expect(root.querySelector(".sources")?.hasAttribute("open")).toBe(false);
       expect(
         root.querySelector(".table-scroll")?.classList.contains("compact"),
       ).toBe(true);
