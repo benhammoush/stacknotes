@@ -55,9 +55,13 @@ describe("database comparison", () => {
     ).toBe("10");
     expect(container.querySelectorAll("thead th")).toHaveLength(11);
     expect(container.querySelectorAll("tbody td")).toHaveLength(150);
-    expect(container.querySelector(".provider-count")?.textContent).toBe(
-      "10 providers",
+    expect(container.querySelector(".provider-count")).toBeNull();
+    expect(container.querySelector("h1")?.className).toBe("sr-only");
+    expect(container.querySelector("select")).toBeNull();
+    expect(container.querySelector(".sources")?.hasAttribute("open")).toBe(
+      false,
     );
+    expect(container.querySelector(".reading-notes > p")).toBeNull();
     expect(
       container.querySelector(".table-scroll")?.classList.contains("compact"),
     ).toBe(true);

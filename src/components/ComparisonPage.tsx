@@ -2,7 +2,7 @@
  * Renders shared comparison tables with local disclosure state and native explanations.
  * @packageDocumentation
  */
-import { type CSSProperties, useRef, useState } from "react";
+import { type CSSProperties, useState } from "react";
 import type { Category } from "../data/categories";
 import { differences } from "../utils/comparison";
 
@@ -12,7 +12,7 @@ interface ComparisonPageProps {
 }
 
 /**
- * Render one category; route keys reset controls and remove open popovers on navigation.
+ * Render one compact category; route keys reset disclosure and popovers on navigation.
  * @param props - The category dataset and its public identity.
  * @returns Semantic comparison content with accessible table controls.
  */
@@ -20,84 +20,21 @@ export default function ComparisonPage(props: ComparisonPageProps) {
   const { category } = props;
   const { data } = category;
   const [expanded, setExpanded] = useState(false);
-  const [compact, setCompact] = useState(true);
-  const scroll = useRef<HTMLDivElement>(null);
+  const statusHelp = category.selfHosted
+    ? "Auto: software handles it after setup. Manual: you configure and operate it. Excluded: handle separately."
+    : "Auto: the provider handles it. Manual: you set it up. Excluded: handle separately.";
+  const tableHelp = `${statusHelp} The ≠ mark means a less-common status in this row, not better or worse.`;
 
   return (
     <>
       <main tabIndex={-1}>
-        <div className="page-heading">
-          <h1>{category.title}</h1>
-          <span className="provider-count">
-            {data.providers.length}{" "}
-            {category.selfHosted ? "products" : "providers"}
-          </span>
-        </div>
-        <div className="legend" aria-label="Responsibility legend">
-          <span>
-            <strong className="status auto">Auto</strong>{" "}
-            {category.selfHosted
-              ? "Software handles it after setup"
-              : "Provider handles it"}
-          </span>
-          <span>
-            <strong className="status manual">Manual</strong>{" "}
-            {category.selfHosted
-              ? "You configure and operate it"
-              : "You set it up"}
-          </span>
-          <span>
-            <strong className="status excluded">Excluded</strong> Handle
-            separately
-          </span>
-        </div>
-        <div className="table-tools">
-          <p className="table-hint" id="table-help">
-            Scroll to compare. ⓘ explains terms.{" "}
-            <span className="difference-key">≠ Less-common status</span> in this
-            row—not better or worse.
-          </p>
-          <div className="view-controls">
-            <label htmlFor="provider-jump">Jump to</label>
-            <select
-              id="provider-jump"
-              defaultValue=""
-              onChange={(event) => {
-                const value = event.currentTarget.value;
-                if (value === "" || !scroll.current) return;
-                const column = scroll.current.querySelector<HTMLElement>(
-                  `#provider-${value}`,
-                )!;
-                const label =
-                  scroll.current.querySelector<HTMLElement>("thead th")!;
-                scroll.current.scrollTo({
-                  left: column.offsetLeft - label.offsetWidth,
-                  behavior: "instant",
-                });
-              }}
-            >
-              <option value="">Provider…</option>
-              {data.providers.map((provider, index) => (
-                <option key={index} value={index}>
-                  {provider.company === provider.name
-                    ? provider.name
-                    : `${provider.company} · ${provider.name}`}
-                </option>
-              ))}
-            </select>
-            <button
-              id="compact-toggle"
-              aria-pressed={compact}
-              onClick={() => setCompact(!compact)}
-            >
-              Compact view
-            </button>
-          </div>
-        </div>
+        <h1 className="sr-only">{category.title}</h1>
+        <p className="sr-only" id="table-help">
+          {tableHelp}
+        </p>
         <div
-          ref={scroll}
           id="comparison"
-          className={`table-scroll${compact ? " compact" : ""}`}
+          className="table-scroll compact"
           role="region"
           aria-label={`${category.path === "/" ? "Managed database" : category.title} comparison`}
           aria-describedby="table-help"
@@ -242,98 +179,105 @@ export default function ComparisonPage(props: ComparisonPageProps) {
           </table>
         </div>
         <section className="reading-notes" aria-label="Comparison notes">
-          {category.selfHosted ? (
-            <>
-              <p>
-                <strong>You operate the service:</strong> provide the servers,
-                network and disks; maintain the operating system and software;
-                configure access rules, monitoring, backups and recovery.
-                Renting a cloud server does not transfer those responsibilities
-                to the software project.
-              </p>
-              <p>
-                Auto means a software feature works after setup, not that a
-                provider operates it for you. Manual means you configure and
-                maintain it. Excluded means use a separate product or app code.
-                Replication is not a backup.
-              </p>
-              <p className="provenance">
-                Based on official documentation and license files reviewed in
-                November 2026. These are starting points, not installation or
-                security instructions. Editions and license terms differ; check
-                the linked sources.
-              </p>
-              <details className="sources">
-                <summary>License sources</summary>
-                <ul>
-                  {data.providers.map((provider) => (
-                    <li key={provider.name}>
-                      <a href={provider.license}>{provider.name} license</a>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            </>
-          ) : category.path === "/" ? (
-            <>
-              <p>
-                <strong>You manage:</strong> data structure and validation,
-                changes that must succeed together, safe retries, queries and
-                search indexes, database changes, access rules, how long to keep
-                data and recovery testing.
-              </p>
-              <p>
-                Features and charges vary by plan and location. Auto does not
-                mean free or unlimited. Manual can mean one-time setup.
-                Read-only copies are not backups. RDS, Aurora and Cloud SQL use
-                PostgreSQL examples.
-              </p>
-              <p className="provenance">
-                The original eight products are based on the November 2026 PDF;
-                their technical claims have not been independently revalidated.
-                DynamoDB and Firestore were added from official documentation.
-                Wording has been simplified. Check provider documentation.
-              </p>
-            </>
-          ) : (
-            <>
-              {category.path === "/hosting/" ? (
+          <details className="sources">
+            <summary>Notes & sources</summary>
+            <p>{tableHelp}</p>
+            {category.selfHosted ? (
+              <>
                 <p>
-                  A web app is used through a browser, including a website.
-                  Browser files provide its interface; server code handles work
-                  on the provider&apos;s machines. Background tasks do work
-                  separately, such as sending emails. A framework provides a
-                  starting structure and tools for app code.
+                  <strong>You operate the service:</strong> provide the servers,
+                  network and disks; maintain the operating system and software;
+                  configure access rules, monitoring, backups and recovery.
+                  Renting a cloud server does not transfer those
+                  responsibilities to the software project.
                 </p>
-              ) : null}
-              <p>
-                These are provider-run products. Features, limits and charges
-                vary by plan and location. Auto does not mean free or unlimited.
-                Manual can mean one-time setup. Excluded means not included in
-                this product; the provider may sell a separate tool for it.
-              </p>
-              <p className="provenance">
-                Based on official documentation and billing information reviewed
-                in November 2026. Similar descriptions do not mean identical
-                features or prices. Provider names link to documentation.
-              </p>
-              <details className="sources">
-                <summary>Pricing sources</summary>
-                <ul>
-                  {data.providers.map((provider, index) => (
-                    <li key={index}>
-                      <a href={provider.pricing}>
-                        {provider.company === provider.name
-                          ? provider.name
-                          : `${provider.company} · ${provider.name}`}{" "}
-                        pricing
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            </>
-          )}
+                <p>
+                  Auto means a software feature works after setup, not that a
+                  provider operates it for you. Manual means you configure and
+                  maintain it. Excluded means use a separate product or app
+                  code. Replication is not a backup.
+                </p>
+                <p className="provenance">
+                  Based on official documentation and license files reviewed in
+                  November 2026. These are starting points, not installation or
+                  security instructions. Editions and license terms differ;
+                  check the linked sources.
+                </p>
+                <div>
+                  <h2>License sources</h2>
+                  <ul>
+                    {data.providers.map((provider) => (
+                      <li key={provider.name}>
+                        <a href={provider.license}>{provider.name} license</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            ) : category.path === "/" ? (
+              <>
+                <p>
+                  <strong>You manage:</strong> data structure and validation,
+                  changes that must succeed together, safe retries, queries and
+                  search indexes, database changes, access rules, how long to
+                  keep data and recovery testing.
+                </p>
+                <p>
+                  Features and charges vary by plan and location. Auto does not
+                  mean free or unlimited. Manual can mean one-time setup.
+                  Read-only copies are not backups. RDS, Aurora and Cloud SQL
+                  use PostgreSQL examples.
+                </p>
+                <p className="provenance">
+                  The original eight products are based on the November 2026
+                  PDF; their technical claims have not been independently
+                  revalidated. DynamoDB and Firestore were added from official
+                  documentation. Wording has been simplified. Check provider
+                  documentation.
+                </p>
+              </>
+            ) : (
+              <>
+                {category.path === "/hosting/" ? (
+                  <p>
+                    A web app is used through a browser, including a website.
+                    Browser files provide its interface; server code handles
+                    work on the provider&apos;s machines. Background tasks do
+                    work separately, such as sending emails. A framework
+                    provides a starting structure and tools for app code.
+                  </p>
+                ) : null}
+                <p>
+                  These are provider-run products. Features, limits and charges
+                  vary by plan and location. Auto does not mean free or
+                  unlimited. Manual can mean one-time setup. Excluded means not
+                  included in this product; the provider may sell a separate
+                  tool for it.
+                </p>
+                <p className="provenance">
+                  Based on official documentation and billing information
+                  reviewed in November 2026. Similar descriptions do not mean
+                  identical features or prices. Provider names link to
+                  documentation.
+                </p>
+                <div>
+                  <h2>Pricing sources</h2>
+                  <ul>
+                    {data.providers.map((provider, index) => (
+                      <li key={index}>
+                        <a href={provider.pricing}>
+                          {provider.company === provider.name
+                            ? provider.name
+                            : `${provider.company} · ${provider.name}`}{" "}
+                          pricing
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
+          </details>
         </section>
       </main>
       {data.responsibilities.map((row, index) => (

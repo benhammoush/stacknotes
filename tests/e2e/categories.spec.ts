@@ -103,7 +103,7 @@ for (const category of categories) {
       name: "Categories",
       exact: true,
     });
-    await expect(categoryNav.getByRole("link")).toHaveCount(2);
+    await expect(categoryNav.getByRole("link")).toHaveCount(3);
     await expect(
       categoryNav.getByRole("link", { name: "Cloud services" }),
     ).toHaveAttribute("aria-current", "true");
@@ -120,7 +120,9 @@ for (const category of categories) {
       page.getByRole("rowheader", { name: "What you get" }),
     ).toHaveCount(0);
     if (category.path === "/hosting/") {
-      await page.getByLabel("Jump to").selectOption("9");
+      await page.locator("#comparison").evaluate((element) => {
+        element.scrollLeft = element.scrollWidth;
+      });
       const ecs = page.getByRole("link", {
         name: "ECS Express Mode",
         exact: true,
@@ -136,7 +138,9 @@ for (const category of categories) {
       await expect(
         page.getByText(/App Runner|Existing customers only/),
       ).toHaveCount(0);
-      await page.getByLabel("Jump to").selectOption("0");
+      await page.locator("#comparison").evaluate((element) => {
+        element.scrollLeft = 0;
+      });
     }
     for (const logo of await page.locator(".provider-logo").all()) {
       await expect
@@ -159,26 +163,24 @@ for (const category of categories) {
       ),
     ).toBe(true);
     const region = page.locator(".table-scroll");
-    const compactWidth = await region.evaluate(
-      (element) => element.scrollWidth,
-    );
+    await expect(region).toHaveClass(/compact/);
     await expect(
       page.getByRole("button", { name: "Compact view" }),
-    ).toHaveAttribute("aria-pressed", "true");
-    await page.getByRole("button", { name: "Compact view" }).click();
-    await expect(
-      page.getByRole("button", { name: "Compact view" }),
-    ).toHaveAttribute("aria-pressed", "false");
-    expect(
-      await region.evaluate((element) => element.scrollWidth),
-    ).toBeGreaterThan(compactWidth);
-    await page.getByRole("button", { name: "Compact view" }).click();
-    await page.getByLabel("Jump to").selectOption(String(count - 1));
+    ).toHaveCount(0);
+    await expect(page.getByRole("combobox")).toHaveCount(0);
+    await expect(page.locator("h1")).toHaveClass("sr-only");
+    await expect(page.locator(".page-heading")).toHaveCount(0);
+    await expect(page.locator(".sources")).not.toHaveAttribute("open");
+    await region.evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
     await expect(page.locator(`#provider-${count - 1}`)).toBeInViewport();
     await expect(
       page.getByRole("columnheader", { name: "Characteristic" }),
     ).toBeInViewport();
-    await page.getByLabel("Jump to").selectOption("0");
+    await region.evaluate((element) => {
+      element.scrollLeft = 0;
+    });
     await expect(page.locator("#provider-0")).toBeInViewport();
     const toggle = page.getByRole("button", {
       name: "Who handles what",
@@ -203,7 +205,7 @@ for (const category of categories) {
     await page.keyboard.press("Space");
     await expect(page.locator("#technical-rows")).toBeHidden();
     if (category.path !== "/") {
-      await page.getByText("Pricing sources", { exact: true }).click();
+      await page.getByText("Notes & sources", { exact: true }).click();
       await expect(page.locator(".sources li a")).toHaveCount(count);
     }
     expect(errors).toEqual([]);
@@ -248,7 +250,7 @@ test("navigates across all cloud categories and back", async ({ page }) => {
   );
 });
 
-test("opens Cloud services at Common combinations without a landing page", async ({
+test("opens Cloud services at Services offered without a landing page", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -259,10 +261,10 @@ test("opens Cloud services at Common combinations without a landing page", async
     .click();
   await expect(page).toHaveURL("http://127.0.0.1:4178/combinations/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Common combinations",
+    "Services offered",
   );
   await expect(
-    page.getByRole("link", { name: "Common combinations", exact: true }),
+    page.getByRole("link", { name: "Services offered", exact: true }),
   ).toHaveAttribute("aria-current", "page");
   await expect(
     page.getByRole("navigation", { name: "Cloud services topics" }),
@@ -301,7 +303,6 @@ test("resets route state, closes old explanations and handles unknown pages", as
   page,
 }) => {
   await page.goto("/jobs/");
-  await page.getByRole("button", { name: "Compact view" }).click();
   await page
     .getByRole("button", { name: "Who handles what", exact: true })
     .click();
@@ -318,9 +319,7 @@ test("resets route state, closes old explanations and handles unknown pages", as
     .click();
   await expect(page.locator("#technical-rows")).toBeHidden();
   await expect(page.locator("#term-0")).toBeHidden();
-  await expect(
-    page.getByRole("button", { name: "Compact view" }),
-  ).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#comparison")).toHaveClass(/compact/);
   await expect(page.locator("main")).toBeFocused();
   await page.goBack();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(

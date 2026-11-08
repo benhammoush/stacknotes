@@ -11,6 +11,7 @@ import monitoring from "./monitoring.json";
 import caching from "./caching.json";
 import search from "./search.json";
 import { selfHostedCategories } from "./selfHosted";
+import { javascriptStacksTopic, javascriptTopics } from "./javascript";
 
 /** Editorial content and route identity for one comparison topic. */
 export interface Category {
@@ -74,15 +75,9 @@ export const categories: Category[] = [
 ];
 
 export const combinationsTopic = {
-  label: "Common combinations",
-  title: "Common combinations",
+  label: "Services offered",
+  title: "Services offered",
   path: "/combinations/",
-};
-
-export const selfHostedCombinationsTopic = {
-  label: "Common combinations",
-  title: "Self-hosted combinations",
-  path: "/self-hosted/combinations/",
 };
 
 export const comparisonCategories = [...categories, ...selfHostedCategories];
@@ -95,7 +90,12 @@ export const categoryGroups = [
   },
   {
     label: "Self-hosted services",
-    path: selfHostedCombinationsTopic.path,
-    topics: [selfHostedCombinationsTopic, ...selfHostedCategories],
+    path: selfHostedCategories[0].path,
+    topics: selfHostedCategories,
+  },
+  {
+    label: "JavaScript / TypeScript",
+    path: javascriptStacksTopic.path,
+    topics: [javascriptStacksTopic, ...javascriptTopics],
   },
 ];
