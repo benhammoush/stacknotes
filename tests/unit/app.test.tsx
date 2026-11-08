@@ -74,7 +74,7 @@ describe("application routing", () => {
     scroll.mockRestore();
   });
 
-  it("opens Cloud services at Common combinations without a landing page", () => {
+  it("opens Cloud services at Services offered without a landing page", () => {
     const scroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
     const { getByRole, container } = renderApp("/hosting/");
     const cloud = getByRole("link", { name: "Cloud services" });
@@ -86,10 +86,10 @@ describe("application routing", () => {
     expect(container.querySelectorAll("nav")).toHaveLength(2);
     fireEvent.click(cloud);
     expect(getByRole("heading", { level: 1 }).textContent).toBe(
-      "Common combinations",
+      "Services offered",
     );
     expect(
-      getByRole("link", { name: "Common combinations" }).getAttribute(
+      getByRole("link", { name: "Services offered" }).getAttribute(
         "aria-current",
       ),
     ).toBe("page");

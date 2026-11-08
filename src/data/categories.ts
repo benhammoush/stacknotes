@@ -74,8 +74,8 @@ export const categories: Category[] = [
 ];
 
 export const combinationsTopic = {
-  label: "Common combinations",
-  title: "Common combinations",
+  label: "Services offered",
+  title: "Services offered",
   path: "/combinations/",
 };
 

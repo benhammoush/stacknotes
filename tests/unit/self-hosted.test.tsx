@@ -195,7 +195,7 @@ describe("self-hosted services", () => {
       );
       fireEvent.click(getByRole("link", { name: "Cloud services" }));
       expect(getByRole("heading", { level: 1 }).textContent).toBe(
-        "Common combinations",
+        "Services offered",
       );
       expect(
         getByRole("navigation", { name: "Cloud services topics" }),

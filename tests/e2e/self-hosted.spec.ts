@@ -218,16 +218,18 @@ for (const width of [360, 1440]) {
       .getByRole("link", { name: "Cloud services", exact: true })
       .click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-      "Common combinations",
+      "Services offered",
     );
     await expect(page.locator('nav a[aria-current="true"]')).toHaveText(
       "Cloud services",
     );
     await expect(page).toHaveURL(/(?<!self-hosted)\/combinations\/$/);
-    const table = page.getByRole("table", { name: "Services by combination" });
-    await expect(table.locator(".combination-product-example")).toHaveCount(0);
-    await table.getByRole("button", { name: "About AWS", exact: true }).click();
-    await expect(page.locator("dialog:modal")).toHaveCount(1);
+    const table = page.getByRole("table", { name: "Services by provider" });
+    await expect(
+      table.getByRole("rowheader", { name: "AWS", exact: true }),
+    ).toHaveCount(1);
+    await expect(table.getByRole("button")).toHaveCount(0);
+    await expect(page.locator("dialog")).toHaveCount(0);
     await page.goBack();
     await expect(page.locator("dialog:modal")).toHaveCount(0);
     await page

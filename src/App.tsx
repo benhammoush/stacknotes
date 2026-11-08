@@ -10,7 +10,7 @@ import {
   combinationsTopic,
 } from "./data/categories";
 import ComparisonPage from "./components/ComparisonPage";
-import CombinationsPage from "./components/CombinationsPage";
+import CloudServicesPage from "./components/CloudServicesPage";
 import NotFound from "./components/NotFound";
 
 /**
@@ -91,7 +91,7 @@ export default function App() {
       <Routes>
         <Route
           path={combinationsTopic.path}
-          element={<CombinationsPage key={combinationsTopic.path} />}
+          element={<CloudServicesPage />}
         />
         {comparisonCategories.map((category) => (
           <Route

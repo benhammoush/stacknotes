@@ -248,7 +248,7 @@ test("navigates across all cloud categories and back", async ({ page }) => {
   );
 });
 
-test("opens Cloud services at Common combinations without a landing page", async ({
+test("opens Cloud services at Services offered without a landing page", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -259,10 +259,10 @@ test("opens Cloud services at Common combinations without a landing page", async
     .click();
   await expect(page).toHaveURL("http://127.0.0.1:4178/combinations/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Common combinations",
+    "Services offered",
   );
   await expect(
-    page.getByRole("link", { name: "Common combinations", exact: true }),
+    page.getByRole("link", { name: "Services offered", exact: true }),
   ).toHaveAttribute("aria-current", "page");
   await expect(
     page.getByRole("navigation", { name: "Cloud services topics" }),
