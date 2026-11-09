@@ -41,11 +41,23 @@ its strengths and limitations, and what you still need to manage.
   validation, backend frameworks, database tools, testing and build tools.
   Comparisons always show all tools in compact tables, without page banners,
   ecosystem selectors or jump controls. Comparisons follow the Cloud/Self-hosted layout: Overview shows Primary
-  purpose (Default look & feel for component libraries), Strengths, Limitations and License & operating costs, followed by a
+  purpose (Default look & feel for component libraries; Best fit & scope for state, data fetching and forms), Strengths, Limitations and License & operating costs, followed by a
   collapsed Features section with comparable labels and explanatory notes. Costs depend on setup
   and are not priced in license cells. ⓘ explains every row; cloud-provider
   responsibility scores are not applied to libraries. Supporting caveats and
-  references stay in a collapsed Notes & sources disclosure.
+  references stay in a collapsed Notes & sources disclosure, including the meanings
+  of Built-in, Configurable, Add-on and Manual support.
+- Data fetching compares optional TanStack Query, SWR, RTK Query, Apollo Client,
+  urql and Axios. Features explain caching,
+  refreshing, shared results, updates after saving, loading/errors and retries.
+  Framework support and API scope distinguish optional query tools from GraphQL clients
+  and basic HTTP requests; extra libraries are not required for every app.
+- State management compares shared state, derived values, async workflows,
+  persistence and debugging, including Jotai. Forms
+  separates field state, validation, errors, repeated fields, submissions and UI
+  wiring, including Formik, Vuelidate and Superforms. These three tabs list optional
+  libraries only; native framework capabilities stay in Frameworks & libraries.
+  All tool headers include local icons, and package/configuration boundaries are explicit.
 - Styling is a single table of Tailwind CSS, Motion, GSAP, Anime.js, AutoAnimate,
   Lucide, Heroicons, Tabler Icons and Phosphor, without a Features section.
   Tool marks and category subtitles identify columns; only the four Overview
@@ -83,6 +95,9 @@ its strengths and limitations, and what you still need to manage.
   not required dependencies. These are guides,
   not tested deployment recipes. Python is outside this section.
   Stack rows use editorial order, not measured usage of exact stacks.
+  Angular includes optional NgRx, TanStack Query and TanStack Form choices; React
+  includes Jotai, Formik and RTK Query, Vue includes Vuelidate, and Svelte includes
+  Superforms alongside TanStack Form. Built-in capabilities can make extra libraries unnecessary.
   Stack choices and their matching tool headers use locally hosted project icons where available;
   equal alternatives stay equally styled and independently linked.
 - Blue ≠ marks identify less-common responsibility or JS/TS feature labels, not

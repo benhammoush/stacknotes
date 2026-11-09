@@ -34,6 +34,48 @@ Collection licensing below does not grant trademark rights or establish the
 software license of the represented product. Framework-feature/tooling cells reuse
 the associated parent project's mark. No GitHub or css-loader mark represents CSS Modules.
 
+Data-fetching header marks, retrieved November 9, 2026, locally hosted:
+TanStack Query reuses js-tanstack-start.svg, the unchanged TanStack parent-project
+  favicon documented below.
+js-rtk-query.svg uses the unchanged Redux parent-project mark from Devicon (MIT),
+  mapped below; RTK Query is part of Redux Toolkit.
+js-swr.svg and js-apollo.svg use unchanged Simple Icons geometry (CC0 collection),
+  mapped below. Apollo Client uses the Apollo GraphQL parent-project mark.
+js-urql.png = https://raw.githubusercontent.com/urql-graphql/urql/main/packages/site/public/favicon/favicon-32.png
+  Identity source: official urql repository's documentation-site favicon.
+  Unmodified project artwork, not covered by collection licenses.
+Collection/software licenses do not grant trademark rights or imply endorsement.
+
+State/form header marks, retrieved November 9, 2026, unmodified and locally hosted:
+Redux Toolkit reuses js-rtk-query.svg (Redux parent-project mark).
+TanStack Form reuses js-tanstack-start.svg (TanStack parent-project favicon).
+js-zustand.png = https://zustand.docs.pmnd.rs/favicon.ico
+  Identity source: official Zustand documentation favicon link (PNG bytes despite
+  the upstream .ico suffix; locally named for its actual format).
+js-pinia.png = https://pinia.vuejs.org/logo.png
+  Identity source: official Pinia documentation favicon link.
+js-ngrx.png = https://ngrx.io/favicon-32x32.png
+  Identity source: official NgRx documentation favicon link.
+js-react-hook-form.png = https://react-hook-form.com/images/logo/react-hook-form-logo-only.png
+  Identity source: official React Hook Form documentation favicon link.
+js-vee-validate.ico = https://vee-validate.logaretm.com/v4/img/favicon.ico
+  Identity source: official vee-validate v4 documentation favicon link.
+js-superforms.png = https://superforms.rocks/favicon-32x32.png?v=2
+  Identity source: official Superforms documentation favicon link.
+These official project images are not covered by collection licenses.
+js-nanostores.svg uses the unchanged Simple Icons Nano Stores mark (CC0 collection).
+js-jotai.svg = https://raw.githubusercontent.com/pmndrs/jotai/main/website/static/favicon.svg
+  Identity source: official Jotai documentation-site favicon in the project repository.
+  The original ghost-emoji SVG is unchanged; appearance depends on system fonts.
+js-formik.png = https://formik.org/images/favicon.png
+  Identity source: official Formik documentation favicon link.
+js-vuelidate.png = https://vuelidate-next.netlify.app/favicons/favicon-32x32.png
+  Identity source: official Vuelidate documentation favicon link.
+These three official images are not covered by collection licenses; product
+licenses do not establish trademark rights or the terms of documentation artwork.
+js-axios.svg uses the unchanged Simple Icons Axios mark (CC0 collection), mapped below.
+Software/collection licenses do not grant trademark rights or imply endorsement.
+
 Devicon assets (MIT), source base:
 https://raw.githubusercontent.com/devicons/devicon/master/icons/
 Local filename = upstream relative path:
@@ -56,6 +98,7 @@ js-prisma.svg = prisma/prisma-original.svg
 js-vitest.svg = vitest/vitest-original.svg
 js-playwright.svg = playwright/playwright-original.svg
 js-vite.svg = vitejs/vitejs-original.svg
+js-rtk-query.svg = redux/redux-original.svg
 
 Simple Icons assets (CC0 1.0 collection), source base:
 https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/
@@ -63,6 +106,9 @@ js-mantine.svg = mantine.svg; js-radix.svg = radixui.svg;
 js-shadcn.svg = shadcnui.svg; js-primevue.svg = primevue.svg;
 js-skeleton.svg = skeleton.svg; js-drizzle.svg = drizzle.svg; js-zod.svg = zod.svg.
 js-ant-design.svg = antdesign.svg; js-primeng.svg = primeng.svg.
+js-swr.svg = swr.svg; js-apollo.svg = apollographql.svg.
+js-nanostores.svg = nanostores.svg.
+js-axios.svg = axios.svg.
 License: https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md
 Upstream identity sources: https://github.com/simple-icons/simple-icons/blob/develop/data/simple-icons.json
 That metadata identifies Mantine and Zod original artwork as MIT licensed.

@@ -97,6 +97,9 @@ for (const width of [390, 1440]) {
         );
       }
       await expect(page.locator(".legend")).toHaveCount(0);
+      await expect(
+        page.locator(".tool-feature-guide, .tool-feature-legend"),
+      ).toHaveCount(0);
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,
@@ -127,6 +130,165 @@ for (const width of [390, 1440]) {
     }
     expect(errors).toEqual([]);
   });
+
+  test(`data fetching compares optional lifecycle libraries and an HTTP client at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/javascript/data-fetching/");
+    const table = page.getByRole("table");
+    await expect(table.locator(".provider-logo")).toHaveCount(6);
+    for (const image of await table.locator(".provider-logo").all()) {
+      await expect(image).toHaveAttribute("alt", "");
+      expect(
+        await image.evaluate(
+          (element: HTMLImageElement) =>
+            element.complete && element.naturalWidth > 0,
+        ),
+      ).toBe(true);
+    }
+    await expect(table.locator('th[scope="colgroup"]')).toHaveText([
+      "General-purpose data management",
+      "GraphQL clients",
+      "HTTP client",
+    ]);
+    await expect(table.locator(".tool-column-headers th a")).toHaveText([
+      "TanStack Query ↗",
+      "SWR ↗",
+      "RTK Query ↗",
+      "Apollo Client ↗",
+      "urql ↗",
+      "Axios ↗",
+    ]);
+    await expect(table.getByRole("cell")).toHaveCount(24);
+    await page.getByRole("button", { name: "Features", exact: true }).click();
+    await expect(table.getByRole("cell")).toHaveCount(66);
+    await expect(
+      table
+        .getByRole("row", { name: /^Caching/ })
+        .locator(".tool-feature-label"),
+    ).toHaveText([
+      "Built-in",
+      "Built-in",
+      "Built-in",
+      "Built-in",
+      "Built-in",
+      "Manual",
+    ]);
+    await expect(
+      table
+        .getByRole("row", { name: /^Automatic retries/ })
+        .locator(".tool-feature-label"),
+    ).toHaveText([
+      "Configurable",
+      "Configurable",
+      "Configurable",
+      "Configurable",
+      "Add-on",
+      "Manual",
+    ]);
+    const button = page.getByRole("button", {
+      name: "About Automatic retries",
+      exact: true,
+    });
+    await button.focus();
+    await page.keyboard.press("Enter");
+    const dialog = page.getByRole("dialog", {
+      name: "Automatic retries",
+      exact: true,
+    });
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toContainText("bundled module");
+    await expect(dialog).toContainText("separately installed package");
+    await page.keyboard.press("Escape");
+    await expect(button).toBeFocused();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await page.locator("#comparison").evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
+    await expect(table.locator("#tool-axios")).toBeInViewport();
+    await page.reload();
+    await expect(
+      page.getByRole("button", { name: "Features", exact: true }),
+    ).toHaveAttribute("aria-expanded", "false");
+  });
+
+  for (const comparison of [
+    {
+      slug: "state",
+      last: "jotai",
+      cells: 54,
+      explanation: "Async workflows",
+      boundary: "NgRx Effects is a separate package",
+    },
+    {
+      slug: "forms",
+      last: "superforms",
+      cells: 60,
+      explanation: "Submission & pending state",
+      boundary:
+        "$pending tracks asynchronous validation, not a network submission",
+    },
+  ]) {
+    test(`${comparison.slug} compares optional library capabilities and icons at ${width}px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`/javascript/${comparison.slug}/`);
+      const table = page.getByRole("table");
+      await expect(table.getByRole("cell")).toHaveCount(24);
+      await expect(
+        page.locator(".tool-feature-guide, .tool-feature-legend"),
+      ).toHaveCount(0);
+      await expect(table.locator(".provider-logo")).toHaveCount(6);
+      await expect(
+        table.locator(
+          "#tool-angular-signals, #tool-angular-httpclient, #tool-angular-forms, #tool-html-forms",
+        ),
+      ).toHaveCount(0);
+      for (const image of await table.locator(".provider-logo").all()) {
+        await expect(image).toHaveAttribute("alt", "");
+        await expect
+          .poll(() =>
+            image.evaluate((element: HTMLImageElement) => element.naturalWidth),
+          )
+          .toBeGreaterThan(0);
+      }
+      await page.getByRole("button", { name: "Features", exact: true }).click();
+      await expect(table.getByRole("cell")).toHaveCount(comparison.cells);
+      const button = page.getByRole("button", {
+        name: `About ${comparison.explanation}`,
+        exact: true,
+      });
+      await button.focus();
+      await page.keyboard.press("Enter");
+      const dialog = page.getByRole("dialog", {
+        name: comparison.explanation,
+        exact: true,
+      });
+      await expect(dialog).toBeVisible();
+      await expect(dialog).toContainText(comparison.boundary);
+      await page.keyboard.press("Escape");
+      await expect(button).toBeFocused();
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      await page.locator("#comparison").evaluate((element) => {
+        element.scrollLeft = element.scrollWidth;
+      });
+      await expect(table.locator(`#tool-${comparison.last}`)).toBeInViewport();
+      await page.goto("/javascript/ui/");
+      await expect(
+        page.getByRole("button", { name: "Features", exact: true }),
+      ).toHaveAttribute("aria-expanded", "false");
+    });
+  }
 
   test(`unified Styling keeps tool logos, redirects and overview dialogs at ${width}px`, async ({
     page,
@@ -519,10 +681,25 @@ for (const width of [390, 1440]) {
       "Nano Stores",
       "TanStack Query",
       "TanStack Form",
+      "Superforms",
     ])
       await expect(svelte.getByRole("link", { name, exact: true })).toHaveCount(
         1,
       );
+    const angular = table.getByRole("row", { name: /^Angular / });
+    for (const name of [
+      "NgRx Store",
+      "TanStack Query",
+      "Axios",
+      "TanStack Form",
+    ])
+      await expect(
+        angular.getByRole("link", { name, exact: true }),
+      ).toHaveCount(1);
+    const react = table.getByRole("row", { name: /^React / });
+    await expect(
+      react.getByRole("link", { name: "RTK Query", exact: true }),
+    ).toHaveCount(1);
     const images = table.locator("img.provider-logo");
     const expectedLogos = javascriptStacks
       .flatMap(({ services }) =>

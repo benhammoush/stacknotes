@@ -11,8 +11,8 @@ All JavaScript comparisons except Application stacks and Styling follow the Clou
 table structure: an always-visible Overview with Primary purpose, Strengths,
 Limitations and License & operating costs, followed by a collapsed Features
 section. Component libraries replaces Primary purpose with Default look & feel
-using the topic's optional `overviewPurpose` label/explanation; other topics keep
-their existing first row. License cells show core terms; the explanation and shared note make clear
+using the topic's optional `overviewPurpose` label/explanation; State management,
+Data fetching and Forms use Best fit & scope. Other topics keep their existing first row. License cells show core terms; the explanation and shared note make clear
 that infrastructure, operation, add-on and external-service costs depend on setup
 and are not priced here. Topic-specific facts use short comparable category labels
 or explicit Included/— verdicts, with descriptive notes underneath—not cloud-provider
@@ -45,14 +45,14 @@ rows, all-unique rows and labels tied for the maximum frequency remain neutral;
 a rarer third label can still be marked when two leading labels tie. This is a
 within-table distinction, not an adoption statistic or a recommendation. The mark
 has a screen-reader explanation; its meaning is in accessible help and collapsed
-notes, with no new banner or legend. Application stacks stays unmarked because its
+notes, with no visible intro or legend. Application stacks stays unmarked because its
 candidate lists compare different roles rather than one shared feature axis.
 
 Categories are editorial summaries of the detailed notes, not automatically
 inferred from wording. Component accessibility labels describe supplied behavior,
 not a compliance score; all suites still require application checks. Data-fetching labels retain the
 distinction between keyed results, normalized entities and urql's document cache
-with optional Graphcache. Database tools retain ORM versus query-builder scope.
+with optional Graphcache in Caching details. Database tools retain ORM versus query-builder scope.
 
 ## Sources and scope
 
@@ -62,11 +62,101 @@ frontend returned gateway errors. Documentation paths for PrimeVue and Zustand
 were updated after checking their current official sites. GSAP's own Standard License is not labeled
 as an MIT license. Core licenses do not establish the terms of every add-on.
 
-Comparison entries are intentionally scoped: Apollo covers its React integration, and Angular forms
-the documented reactive-forms APIs. Framework-agnostic means the core approach can
+Comparison entries are intentionally scoped: Apollo covers its React integration,
+and vee-validate covers v4 APIs. State management, Data fetching and Forms list
+optional libraries only; framework/browser capabilities are explained in Frameworks & libraries.
+Framework-agnostic means the core approach can
 be used without a UI-framework binding, not that every adapter exists. The
 ecosystem labels describe compatibility; they do not filter the visible tools or
 promise an integration with every framework.
+
+## State management
+
+State management compares Redux Toolkit, Zustand, Pinia, NgRx Store, Nano Stores
+and Jotai, grouped as stores/reducers and atomic state. All six headers
+have documented local icons and visible ecosystem compatibility. The five Features
+rows are Shared application state, Derived values, Async workflows, Persistence
+and Debugging. Built-in/Configurable/Add-on/Manual definitions stay in Notes & sources;
+labels describe how to obtain behavior, not quality or installation defaults.
+
+Redux uses action/reducer conventions and supplied thunk/listener helpers.
+Zustand selectors do not imply a separate memoized computation graph; its persist
+and devtools middleware are bundled integrations. Pinia has reactive getters and
+supports async actions, but both Pinia and Zustand leave async orchestration and
+pending/error updates to application code. NgRx Store is optional and distinct
+from NgRx SignalStore; Effects and Store Devtools are separate companion packages.
+Nano Stores has computed stores and task helpers, with persistence and logging
+companions. Jotai has shared/derived atoms, async atoms with application-defined
+pending/error UI, bundled `atomWithStorage`, and a separate `jotai-devtools` package.
+
+Browser extensions and development builds may be required for inspection even
+when integration is bundled. Persistence needs hydration, versioning and logout
+cleanup; storage is not authorization or a safe secret store. Keep server-rendered
+stores isolated per user/request. Local component state and framework-native
+features may suffice; API-data caching is covered separately in Data fetching.
+
+## Forms
+
+Forms compares React Hook Form, Formik 2.x, TanStack Form, vee-validate v4,
+Vuelidate 2.x and Superforms, grouped as React, multi-framework, Vue and SvelteKit.
+All six
+headers have local icons with provenance in `THIRD_PARTY_NOTICES.txt`. Features
+contains Field values & state, Validation, Errors & messages, Repeated fields,
+Submission & pending state and UI control integration. Status definitions in Notes &
+sources describe implementation approaches. All entries are separately installed
+libraries, not framework-provided forms or native HTML.
+
+Formik supplies values, dirty/touched state, errors, FieldArray helpers and
+submitting state; applications supply validation rules and the actual request.
+Its currently documented 2.x package/license is Apache-2.0, not the catalog helper's
+default MIT. Vuelidate is validation-focused and in LTS mode according to its
+official documentation: it validates application-owned Vue values, supplies
+dirty/error metadata and collection validation, but does not own complete form
+values, repeated-field UI or submission state. Its `$pending` is validation,
+not a network submission. Configure core with supplied/custom validators.
+
+React Hook Form, Formik, TanStack Form and vee-validate submission helpers track callbacks;
+applications supply the actual request and failure handling. Schema libraries and
+resolvers/adapters may need separate installation and compatible versions.
+Superforms tracks tainted fields and coordinates SvelteKit actions/enhancement,
+supported schemas, nested data and submission timers. It does not supply business
+logic, authorization or persistence, and live actions need a server runtime/adapter.
+Native forms may suffice for simple cases. Custom controls still need value/blur
+and accessibility wiring. Error data is not accessible rendering. Validate and authorize
+every server operation; test feedback, labels, focus and failed/pending submissions.
+
+## Data fetching
+
+The Data fetching page compares six optional libraries in three scope groups: general-purpose
+data management (TanStack Query, SWR, RTK Query), GraphQL clients (Apollo Client,
+urql), and an HTTP client (Axios). Ecosystem subtitles show
+framework support without filtering tools. RTK Query has a framework-independent
+core and first-party React hooks; it requires Redux store/middleware setup. Apollo
+covers React and urql covers React/Vue here. Axios is a framework-independent HTTP
+client rather than a query cache and can be used inside a query library's fetcher.
+Framework-provided HTTP/loading APIs are excluded from this optional-library catalog.
+All six headers have locally hosted tool marks. TanStack Query and RTK Query use
+their parent-project marks. Artwork
+sources and collection/trademark boundaries live in `THIRD_PARTY_NOTICES.txt`.
+
+The Overview retains four rows, with Best fit & scope replacing Primary purpose.
+Features contains API focus plus six plain-language lifecycle rows: Caching,
+Automatic refreshing, Shared requests & results, Updates after saving, Loading &
+error states, and Automatic retries. Each row keeps an activation-only explanation.
+Built-in means supplied behavior, Configurable means enable or define rules,
+Add-on means a separate package, and Manual means application code. These are
+implementation approaches, not quality scores or zero-configuration promises.
+
+Caching details preserve keyed results versus normalized entities versus document
+caching with optional Graphcache. Updates after saving require business-specific
+invalidation or cache rules. Axios supplies promises, structured errors and
+interceptors, but the app manages loading, cache sharing and synchronization.
+Browser HTTP caching is not a shared query cache. Retries distinguish the bundled
+Apollo RetryLink and RTK retry wrapper from urql's separately installed retry
+exchange; Axios retry rules require application logic or another integration.
+Shared results apply within one client/provider/store. SSR still needs compatible
+hydration and request-isolated caches. Authorization remains server-enforced;
+cached results are not a security check. Additional query libraries are optional.
 
 ## Styling
 
@@ -270,13 +360,24 @@ coverage rather than assuming every component can be unit-tested.
 Shared notes below the table explain architecture boundaries; there are no row-info controls.
 Astro requires the matching React/Vue integration and explicit island hydration.
 TanStack Start hosting depends on build tool and target; SvelteKit requires a suitable adapter.
-The Svelte row lists SvelteKit, Skeleton, Nano Stores, TanStack Query and TanStack Form.
+The Angular row lists optional NgRx Store, TanStack Query (with Axios as an HTTP
+client choice) and TanStack Form. None is an Angular installation default. React's
+data-fetching alternatives include RTK Query, with required Redux setup; Apollo/urql
+are specifically GraphQL choices; React also offers Jotai and Formik. Vue includes
+Vuelidate as a validation-focused alternative. The Svelte row lists SvelteKit, Skeleton, Nano
+Stores, TanStack Query and TanStack Form, with Superforms as a SvelteKit form alternative.
 Skeleton v5 combines styled utilities with framework components, some headless;
 its form utility classes require `@tailwindcss/forms`, while form state and validation stay separate.
 Use `@skeletonlabs/skeleton-svelte`, `@tanstack/svelte-query` (currently Svelte 5.25+)
-and `@tanstack/svelte-form`. Nano Stores implements the Svelte store contract;
+and `@tanstack/svelte-form`, or configure Superforms with a supported schema adapter
+and SvelteKit actions. Nano Stores implements the Svelte store contract;
 its runes integration is separate. SSR stores and caches must be scoped per request.
 SvelteKit load functions/actions can avoid extra client libraries.
+Simple forms and built-in state/fetching can suffice across stacks; their native
+capabilities are not repeated as optional library candidates. Form state/validation
+tools and visual component suites have different responsibilities. Choices are
+equally presented, not a ranking or dependency checklist; request clients and
+query caches can be combined rather than being exact substitutes.
 
 Python is not part of these comparisons. Existing cloud service comparisons own
 hosting and database-provider choices. Stack choices use verified local marks where available,

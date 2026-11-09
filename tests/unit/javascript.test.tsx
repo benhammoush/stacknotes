@@ -36,7 +36,7 @@ describe("JavaScript / TypeScript", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(JSON.stringify(group)).not.toMatch(/python|django|flask|fastapi/i);
     const tools = javascriptTopics.flatMap((topic) => topic.tools);
-    expect(tools).toHaveLength(62);
+    expect(tools).toHaveLength(67);
     for (const id of ["bootstrap", "css-modules", "sass", "emotion"])
       expect(javascriptTools[id]).toBeUndefined();
     expect(javascriptTools.solid).toBeUndefined();
@@ -49,6 +49,12 @@ describe("JavaScript / TypeScript", () => {
       "autoanimate",
       "nanostores",
       "tanstack-query",
+      "rtk-query",
+      "axios",
+      "jotai",
+      "superforms",
+      "formik",
+      "vuelidate",
       "tanstack-form",
       "urql",
       "testing-library",
@@ -56,6 +62,13 @@ describe("JavaScript / TypeScript", () => {
       expect(javascriptTools[id]).toBeDefined();
     }
     expect(new Set(tools.map(({ id }) => id)).size).toBe(tools.length);
+    for (const id of [
+      "angular-signals",
+      "angular-httpclient",
+      "angular-forms",
+      "html-forms",
+    ])
+      expect(javascriptTools[id]).toBeUndefined();
   });
 
   for (const topic of javascriptTopics) {
@@ -69,7 +82,13 @@ describe("JavaScript / TypeScript", () => {
             ? 9
             : topic.path === "/javascript/styling/"
               ? 0
-              : 4,
+              : topic.path === "/javascript/data-fetching/"
+                ? 7
+                : topic.path === "/javascript/state/"
+                  ? 5
+                  : topic.path === "/javascript/forms/"
+                    ? 6
+                    : 4,
       );
       for (const tool of topic.tools) {
         expect(tool.facts).toHaveLength(topic.dimensions.length);
@@ -167,6 +186,9 @@ describe("JavaScript / TypeScript", () => {
       expect(container.querySelector('option[value="Svelte"]')).toBeNull();
       expect(container.querySelector('option[value="Solid"]')).toBeNull();
       expect(container.querySelector(".legend")).toBeNull();
+      expect(
+        container.querySelector(".tool-feature-guide, .tool-feature-legend"),
+      ).toBeNull();
       expect(container.querySelectorAll(".sources a")).toHaveLength(
         topic.tools.length * 2 + (topic.sources?.length ?? 0),
       );
@@ -468,29 +490,384 @@ describe("JavaScript / TypeScript", () => {
       expect(new URL(source.url).protocol).toBe("https:");
   });
 
-  it("preserves cache-model differences while leaving tied API categories neutral", () => {
-    const { getByRole } = renderApp("/javascript/data-fetching/");
-    fireEvent.click(getByRole("button", { name: "Features" }));
-    const cache = getByRole("row", { name: /^Cache model/ });
-    expect(
-      [...cache.querySelectorAll(".tool-feature-label")].map(
-        (label) => label.textContent,
-      ),
-    ).toEqual([
-      "Keyed results",
-      "Keyed results",
-      "Normalized entities",
-      "Documents / optional entities",
+  it("compares six data tools by lifecycle support while retaining their scopes", () => {
+    const topic = javascriptTopics.find(
+      ({ path }) => path === "/javascript/data-fetching/",
+    )!;
+    expect(topic.tools.map(({ id }) => id)).toEqual([
+      "tanstack-query",
+      "swr",
+      "rtk-query",
+      "apollo",
+      "urql",
+      "axios",
     ]);
-    expect(
-      [...cache.querySelectorAll("td")].flatMap((cell, index) =>
-        cell.classList.contains("different") ? [index] : [],
-      ),
-    ).toEqual([2, 3]);
-    expect(
-      getByRole("row", { name: /^API focus/ }).querySelectorAll("td.different"),
-    ).toHaveLength(0);
-    expect(cache.textContent).toContain("Graphcache adds normalized caching");
+    expect(topic.columnGroups?.map(({ toolIds }) => toolIds.length)).toEqual([
+      3, 2, 1,
+    ]);
+    expect(javascriptTools["rtk-query"].ecosystems).toEqual([
+      "Framework-agnostic",
+      "React",
+    ]);
+    expect(javascriptTools.axios.ecosystems).toEqual(["Framework-agnostic"]);
+    const { getByRole, container } = renderApp(topic.path);
+    const notices = readFileSync(resolve("THIRD_PARTY_NOTICES.txt"), "utf8");
+    for (const tool of topic.tools) {
+      expect(tool.logo).toBeTruthy();
+      const image = container.querySelector<HTMLImageElement>(
+        `#tool-${tool.id} img`,
+      )!;
+      expect(image.getAttribute("src")).toBe(`/providers/${tool.logo}`);
+      expect(image.getAttribute("alt")).toBe("");
+      const asset = readFileSync(resolve("public/providers", tool.logo!));
+      expect(asset.length).toBeGreaterThan(100);
+      expect(notices).toContain(tool.logo);
+      if (tool.logo!.endsWith(".png"))
+        expect([...asset.subarray(0, 8)]).toEqual([
+          137, 80, 78, 71, 13, 10, 26, 10,
+        ]);
+      else expect(asset.toString("utf8")).toContain("<svg");
+    }
+    expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(66);
+    fireEvent.click(getByRole("button", { name: "Features" }));
+    const expected = [
+      [
+        "API focus",
+        [
+          "Custom fetcher",
+          "Custom fetcher",
+          "Custom fetcher",
+          "GraphQL",
+          "GraphQL",
+          "HTTP requests",
+        ],
+      ],
+      [
+        "Caching",
+        ["Built-in", "Built-in", "Built-in", "Built-in", "Built-in", "Manual"],
+      ],
+      [
+        "Automatic refreshing",
+        [
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Manual",
+        ],
+      ],
+      [
+        "Shared requests & results",
+        ["Built-in", "Built-in", "Built-in", "Built-in", "Built-in", "Manual"],
+      ],
+      [
+        "Updates after saving",
+        [
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Manual",
+        ],
+      ],
+      [
+        "Loading & error states",
+        ["Built-in", "Built-in", "Built-in", "Built-in", "Built-in", "Manual"],
+      ],
+      [
+        "Automatic retries",
+        [
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Add-on",
+          "Manual",
+        ],
+      ],
+    ] as const;
+    for (const [name, labels] of expected) {
+      const row = getByRole("row", { name: new RegExp(`^${name}`) });
+      expect(
+        [...row.querySelectorAll(".tool-feature-label")].map(
+          (cell) => cell.textContent,
+        ),
+      ).toEqual(labels);
+    }
+    const cache = getByRole("row", { name: /^Caching/ });
+    for (const text of [
+      "Keyed",
+      "endpoint and arguments",
+      "Normalized entity",
+      "Graphcache",
+      "HTTP caching is separate",
+    ])
+      expect(cache.textContent).toContain(text);
+    const retries = getByRole("row", { name: /^Automatic retries/ });
+    expect(retries.textContent).toContain("bundled RetryLink");
+    expect(retries.textContent).toContain(
+      "Install and configure the retry exchange",
+    );
+    const button = getByRole("button", {
+      name: "About Shared requests & results",
+    });
+    const dialog = container.querySelector<HTMLDialogElement>(
+      `#${button.getAttribute("aria-controls")}`,
+    )!;
+    const showModal = vi.fn();
+    dialog.showModal = showModal;
+    fireEvent.click(button);
+    expect(showModal).toHaveBeenCalledOnce();
+    expect(dialog.textContent).toContain("request-isolated caches");
+    expect(topic.note).toContain("not an authorization check");
+    expect(topic.note).toContain(
+      "Axios is a framework-independent request client",
+    );
+    expect(javascriptTools.axios.facts[6]).toHaveProperty("label", "Manual");
+    expect(topic.sources!.length).toBeGreaterThanOrEqual(12);
+  });
+
+  it.each([
+    {
+      slug: "state",
+      ids: ["redux", "zustand", "pinia", "ngrx", "nanostores", "jotai"],
+      groups: [4, 2],
+      cells: 54,
+      rows: [
+        "Shared application state",
+        "Derived values",
+        "Async workflows",
+        "Persistence",
+        "Debugging",
+      ],
+      labels: [
+        [
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+        ],
+        [
+          "Configurable",
+          "Configurable",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+        ],
+        [
+          "Configurable",
+          "Manual",
+          "Manual",
+          "Add-on",
+          "Configurable",
+          "Configurable",
+        ],
+        [
+          "Add-on",
+          "Configurable",
+          "Add-on",
+          "Manual",
+          "Add-on",
+          "Configurable",
+        ],
+        [
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Add-on",
+          "Add-on",
+          "Add-on",
+        ],
+      ],
+    },
+    {
+      slug: "forms",
+      ids: [
+        "react-hook-form",
+        "formik",
+        "tanstack-form",
+        "vee-validate",
+        "vuelidate",
+        "superforms",
+      ],
+      groups: [2, 1, 2, 1],
+      cells: 60,
+      rows: [
+        "Field values & state",
+        "Validation",
+        "Errors & messages",
+        "Repeated fields",
+        "Submission & pending state",
+        "UI control integration",
+      ],
+      labels: [
+        [
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Configurable",
+          "Built-in",
+        ],
+        [
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+        ],
+        [
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+        ],
+        [
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Configurable",
+          "Configurable",
+        ],
+        [
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Manual",
+          "Configurable",
+        ],
+        [
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+        ],
+      ],
+    },
+  ])(
+    "compares optional $slug libraries with explicit capabilities and local icons",
+    ({ slug, ids, groups, cells, rows, labels }) => {
+      const topic = javascriptTopics.find(
+        ({ path }) => path === `/javascript/${slug}/`,
+      )!;
+      expect(topic.tools.map(({ id }) => id)).toEqual(ids);
+      expect(topic.columnGroups?.map(({ toolIds }) => toolIds.length)).toEqual(
+        groups,
+      );
+      expect(topic.dimensions.map(({ label }) => label)).toEqual(rows);
+      const { getByRole, container } = renderApp(topic.path);
+      expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(
+        cells,
+      );
+      expect(
+        getByRole("button", { name: "Features" }).getAttribute("aria-expanded"),
+      ).toBe("false");
+      fireEvent.click(getByRole("button", { name: "Features" }));
+      for (const [index, name] of rows.entries()) {
+        const row = getByRole("row", { name: new RegExp(`^${name}`) });
+        expect(
+          [...row.querySelectorAll(".tool-feature-label")].map(
+            (cell) => cell.textContent,
+          ),
+        ).toEqual(labels[index]);
+      }
+      const notices = readFileSync(resolve("THIRD_PARTY_NOTICES.txt"), "utf8");
+      for (const tool of topic.tools) {
+        expect(tool.logo).toBeTruthy();
+        const image = container.querySelector<HTMLImageElement>(
+          `#tool-${tool.id} img`,
+        )!;
+        expect(image.getAttribute("src")).toBe(`/providers/${tool.logo}`);
+        expect(image.getAttribute("alt")).toBe("");
+        const asset = readFileSync(resolve("public/providers", tool.logo!));
+        expect(asset.length).toBeGreaterThan(100);
+        expect(notices).toContain(tool.logo);
+        if (tool.logo!.endsWith(".svg")) {
+          expect(asset.toString()).toContain("<svg");
+          expect(asset.toString()).not.toMatch(
+            /<script|<foreignObject|<!DOCTYPE|<!ENTITY|\bon[a-z]+\s*=|@import|(?:href|src)\s*=\s*["'](?!#)|url\(\s*["']?(?!#)/i,
+          );
+        } else if (tool.logo!.endsWith(".png")) {
+          expect([...asset.subarray(0, 8)]).toEqual([
+            137, 80, 78, 71, 13, 10, 26, 10,
+          ]);
+        } else expect([...asset.subarray(0, 4)]).toEqual([0, 0, 1, 0]);
+      }
+      for (const source of topic.sources!)
+        expect(new URL(source.url).protocol).toBe("https:");
+    },
+  );
+
+  it("distinguishes optional libraries, companion packages and server form responsibilities", () => {
+    const state = javascriptTopics.find(
+      ({ path }) => path === "/javascript/state/",
+    )!;
+    const forms = javascriptTopics.find(
+      ({ path }) => path === "/javascript/forms/",
+    )!;
+    expect(state.note).toContain("NgRx Store is separately installed");
+    expect(state.note).toContain("distinct from NgRx SignalStore");
+    expect(javascriptTools.ngrx.facts[2]).toEqual({
+      label: "Add-on",
+      detail: "Install Effects for side-effect workflows.",
+    });
+    expect(javascriptTools.zustand.facts[3]).toHaveProperty(
+      "label",
+      "Configurable",
+    );
+    expect(javascriptTools.formik.licenseName).toBe("Apache-2.0");
+    expect(javascriptTools.jotai.ecosystems).toEqual(["React"]);
+    expect(javascriptTools.jotai.facts[3]).toHaveProperty(
+      "label",
+      "Configurable",
+    );
+    expect(javascriptTools.jotai.facts[4]).toHaveProperty("label", "Add-on");
+    expect(javascriptTools.superforms.ecosystems).toEqual(["Svelte"]);
+    expect(javascriptTools.vuelidate.ecosystems).toEqual(["Vue"]);
+    expect(javascriptTools.vuelidate.facts[4]).toHaveProperty(
+      "label",
+      "Manual",
+    );
+    expect(forms.note).toContain(
+      "$pending tracks async validation, not an HTTP submission",
+    );
+    expect(forms.note).toContain(
+      "server action still validates, authorizes and saves data",
+    );
+    expect(forms.note).toContain("vee-validate v4");
+    expect(forms.note).toContain("Vuelidate 2.x");
+    for (const topic of [state, forms])
+      expect(topic.note).toContain("Every entry here is an optional library");
+    expect(forms.dimensions[4].explanation).toContain(
+      "not a network submission",
+    );
+    const { getByRole, container } = renderApp(forms.path);
+    fireEvent.click(getByRole("button", { name: "Features" }));
+    const button = getByRole("button", {
+      name: "About Submission & pending state",
+    });
+    const dialog = container.querySelector<HTMLDialogElement>(
+      `#${button.getAttribute("aria-controls")}`,
+    )!;
+    const showModal = vi.fn();
+    dialog.showModal = showModal;
+    fireEvent.click(button);
+    expect(showModal).toHaveBeenCalledOnce();
+    expect(dialog.textContent).toContain(
+      "Supply the actual request and failure handling",
+    );
   });
 
   it("keeps application-stack candidates outside feature highlighting", () => {
@@ -575,7 +952,12 @@ describe("JavaScript / TypeScript", () => {
     ])
       expect(container.textContent).toContain(text);
     expect(container.textContent).not.toContain("Click ⓘ");
-    for (const id of ["nanostores", "tanstack-query", "tanstack-form"])
+    for (const id of [
+      "nanostores",
+      "tanstack-query",
+      "tanstack-form",
+      "superforms",
+    ])
       expect(javascriptTools[id].ecosystems).toContain("Svelte");
   });
 
@@ -1052,6 +1434,32 @@ describe("JavaScript / TypeScript", () => {
     ).toEqual(["React", "Angular", "Vue", "Svelte"]);
     expect(container.textContent).toContain("in editorial order");
     expect(container.textContent).not.toContain("Ordering source:");
+  });
+
+  it("aligns stack tooling with optional libraries and supported UI ecosystems", () => {
+    const angular = javascriptStacks.find(({ name }) => name === "Angular")!;
+    expect(angular.services[2][0]).toBe("NgRx Store");
+    expect(angular.services[3][0]).toBe("TanStack Query");
+    expect(angular.services[3][3]?.map(([name]) => name)).toEqual(["Axios"]);
+    expect(angular.services[4][0]).toBe("TanStack Form");
+    const react = javascriptStacks.find(({ name }) => name === "React")!;
+    expect(react.services[3][3]?.map(([name]) => name)).toContain("RTK Query");
+    expect(react.services[2][3]?.map(([name]) => name)).toContain("Jotai");
+    expect(react.services[4][3]?.map(([name]) => name)).toContain("Formik");
+    const vue = javascriptStacks.find(({ name }) => name === "Vue")!;
+    expect(vue.services[4][3]?.map(([name]) => name)).toContain("Vuelidate");
+    const svelte = javascriptStacks.find(({ name }) => name === "Svelte")!;
+    expect(svelte.services[4][3]?.map(([name]) => name)).toEqual([
+      "Superforms",
+    ]);
+    const { container } = renderApp(javascriptStacksTopic.path);
+    expect(container.textContent).toContain(
+      "Simple forms and built-in state/fetching may suffice across stacks",
+    );
+    expect(container.textContent).toContain(
+      "cells list optional libraries only",
+    );
+    expect(container.textContent).toContain("supported schema adapter");
   });
 
   it("keeps added choices in their category and supported UI ecosystem", () => {
