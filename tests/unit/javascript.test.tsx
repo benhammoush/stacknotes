@@ -36,13 +36,13 @@ describe("JavaScript / TypeScript", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(JSON.stringify(group)).not.toMatch(/python|django|flask|fastapi/i);
     const tools = javascriptTopics.flatMap((topic) => topic.tools);
-    expect(tools).toHaveLength(65);
+    expect(tools).toHaveLength(66);
     expect(javascriptTools.solid).toBeUndefined();
     expect(tools.flatMap(({ ecosystems }) => ecosystems)).not.toContain(
       "Solid",
     );
     expect(javascriptTools.sveltekit.ecosystems).toEqual(["Svelte"]);
-    expect(javascriptTools.skeleton).toBeUndefined();
+    expect(javascriptTools.skeleton.ecosystems).toEqual(["Svelte"]);
     for (const id of [
       "autoanimate",
       "nanostores",
@@ -171,7 +171,7 @@ describe("JavaScript / TypeScript", () => {
     });
   }
 
-  it("shows all nine component suites in compact groups without selectors", () => {
+  it("shows all ten component suites in compact groups without selectors", () => {
     const { getByRole, container } = renderApp("/javascript/components/");
     expect(
       [...container.querySelectorAll('th[scope="colgroup"]')].map((group) => [
@@ -182,14 +182,15 @@ describe("JavaScript / TypeScript", () => {
       ["React-based", "3"],
       ["Vue-based", "3"],
       ["Angular", "3"],
+      ["Svelte", "1"],
     ]);
-    expect(getByRole("table").querySelectorAll("thead th")).toHaveLength(13);
-    expect(container.querySelectorAll("tbody td")).toHaveLength(117);
+    expect(getByRole("table").querySelectorAll("thead th")).toHaveLength(15);
+    expect(container.querySelectorAll("tbody td")).toHaveLength(130);
     const topic = javascriptTopics.find(
       ({ path }) => path === "/javascript/components/",
     )!;
     expect(container.querySelectorAll(".sources a")).toHaveLength(
-      18 + topic.sources!.length,
+      20 + topic.sources!.length,
     );
     expect(container.querySelectorAll("select")).toHaveLength(0);
     expect(getByRole("link", { name: "Angular Material" })).toBeTruthy();
@@ -276,7 +277,7 @@ describe("JavaScript / TypeScript", () => {
     const { getByRole, container } = renderApp("/javascript/components/");
     const visual = getByRole("row", { name: /^Default look & feel/ });
     expect(visual.closest("tbody")).toBe(container.querySelector("tbody"));
-    expect(visual.querySelectorAll("td")).toHaveLength(9);
+    expect(visual.querySelectorAll("td")).toHaveLength(10);
     expect(
       visual.querySelectorAll(".different, .difference-mark"),
     ).toHaveLength(0);
@@ -327,12 +328,13 @@ describe("JavaScript / TypeScript", () => {
       "Styles / component overrides",
       "Styled / unstyled APIs",
       "Styles / component overrides",
+      "Utility classes + CSS",
     ]);
     expect(
       [...styling.querySelectorAll("td")].flatMap((cell, index) =>
         cell.classList.contains("different") ? [index] : [],
       ),
-    ).toEqual([2, 3, 7]);
+    ).toEqual([2, 3, 7, 9]);
     expect(
       getByRole("row", { name: /^Accessibility support/ }).querySelectorAll(
         "td.different",
@@ -411,15 +413,16 @@ describe("JavaScript / TypeScript", () => {
     ).toHaveLength(0);
   });
 
-  it("uses the same three component suites per ecosystem in comparisons and stacks", () => {
+  it("uses the same component candidates per ecosystem in comparisons and stacks", () => {
     const components = javascriptTopics.find(
       ({ path }) => path === "/javascript/components/",
     )!;
-    expect(components.tools).toHaveLength(9);
+    expect(components.tools).toHaveLength(10);
     for (const [ecosystem, ids] of [
       ["React", ["mui", "ant-design", "mantine"]],
       ["Vue", ["primevue", "vuetify", "element-plus"]],
       ["Angular", ["angular-material", "primeng", "ng-zorro"]],
+      ["Svelte", ["skeleton"]],
     ] as const) {
       expect(
         components.tools
@@ -445,7 +448,7 @@ describe("JavaScript / TypeScript", () => {
     for (const tool of components.tools) expect(tool.logo).toBeTruthy();
     const { container } = renderApp(components.path);
     expect(container.querySelectorAll("thead img.provider-logo")).toHaveLength(
-      9,
+      10,
     );
     for (const [id, filename] of [
       ["ant-design", "js-ant-design.svg"],
@@ -468,8 +471,29 @@ describe("JavaScript / TypeScript", () => {
     }
   });
 
-  it("keeps three complete JavaScript stacks with canonical tool names and explicit integration work", () => {
-    expect(javascriptStacks).toHaveLength(3);
+  it("documents Skeleton assets and Svelte integration boundaries in visible stack notes", () => {
+    expect(javascriptTools.skeleton.logo).toBe("js-skeleton.ico");
+    const bytes = readFileSync(
+      resolve(import.meta.dirname, "../../public/providers/js-skeleton.ico"),
+    );
+    expect([...bytes.subarray(0, 4)]).toEqual([0, 0, 1, 0]);
+    const { container } = renderApp(javascriptStacksTopic.path);
+    for (const text of [
+      "@skeletonlabs/skeleton-svelte",
+      "@tailwindcss/forms",
+      "@tanstack/svelte-query",
+      "@tanstack/svelte-form",
+      "per-request",
+      "static output cannot execute",
+    ])
+      expect(container.textContent).toContain(text);
+    expect(container.textContent).not.toContain("Click ⓘ");
+    for (const id of ["nanostores", "tanstack-query", "tanstack-form"])
+      expect(javascriptTools[id].ecosystems).toContain("Svelte");
+  });
+
+  it("keeps four complete JavaScript stacks with canonical tool names and explicit integration work", () => {
+    expect(javascriptStacks).toHaveLength(4);
     expect(javascriptStackRoles.map(({ label }) => label)).toEqual([
       "Application framework",
       "Component-library candidates",
@@ -498,7 +522,7 @@ describe("JavaScript / TypeScript", () => {
       /python|django|flask|fastapi/i,
     );
     const { getByRole, container } = renderApp(javascriptStacksTopic.path);
-    expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(18);
+    expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(24);
     expect(
       within(getByRole("table"))
         .getAllByRole("columnheader")
@@ -729,20 +753,25 @@ describe("JavaScript / TypeScript", () => {
     }
   });
 
-  it("uses one row per ecosystem in React, Angular, Vue order with framework alternatives", () => {
+  it("uses one row per ecosystem in React, Angular, Vue, Svelte order with framework alternatives", () => {
     expect(javascriptStacks.map(({ id }) => id)).toEqual([
       "js-react-api",
       "js-angular-api",
       "js-vue-api",
+      "js-svelte-api",
     ]);
     expect(javascriptStacks.map(({ name }) => name)).toEqual([
       "React",
       "Angular",
       "Vue",
+      "Svelte",
     ]);
     const react = javascriptStacks[0];
     expect(react.services[0][0]).toBe("Next.js");
-    expect(react.services[0][3]?.map(([name]) => name)).toEqual(["Astro"]);
+    expect(react.services[0][3]?.map(([name]) => name)).toEqual([
+      "TanStack Start",
+      "Astro",
+    ]);
     expect(react.services[1][3]?.map(([name]) => name)).toEqual([
       "Ant Design",
       "Mantine",
@@ -750,14 +779,14 @@ describe("JavaScript / TypeScript", () => {
     expect(react.note).toContain("can replace a separate API");
     const vue = javascriptStacks[2];
     expect(vue.services[0][0]).toBe("Nuxt");
-    expect(vue.services[0][3]).toEqual([]);
+    expect(vue.services[0][3]?.map(([name]) => name)).toEqual(["Astro"]);
     expect(vue.note).toContain("can replace a separate API");
     const { getByRole, container } = renderApp(javascriptStacksTopic.path);
     expect(
       within(getByRole("table"))
         .getAllByRole("rowheader")
         .map((row) => row.querySelector(".combination-name")?.textContent),
-    ).toEqual(["React", "Angular", "Vue"]);
+    ).toEqual(["React", "Angular", "Vue", "Svelte"]);
     expect(container.textContent).toContain("in editorial order");
     expect(container.textContent).not.toContain("Ordering source:");
   });
@@ -878,7 +907,7 @@ describe("JavaScript / TypeScript", () => {
       within(container.querySelector("table")!).getAllByRole("link", {
         name: "TanStack Query",
       }),
-    ).toHaveLength(3);
+    ).toHaveLength(4);
     for (const image of container.querySelectorAll(".provider-logo"))
       expect(image.getAttribute("alt")).toBe("");
   });

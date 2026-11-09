@@ -220,20 +220,25 @@ for (const width of [390, 1440]) {
       "React-based",
       "Vue-based",
       "Angular",
+      "Svelte",
     ]);
-    for (const group of await page.locator('th[scope="colgroup"]').all())
-      await expect(group).toHaveAttribute("colspan", "3");
-    await expect(page.getByRole("cell")).toHaveCount(36);
-    await expect(page.getByRole("columnheader")).toHaveCount(13);
+    const groups = page.locator('th[scope="colgroup"]');
+    for (let index = 0; index < 4; index++)
+      await expect(groups.nth(index)).toHaveAttribute(
+        "colspan",
+        index === 3 ? "1" : "3",
+      );
+    await expect(page.getByRole("cell")).toHaveCount(40);
+    await expect(page.getByRole("columnheader")).toHaveCount(15);
     await expect(page.getByRole("combobox")).toHaveCount(0);
     const visual = page.getByRole("row", { name: /^Default look & feel/ });
-    await expect(visual.getByRole("cell")).toHaveCount(9);
+    await expect(visual.getByRole("cell")).toHaveCount(10);
     await expect(visual.locator(".different, .difference-mark")).toHaveCount(0);
     await expect(
       page.getByRole("button", { name: "About Primary purpose", exact: true }),
     ).toHaveCount(0);
     await page.getByRole("button", { name: "Features", exact: true }).click();
-    await expect(page.getByRole("cell")).toHaveCount(117);
+    await expect(page.getByRole("cell")).toHaveCount(130);
     await expect(page.locator('#technical-rows th[scope="row"]')).toHaveCount(
       9,
     );
@@ -246,7 +251,7 @@ for (const width of [390, 1440]) {
     await page.locator("#comparison").evaluate((element) => {
       element.scrollLeft = element.scrollWidth;
     });
-    await expect(page.locator("#tool-ng-zorro")).toBeInViewport();
+    await expect(page.locator("#tool-skeleton")).toBeInViewport();
     await expect(page.locator(".sources > p").first()).toBeHidden();
     await page.getByText("Notes & sources", { exact: true }).click();
     await expect(page.locator(".sources > p").first()).toBeVisible();
@@ -277,8 +282,8 @@ for (const width of [390, 1440]) {
     const table = page.getByRole("table", {
       name: "Tools by application stack",
     });
-    await expect(table.getByRole("rowheader")).toHaveCount(3);
-    await expect(table.getByRole("cell")).toHaveCount(18);
+    await expect(table.getByRole("rowheader")).toHaveCount(4);
+    await expect(table.getByRole("cell")).toHaveCount(24);
     await expect(table.getByRole("columnheader")).toHaveText([
       "Application stack",
       "Application framework",
@@ -316,7 +321,20 @@ for (const width of [390, 1440]) {
       "React",
       "Angular",
       "Vue",
+      "Svelte",
     ]);
+    const svelte = table.getByRole("row", { name: /^Svelte / });
+    for (const name of [
+      "SvelteKit",
+      "Skeleton",
+      "Tailwind CSS",
+      "Nano Stores",
+      "TanStack Query",
+      "TanStack Form",
+    ])
+      await expect(svelte.getByRole("link", { name, exact: true })).toHaveCount(
+        1,
+      );
     const images = table.locator("img.provider-logo");
     const expectedLogos = javascriptStacks
       .flatMap(({ services }) =>

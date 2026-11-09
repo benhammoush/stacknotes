@@ -81,6 +81,7 @@ const stackToolLogos: Record<string, string> = {
   primevue: "js-primevue.svg",
   vuetify: "js-vuetify.svg",
   "angular-material": "js-angular-material.svg",
+  skeleton: "js-skeleton.ico",
   tailwind: "js-tailwind.svg",
   "css-modules": "js-css-modules.png",
   sass: "js-sass.svg",
@@ -160,9 +161,10 @@ export const javascriptTopics: JavaScriptTopic[] = [
         label: "Angular",
         toolIds: ["angular-material", "primeng", "ng-zorro"],
       },
+      { label: "Svelte", toolIds: ["skeleton"] },
     ],
     introduction:
-      "Compare the visual character, UI controls and developer APIs of three component suites for each UI ecosystem. These are curated choices, not a popularity ranking.",
+      "Compare the visual character, UI controls and developer APIs of component suites for React, Vue, Angular and Svelte. These are curated choices, not a popularity ranking.",
     note: "Default look & feel describes the components themselves, not full-page templates. These are editorial impressions, not design-quality scores; themes and versions change their appearance. Compare candidates within your UI ecosystem. Matching feature labels do not promise identical controls or APIs. Companion packages, commercial products and selected-release terms have separate boundaries; check the exact table, date picker or other control you need. Coordinate package and framework upgrades, especially Angular/CDK major versions. Accessibility still requires labels, contrast, keyboard and screen-reader checks in your app. Compact sizing does not guarantee touch accessibility. Client form validation never replaces server validation or authorization.",
     overviewPurpose: {
       label: "Default look & feel",
@@ -649,8 +651,72 @@ export const javascriptTopics: JavaScriptTopic[] = [
           ],
         ],
       ],
+      [
+        "skeleton",
+        "Skeleton",
+        "https://www.skeleton.dev/docs/svelte/get-started/introduction",
+        "https://github.com/skeletonlabs/skeleton/blob/main/LICENSE",
+        ["Svelte"],
+        "Theme-led, colorful surfaces with rounded controls and utility-driven spacing; headless controls need explicit styling.",
+        "A Tailwind design system with Svelte interaction components powered by Zag.js.",
+        "Requires Tailwind and Svelte-specific packages; form logic and advanced data-grid behavior are separate.",
+        [
+          [
+            "Design system + controls",
+            "Tailwind buttons, cards, forms and tables plus Svelte dialogs, comboboxes, date pickers, uploads and trees; styled tables are not an advanced data grid.",
+          ],
+          [
+            "CSS variables / tokens",
+            "Theme colors, typography, spacing and shape tokens with light/dark styling and theme presets.",
+          ],
+          [
+            "Utility classes + CSS",
+            "Tailwind classes and CSS variables customize component parts; headless controls such as Dialog require explicit styles.",
+          ],
+          [
+            "Snippets / compound parts",
+            "Svelte snippets and compound component parts customize content and rendered elements.",
+          ],
+          [
+            "Zag.js interactions",
+            "Framework components wrap Zag.js state machines; dialog, portal and overlay APIs support explicit interaction composition.",
+          ],
+          [
+            "External form logic",
+            "Form/input utility classes require @tailwindcss/forms; wire values, validation and errors with Svelte or a form library.",
+          ],
+          [
+            "Utilities + sizing",
+            "Responsive Tailwind utilities and element-size/spacing tokens control layouts and density; check touch targets.",
+          ],
+          [
+            "Keyboard / focus support",
+            "Dialog APIs provide focus trapping/restoration and Escape handling; application labels, styling and assistive-technology checks remain required.",
+          ],
+          [
+            "Typed Svelte APIs",
+            "@skeletonlabs/skeleton-svelte exposes typed props and snippet composition; coordinate Svelte, Tailwind and Skeleton versions.",
+          ],
+        ],
+      ],
     ]),
     sources: [
+      {
+        label: "Skeleton Svelte installation and design system",
+        url: "https://www.skeleton.dev/docs/svelte/get-started/installation",
+      },
+      {
+        label: "Skeleton tokens and sizing utilities",
+        url: "https://www.skeleton.dev/docs/svelte/get-started/core-api",
+      },
+      {
+        label: "Skeleton headless dialog, composition and focus APIs",
+        url: "https://www.skeleton.dev/docs/svelte/framework-components/dialog",
+      },
+      {
+        label: "Skeleton form styling and Tailwind forms plugin",
+        url: "https://www.skeleton.dev/docs/svelte/tailwind-components/forms",
+      },
       {
         label: "MUI theming and CSS variables",
         url: "https://mui.com/material-ui/customization/theming/",
@@ -1169,6 +1235,12 @@ export const javascriptTopics: JavaScriptTopic[] = [
   },
   {
     label: "State management",
+    sources: [
+      {
+        label: "Nano Stores Svelte store contract and runes integration",
+        url: "https://github.com/nanostores/nanostores#svelte",
+      },
+    ],
     title: "Application state management",
     path: "/javascript/state/",
     introduction:
@@ -1292,7 +1364,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "Nano Stores",
         "https://github.com/nanostores/nanostores",
         "https://github.com/nanostores/nanostores/blob/main/LICENSE",
-        ["React", "Vue", "Framework-agnostic"],
+        ["React", "Vue", "Svelte", "Framework-agnostic"],
         "Small reactive stores with multiple UI integrations.",
         "Share state across isolated components or UI islands.",
         "Select integrations and organize stores carefully as the app grows.",
@@ -1300,7 +1372,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
           ["Atomic stores", "Atoms, maps and computed stores."],
           [
             "UI-independent core",
-            "Framework adapters around a UI-independent core.",
+            "Framework adapters around a UI-independent core; Svelte supports its store contract directly, with a separate runes integration available.",
           ],
           [
             "Devtools integration",
@@ -1316,6 +1388,12 @@ export const javascriptTopics: JavaScriptTopic[] = [
   },
   {
     label: "Data fetching",
+    sources: [
+      {
+        label: "TanStack Query Svelte adapter and supported versions",
+        url: "https://tanstack.com/query/latest/docs/framework/svelte/installation",
+      },
+    ],
     title: "Data fetching & server state",
     path: "/javascript/data-fetching/",
     introduction:
@@ -1349,7 +1427,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "TanStack Query",
         "https://tanstack.com/query/latest/docs/framework/react/overview",
         "https://github.com/TanStack/query/blob/main/LICENSE",
-        ["React", "Vue", "Angular"],
+        ["React", "Vue", "Angular", "Svelte"],
         "Async state and query-cache tooling with framework adapters.",
         "Centralize fetching status, refetching and invalidation.",
         "You supply fetching functions and meaningful cache/invalidation rules.",
@@ -1439,6 +1517,12 @@ export const javascriptTopics: JavaScriptTopic[] = [
   },
   {
     label: "Forms",
+    sources: [
+      {
+        label: "TanStack Form Svelte adapter",
+        url: "https://tanstack.com/form/latest/docs/framework/svelte/quick-start",
+      },
+    ],
     title: "Form libraries",
     path: "/javascript/forms/",
     introduction:
@@ -1493,7 +1577,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "TanStack Form",
         "https://tanstack.com/form/latest/docs/overview",
         "https://github.com/TanStack/form/blob/main/LICENSE",
-        ["React", "Vue", "Angular"],
+        ["React", "Vue", "Angular", "Svelte"],
         "Typed form-state core with framework adapters.",
         "Form logic is separate from your choice of visual components.",
         "You supply the fields, layout and accessible error presentation.",

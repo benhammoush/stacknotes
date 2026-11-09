@@ -76,13 +76,14 @@ promise an integration with every framework.
 ## Component libraries
 
 The comparison groups columns under React-based, Vue-based and Angular, with three
-suites per group, using the same sticky two-level header as Frameworks & libraries.
-The comparison and stack candidates use the same three general-purpose suites per
+suites per group, plus one Svelte candidate, using the same sticky two-level header as Frameworks & libraries.
+The comparison and stack candidates use the same suites per
 ecosystem, in editorial order rather than a measured popularity ranking:
 
 - React: MUI Material UI, Ant Design, Mantine.
 - Vue: PrimeVue, Vuetify, Element Plus.
 - Angular: Angular Material, PrimeNG, NG-ZORRO.
+- Svelte: Skeleton (Svelte-specific package, Tailwind design system and Zag.js interactions).
 
 Overview starts with **Default look & feel**, replacing—not adding to—Primary
 purpose for this comparison only. It describes the visual character of the
@@ -124,7 +125,7 @@ Core license links do not establish the terms of commercial add-ons or editions.
 PrimeNG's upstream license distinguishes MIT community releases from commercial
 LTS terms, while its current installation guide documents a license key; verify
 the selected version and edition rather than assuming every release is MIT.
-All nine component suites use verified locally hosted marks, shared with the
+All ten component suites use verified locally hosted marks, shared with the
 stack table. Asset sources and rights are recorded in `THIRD_PARTY_NOTICES.txt`.
 
 ## Frameworks & libraries
@@ -175,9 +176,9 @@ site's favicon rather than an older collection mark. Provenance is recorded in
 
 ## Application stacks
 
-There is one row per UI ecosystem, in editorial order: React, Angular, Vue.
-Application-framework choices are Next.js or Astro for React, Angular for Angular,
-and Nuxt for Vue. The merged Frameworks & libraries comparison's build rows explain
+There is one row per UI ecosystem, in editorial order: React, Angular, Vue, Svelte.
+Application-framework choices are Next.js, TanStack Start or Astro for React, Angular for Angular,
+Nuxt or Astro for Vue, and SvelteKit for Svelte. The merged Frameworks & libraries comparison's build rows explain
 setup-dependent tooling:
 standalone React/Vue clients commonly use Vite, Vue's official starter defaults to
 Vite, Next.js 16+ defaults to Turbopack with webpack opt-in, and Angular keeps its
@@ -186,7 +187,7 @@ does not claim measured adoption. Integrated server features can replace a
 separate API; UI choice does not require a particular backend.
 
 Stacks are illustrative associations, not live integration tests or installation
-instructions. Integrated Next.js, Nuxt and Astro server features require
+instructions. Integrated Next.js, TanStack Start, Nuxt, Astro and SvelteKit server features require
 an appropriate deployment mode/adapter; static output has no request-time server.
 Unlisted pairings can also work. Applications with separate APIs need explicit API contracts,
 authentication/session decisions, authorization, CORS or a same-origin proxy,
@@ -207,6 +208,16 @@ comparison distinguishes runners, UI helpers and browser automation tools.
 Guides retain consequential integration caveats:
 asynchronous React Server Components need suitable integration or end-to-end
 coverage rather than assuming every component can be unit-tested.
+Shared notes below the table explain architecture boundaries; there are no row-info controls.
+Astro requires the matching React/Vue integration and explicit island hydration.
+TanStack Start hosting depends on build tool and target; SvelteKit requires a suitable adapter.
+The Svelte row uses Skeleton, Tailwind CSS, Nano Stores, TanStack Query and TanStack Form.
+Skeleton v5 combines styled utilities with framework components, some headless;
+its form utility classes require `@tailwindcss/forms`, while form state and validation stay separate.
+Use `@skeletonlabs/skeleton-svelte`, `@tanstack/svelte-query` (currently Svelte 5.25+)
+and `@tanstack/svelte-form`. Nano Stores implements the Svelte store contract;
+its runes integration is separate. SSR stores and caches must be scoped per request.
+SvelteKit load functions/actions can avoid extra client libraries.
 
 Python is not part of these comparisons. Existing cloud service comparisons own
 hosting and database-provider choices. Stack choices use verified local marks where available,

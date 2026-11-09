@@ -3,6 +3,10 @@ only, without endorsement or affiliation. The software license below does not
 grant trademark rights. Review applicable brand guidelines before public launch.
 
 JavaScript stack marks, retrieved November 8, 2026, unmodified and locally hosted.
+js-skeleton.ico: https://www.skeleton.dev/_astro/favicon.oeNx7Nna.png
+  Identity source: https://www.skeleton.dev/docs/svelte/get-started/introduction
+  (official favicon; ICO bytes despite upstream .png suffix). Project artwork;
+  no additional trademark rights implied.
 Collection licensing below does not grant trademark rights or establish the
 software license of the represented product. Framework-feature/tooling cells reuse
 the associated parent project's mark. No GitHub or css-loader mark represents CSS Modules.

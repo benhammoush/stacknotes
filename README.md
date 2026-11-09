@@ -46,7 +46,7 @@ its strengths and limitations, and what you still need to manage.
   and are not priced in license cells. ⓘ explains every row; cloud-provider
   responsibility scores are not applied to libraries. Supporting caveats and
   references stay in a collapsed Notes & sources disclosure.
-- Component libraries compares three suites each for React, Vue and Angular,
+- Component libraries compares three suites each for React, Vue and Angular, plus Skeleton for Svelte,
   with the same candidates in Application stacks; core and commercial license
   boundaries remain explicit. Default look & feel replaces Primary purpose in
   Overview, as an unhighlighted editorial description of the components themselves.
