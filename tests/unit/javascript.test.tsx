@@ -23,20 +23,22 @@ import ToolComparisonPage from "../../src/components/ToolComparisonPage";
 import type { JavaScriptTopic } from "../../src/data/javascript";
 
 describe("JavaScript / TypeScript", () => {
-  it("registers thirteen distinct comparisons and a separate application-stacks entry", () => {
-    expect(javascriptTopics).toHaveLength(13);
+  it("registers eleven distinct comparisons and a separate application-stacks entry", () => {
+    expect(javascriptTopics).toHaveLength(11);
     const group = categoryGroups.find(
       ({ label }) => label === "JavaScript / TypeScript",
     )!;
     expect(group.path).toBe(javascriptStacksTopic.path);
-    expect(group.topics).toHaveLength(14);
+    expect(group.topics).toHaveLength(12);
     const paths = categoryGroups.flatMap(({ topics }) =>
       topics.map(({ path }) => path),
     );
     expect(new Set(paths).size).toBe(paths.length);
     expect(JSON.stringify(group)).not.toMatch(/python|django|flask|fastapi/i);
     const tools = javascriptTopics.flatMap((topic) => topic.tools);
-    expect(tools).toHaveLength(66);
+    expect(tools).toHaveLength(67);
+    for (const id of ["bootstrap", "css-modules", "sass", "emotion"])
+      expect(javascriptTools[id]).toBeUndefined();
     expect(javascriptTools.solid).toBeUndefined();
     expect(tools.flatMap(({ ecosystems }) => ecosystems)).not.toContain(
       "Solid",
@@ -47,6 +49,12 @@ describe("JavaScript / TypeScript", () => {
       "autoanimate",
       "nanostores",
       "tanstack-query",
+      "rtk-query",
+      "axios",
+      "jotai",
+      "superforms",
+      "formik",
+      "vuelidate",
       "tanstack-form",
       "urql",
       "testing-library",
@@ -54,6 +62,13 @@ describe("JavaScript / TypeScript", () => {
       expect(javascriptTools[id]).toBeDefined();
     }
     expect(new Set(tools.map(({ id }) => id)).size).toBe(tools.length);
+    for (const id of [
+      "angular-signals",
+      "angular-httpclient",
+      "angular-forms",
+      "html-forms",
+    ])
+      expect(javascriptTools[id]).toBeUndefined();
   });
 
   for (const topic of javascriptTopics) {
@@ -62,10 +77,18 @@ describe("JavaScript / TypeScript", () => {
       expect(topic.note.length).toBeGreaterThan(60);
       expect(topic.dimensions).toHaveLength(
         topic === frameworksTopic
-          ? 7
+          ? 10
           : topic.path === "/javascript/components/"
             ? 9
-            : 4,
+            : topic.path === "/javascript/styling/"
+              ? 0
+              : topic.path === "/javascript/data-fetching/"
+                ? 7
+                : topic.path === "/javascript/state/"
+                  ? 5
+                  : topic.path === "/javascript/forms/"
+                    ? 6
+                    : 4,
       );
       for (const tool of topic.tools) {
         expect(tool.facts).toHaveLength(topic.dimensions.length);
@@ -117,16 +140,22 @@ describe("JavaScript / TypeScript", () => {
         "Limitations",
         "License & operating costs",
       ]);
-      const features = getByRole("button", { name: "Features" });
-      expect(features.getAttribute("aria-expanded")).toBe("false");
-      expect(
-        container.querySelector("#technical-rows")?.hasAttribute("hidden"),
-      ).toBe(true);
-      expect(
-        getByRole("table").querySelectorAll(".section-row th"),
-      ).toHaveLength(2);
-      fireEvent.click(features);
-      expect(features.getAttribute("aria-expanded")).toBe("true");
+      if (topic.dimensions.length) {
+        const features = getByRole("button", { name: "Features" });
+        expect(features.getAttribute("aria-expanded")).toBe("false");
+        expect(
+          container.querySelector("#technical-rows")?.hasAttribute("hidden"),
+        ).toBe(true);
+        expect(
+          getByRole("table").querySelectorAll(".section-row th"),
+        ).toHaveLength(2);
+        fireEvent.click(features);
+        expect(features.getAttribute("aria-expanded")).toBe("true");
+      } else {
+        expect(queryByRole("button", { name: "Features" })).toBeNull();
+        expect(container.querySelector("#technical-rows")).toBeNull();
+        expect(container.querySelectorAll(".section-row")).toHaveLength(1);
+      }
       expect(getByRole("table").querySelectorAll("thead th")).toHaveLength(
         topic.tools.length + 1 + (topic.columnGroups?.length ?? 0),
       );
@@ -139,9 +168,10 @@ describe("JavaScript / TypeScript", () => {
       expect(
         container.querySelectorAll("tbody:first-of-type .different"),
       ).toHaveLength(0);
-      expect(container.querySelector("#tool-help")?.textContent).toContain(
-        "not better or worse",
-      );
+      if (topic.dimensions.length)
+        expect(container.querySelector("#tool-help")?.textContent).toContain(
+          "not better or worse",
+        );
       for (const cell of container.querySelectorAll("td.different")) {
         expect(cell.closest("tbody")?.id).toBe("technical-rows");
         expect(
@@ -156,13 +186,16 @@ describe("JavaScript / TypeScript", () => {
       expect(container.querySelector('option[value="Svelte"]')).toBeNull();
       expect(container.querySelector('option[value="Solid"]')).toBeNull();
       expect(container.querySelector(".legend")).toBeNull();
+      expect(
+        container.querySelector(".tool-feature-guide, .tool-feature-legend"),
+      ).toBeNull();
       expect(container.querySelectorAll(".sources a")).toHaveLength(
         topic.tools.length * 2 + (topic.sources?.length ?? 0),
       );
       const nav = within(
         getByRole("navigation", { name: "JavaScript / TypeScript topics" }),
       );
-      expect(nav.getAllByRole("link")).toHaveLength(14);
+      expect(nav.getAllByRole("link")).toHaveLength(12);
       expect(
         nav
           .getByRole("link", { name: topic.label })
@@ -170,6 +203,82 @@ describe("JavaScript / TypeScript", () => {
       ).toBe("page");
     });
   }
+
+  it("shows one Styling overview table with tool marks and no compatibility or feature rows", () => {
+    const topic = javascriptTopics.find(
+      ({ path }) => path === "/javascript/styling/",
+    )!;
+    expect(topic.tools.map(({ id }) => id)).toEqual([
+      "tailwind",
+      "motion",
+      "gsap",
+      "anime",
+      "autoanimate",
+      "lucide",
+      "heroicons",
+      "tabler",
+      "phosphor",
+    ]);
+    const { container, queryByRole } = renderApp(topic.path);
+    expect(container.querySelectorAll("tbody td")).toHaveLength(36);
+    expect(container.querySelectorAll("dialog")).toHaveLength(4);
+    expect(container.querySelectorAll("thead .provider-logo")).toHaveLength(9);
+    expect(
+      container.querySelectorAll(
+        ".different, .difference-mark, #technical-toggle, #technical-rows, th[scope='colgroup']",
+      ),
+    ).toHaveLength(0);
+    expect(queryByRole("button", { name: "Features" })).toBeNull();
+    expect(container.textContent).not.toContain("less-common feature label");
+    expect(container.textContent).not.toContain("Scroll horizontally");
+    expect(queryByRole("row", { name: /^Framework compatibility/ })).toBeNull();
+    expect(container.querySelectorAll("tbody img")).toHaveLength(0);
+    const notices = readFileSync(
+      resolve(import.meta.dirname, "../../THIRD_PARTY_NOTICES.txt"),
+      "utf8",
+    );
+    for (const tool of topic.tools) {
+      expect(tool.category).toBeTruthy();
+      expect(
+        container.querySelector(`#tool-${tool.id} .company`)?.textContent,
+      ).toBe(tool.category);
+      const logo = container.querySelector(`#tool-${tool.id} img`)!;
+      expect(logo.getAttribute("alt")).toBe("");
+      expect(logo.getAttribute("src")).toBe(`/providers/${tool.logo}`);
+      expect(notices).toContain(tool.logo);
+      const bytes = readFileSync(
+        resolve(import.meta.dirname, "../../public/providers", tool.logo!),
+      );
+      expect(bytes.length).toBeGreaterThan(100);
+      if (tool.logo!.endsWith(".png"))
+        expect([...bytes.subarray(0, 8)]).toEqual([
+          137, 80, 78, 71, 13, 10, 26, 10,
+        ]);
+      if (tool.logo!.endsWith(".ico"))
+        expect([...bytes.subarray(0, 4)]).toEqual([0, 0, 1, 0]);
+    }
+    expect(container.querySelector(".sources")?.textContent).toContain(
+      "generic DOM API",
+    );
+  });
+
+  it.each(["/javascript/animation/", "/javascript/icons/"])(
+    "redirects the former %s topic to Styling",
+    async (path) => {
+      const { container } = renderApp(path);
+      await waitFor(() =>
+        expect(document.title).toBe("Styling tools · Stacknotes"),
+      );
+      expect(
+        container
+          .querySelector('nav a[aria-current="page"]')
+          ?.getAttribute("href"),
+      ).toBe("/javascript/styling/");
+      expect(
+        container.querySelectorAll("thead img.provider-logo"),
+      ).toHaveLength(9);
+    },
+  );
 
   it("shows all ten component suites in compact groups without selectors", () => {
     const { getByRole, container } = renderApp("/javascript/components/");
@@ -381,29 +490,384 @@ describe("JavaScript / TypeScript", () => {
       expect(new URL(source.url).protocol).toBe("https:");
   });
 
-  it("preserves cache-model differences while leaving tied API categories neutral", () => {
-    const { getByRole } = renderApp("/javascript/data-fetching/");
-    fireEvent.click(getByRole("button", { name: "Features" }));
-    const cache = getByRole("row", { name: /^Cache model/ });
-    expect(
-      [...cache.querySelectorAll(".tool-feature-label")].map(
-        (label) => label.textContent,
-      ),
-    ).toEqual([
-      "Keyed results",
-      "Keyed results",
-      "Normalized entities",
-      "Documents / optional entities",
+  it("compares six data tools by lifecycle support while retaining their scopes", () => {
+    const topic = javascriptTopics.find(
+      ({ path }) => path === "/javascript/data-fetching/",
+    )!;
+    expect(topic.tools.map(({ id }) => id)).toEqual([
+      "tanstack-query",
+      "swr",
+      "rtk-query",
+      "apollo",
+      "urql",
+      "axios",
     ]);
-    expect(
-      [...cache.querySelectorAll("td")].flatMap((cell, index) =>
-        cell.classList.contains("different") ? [index] : [],
-      ),
-    ).toEqual([2, 3]);
-    expect(
-      getByRole("row", { name: /^API focus/ }).querySelectorAll("td.different"),
-    ).toHaveLength(0);
-    expect(cache.textContent).toContain("Graphcache adds normalized caching");
+    expect(topic.columnGroups?.map(({ toolIds }) => toolIds.length)).toEqual([
+      3, 2, 1,
+    ]);
+    expect(javascriptTools["rtk-query"].ecosystems).toEqual([
+      "Framework-agnostic",
+      "React",
+    ]);
+    expect(javascriptTools.axios.ecosystems).toEqual(["Framework-agnostic"]);
+    const { getByRole, container } = renderApp(topic.path);
+    const notices = readFileSync(resolve("THIRD_PARTY_NOTICES.txt"), "utf8");
+    for (const tool of topic.tools) {
+      expect(tool.logo).toBeTruthy();
+      const image = container.querySelector<HTMLImageElement>(
+        `#tool-${tool.id} img`,
+      )!;
+      expect(image.getAttribute("src")).toBe(`/providers/${tool.logo}`);
+      expect(image.getAttribute("alt")).toBe("");
+      const asset = readFileSync(resolve("public/providers", tool.logo!));
+      expect(asset.length).toBeGreaterThan(100);
+      expect(notices).toContain(tool.logo);
+      if (tool.logo!.endsWith(".png"))
+        expect([...asset.subarray(0, 8)]).toEqual([
+          137, 80, 78, 71, 13, 10, 26, 10,
+        ]);
+      else expect(asset.toString("utf8")).toContain("<svg");
+    }
+    expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(66);
+    fireEvent.click(getByRole("button", { name: "Features" }));
+    const expected = [
+      [
+        "API focus",
+        [
+          "Custom fetcher",
+          "Custom fetcher",
+          "Custom fetcher",
+          "GraphQL",
+          "GraphQL",
+          "HTTP requests",
+        ],
+      ],
+      [
+        "Caching",
+        ["Built-in", "Built-in", "Built-in", "Built-in", "Built-in", "Manual"],
+      ],
+      [
+        "Automatic refreshing",
+        [
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Manual",
+        ],
+      ],
+      [
+        "Shared requests & results",
+        ["Built-in", "Built-in", "Built-in", "Built-in", "Built-in", "Manual"],
+      ],
+      [
+        "Updates after saving",
+        [
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Manual",
+        ],
+      ],
+      [
+        "Loading & error states",
+        ["Built-in", "Built-in", "Built-in", "Built-in", "Built-in", "Manual"],
+      ],
+      [
+        "Automatic retries",
+        [
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Add-on",
+          "Manual",
+        ],
+      ],
+    ] as const;
+    for (const [name, labels] of expected) {
+      const row = getByRole("row", { name: new RegExp(`^${name}`) });
+      expect(
+        [...row.querySelectorAll(".tool-feature-label")].map(
+          (cell) => cell.textContent,
+        ),
+      ).toEqual(labels);
+    }
+    const cache = getByRole("row", { name: /^Caching/ });
+    for (const text of [
+      "Keyed",
+      "endpoint and arguments",
+      "Normalized entity",
+      "Graphcache",
+      "HTTP caching is separate",
+    ])
+      expect(cache.textContent).toContain(text);
+    const retries = getByRole("row", { name: /^Automatic retries/ });
+    expect(retries.textContent).toContain("bundled RetryLink");
+    expect(retries.textContent).toContain(
+      "Install and configure the retry exchange",
+    );
+    const button = getByRole("button", {
+      name: "About Shared requests & results",
+    });
+    const dialog = container.querySelector<HTMLDialogElement>(
+      `#${button.getAttribute("aria-controls")}`,
+    )!;
+    const showModal = vi.fn();
+    dialog.showModal = showModal;
+    fireEvent.click(button);
+    expect(showModal).toHaveBeenCalledOnce();
+    expect(dialog.textContent).toContain("request-isolated caches");
+    expect(topic.note).toContain("not an authorization check");
+    expect(topic.note).toContain(
+      "Axios is a framework-independent request client",
+    );
+    expect(javascriptTools.axios.facts[6]).toHaveProperty("label", "Manual");
+    expect(topic.sources!.length).toBeGreaterThanOrEqual(12);
+  });
+
+  it.each([
+    {
+      slug: "state",
+      ids: ["redux", "zustand", "pinia", "ngrx", "nanostores", "jotai"],
+      groups: [4, 2],
+      cells: 54,
+      rows: [
+        "Shared application state",
+        "Derived values",
+        "Async workflows",
+        "Persistence",
+        "Debugging",
+      ],
+      labels: [
+        [
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+        ],
+        [
+          "Configurable",
+          "Configurable",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+        ],
+        [
+          "Configurable",
+          "Manual",
+          "Manual",
+          "Add-on",
+          "Configurable",
+          "Configurable",
+        ],
+        [
+          "Add-on",
+          "Configurable",
+          "Add-on",
+          "Manual",
+          "Add-on",
+          "Configurable",
+        ],
+        [
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Add-on",
+          "Add-on",
+          "Add-on",
+        ],
+      ],
+    },
+    {
+      slug: "forms",
+      ids: [
+        "react-hook-form",
+        "formik",
+        "tanstack-form",
+        "vee-validate",
+        "vuelidate",
+        "superforms",
+      ],
+      groups: [2, 1, 2, 1],
+      cells: 60,
+      rows: [
+        "Field values & state",
+        "Validation",
+        "Errors & messages",
+        "Repeated fields",
+        "Submission & pending state",
+        "UI control integration",
+      ],
+      labels: [
+        [
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Configurable",
+          "Built-in",
+        ],
+        [
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+        ],
+        [
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+        ],
+        [
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Configurable",
+          "Configurable",
+        ],
+        [
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Built-in",
+          "Manual",
+          "Configurable",
+        ],
+        [
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+          "Configurable",
+        ],
+      ],
+    },
+  ])(
+    "compares optional $slug libraries with explicit capabilities and local icons",
+    ({ slug, ids, groups, cells, rows, labels }) => {
+      const topic = javascriptTopics.find(
+        ({ path }) => path === `/javascript/${slug}/`,
+      )!;
+      expect(topic.tools.map(({ id }) => id)).toEqual(ids);
+      expect(topic.columnGroups?.map(({ toolIds }) => toolIds.length)).toEqual(
+        groups,
+      );
+      expect(topic.dimensions.map(({ label }) => label)).toEqual(rows);
+      const { getByRole, container } = renderApp(topic.path);
+      expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(
+        cells,
+      );
+      expect(
+        getByRole("button", { name: "Features" }).getAttribute("aria-expanded"),
+      ).toBe("false");
+      fireEvent.click(getByRole("button", { name: "Features" }));
+      for (const [index, name] of rows.entries()) {
+        const row = getByRole("row", { name: new RegExp(`^${name}`) });
+        expect(
+          [...row.querySelectorAll(".tool-feature-label")].map(
+            (cell) => cell.textContent,
+          ),
+        ).toEqual(labels[index]);
+      }
+      const notices = readFileSync(resolve("THIRD_PARTY_NOTICES.txt"), "utf8");
+      for (const tool of topic.tools) {
+        expect(tool.logo).toBeTruthy();
+        const image = container.querySelector<HTMLImageElement>(
+          `#tool-${tool.id} img`,
+        )!;
+        expect(image.getAttribute("src")).toBe(`/providers/${tool.logo}`);
+        expect(image.getAttribute("alt")).toBe("");
+        const asset = readFileSync(resolve("public/providers", tool.logo!));
+        expect(asset.length).toBeGreaterThan(100);
+        expect(notices).toContain(tool.logo);
+        if (tool.logo!.endsWith(".svg")) {
+          expect(asset.toString()).toContain("<svg");
+          expect(asset.toString()).not.toMatch(
+            /<script|<foreignObject|<!DOCTYPE|<!ENTITY|\bon[a-z]+\s*=|@import|(?:href|src)\s*=\s*["'](?!#)|url\(\s*["']?(?!#)/i,
+          );
+        } else if (tool.logo!.endsWith(".png")) {
+          expect([...asset.subarray(0, 8)]).toEqual([
+            137, 80, 78, 71, 13, 10, 26, 10,
+          ]);
+        } else expect([...asset.subarray(0, 4)]).toEqual([0, 0, 1, 0]);
+      }
+      for (const source of topic.sources!)
+        expect(new URL(source.url).protocol).toBe("https:");
+    },
+  );
+
+  it("distinguishes optional libraries, companion packages and server form responsibilities", () => {
+    const state = javascriptTopics.find(
+      ({ path }) => path === "/javascript/state/",
+    )!;
+    const forms = javascriptTopics.find(
+      ({ path }) => path === "/javascript/forms/",
+    )!;
+    expect(state.note).toContain("NgRx Store is separately installed");
+    expect(state.note).toContain("distinct from NgRx SignalStore");
+    expect(javascriptTools.ngrx.facts[2]).toEqual({
+      label: "Add-on",
+      detail: "Install Effects for side-effect workflows.",
+    });
+    expect(javascriptTools.zustand.facts[3]).toHaveProperty(
+      "label",
+      "Configurable",
+    );
+    expect(javascriptTools.formik.licenseName).toBe("Apache-2.0");
+    expect(javascriptTools.jotai.ecosystems).toEqual(["React"]);
+    expect(javascriptTools.jotai.facts[3]).toHaveProperty(
+      "label",
+      "Configurable",
+    );
+    expect(javascriptTools.jotai.facts[4]).toHaveProperty("label", "Add-on");
+    expect(javascriptTools.superforms.ecosystems).toEqual(["Svelte"]);
+    expect(javascriptTools.vuelidate.ecosystems).toEqual(["Vue"]);
+    expect(javascriptTools.vuelidate.facts[4]).toHaveProperty(
+      "label",
+      "Manual",
+    );
+    expect(forms.note).toContain(
+      "$pending tracks async validation, not an HTTP submission",
+    );
+    expect(forms.note).toContain(
+      "server action still validates, authorizes and saves data",
+    );
+    expect(forms.note).toContain("vee-validate v4");
+    expect(forms.note).toContain("Vuelidate 2.x");
+    for (const topic of [state, forms])
+      expect(topic.note).toContain("Every entry here is an optional library");
+    expect(forms.dimensions[4].explanation).toContain(
+      "not a network submission",
+    );
+    const { getByRole, container } = renderApp(forms.path);
+    fireEvent.click(getByRole("button", { name: "Features" }));
+    const button = getByRole("button", {
+      name: "About Submission & pending state",
+    });
+    const dialog = container.querySelector<HTMLDialogElement>(
+      `#${button.getAttribute("aria-controls")}`,
+    )!;
+    const showModal = vi.fn();
+    dialog.showModal = showModal;
+    fireEvent.click(button);
+    expect(showModal).toHaveBeenCalledOnce();
+    expect(dialog.textContent).toContain(
+      "Supply the actual request and failure handling",
+    );
   });
 
   it("keeps application-stack candidates outside feature highlighting", () => {
@@ -488,7 +952,12 @@ describe("JavaScript / TypeScript", () => {
     ])
       expect(container.textContent).toContain(text);
     expect(container.textContent).not.toContain("Click ⓘ");
-    for (const id of ["nanostores", "tanstack-query", "tanstack-form"])
+    for (const id of [
+      "nanostores",
+      "tanstack-query",
+      "tanstack-form",
+      "superforms",
+    ])
       expect(javascriptTools[id].ecosystems).toContain("Svelte");
   });
 
@@ -497,7 +966,6 @@ describe("JavaScript / TypeScript", () => {
     expect(javascriptStackRoles.map(({ label }) => label)).toEqual([
       "Application framework",
       "Component-library candidates",
-      "Styling",
       "State management",
       "Data fetching",
       "Forms",
@@ -522,7 +990,10 @@ describe("JavaScript / TypeScript", () => {
       /python|django|flask|fastapi/i,
     );
     const { getByRole, container } = renderApp(javascriptStacksTopic.path);
-    expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(24);
+    expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(20);
+    expect(
+      within(getByRole("table")).queryByRole("link", { name: "Tailwind CSS" }),
+    ).toBeNull();
     expect(
       within(getByRole("table"))
         .getAllByRole("columnheader")
@@ -553,7 +1024,7 @@ describe("JavaScript / TypeScript", () => {
   it("keeps shared categories out of the table while preserving their navigation and server caveats", () => {
     for (const id of ["js-react-api", "js-vue-api", "js-angular-api"]) {
       const stack = javascriptStacks.find((item) => item.id === id)!;
-      expect(stack.services).toHaveLength(6);
+      expect(stack.services).toHaveLength(5);
       expect(stack.note).toMatch(/validat/i);
       expect(stack.note).toContain("server");
       expect(stack.note).toMatch(/authorization/);
@@ -584,7 +1055,7 @@ describe("JavaScript / TypeScript", () => {
       "Testing",
     ])
       expect(table.queryByRole("columnheader", { name: label })).toBeNull();
-    expect(table.getByRole("columnheader", { name: "Styling" })).toBeTruthy();
+    expect(table.queryByRole("columnheader", { name: "Styling" })).toBeNull();
     expect(container.textContent).not.toContain(
       "Build tooling follows your setup:",
     );
@@ -597,8 +1068,7 @@ describe("JavaScript / TypeScript", () => {
     for (const label of [
       "Backend frameworks",
       "Build tools",
-      "Animation",
-      "Icons",
+      "Styling",
       "Database tools",
       "Validation",
       "Testing",
@@ -693,6 +1163,181 @@ describe("JavaScript / TypeScript", () => {
       expect(new URL(source.url).protocol).toBe("https:");
   });
 
+  it("compares SEO integration approaches for all nine frameworks without ranking promises", () => {
+    const index = frameworksTopic.dimensions.findIndex(
+      ({ label }) => label === "SEO & discoverability",
+    );
+    expect(index).toBe(7);
+    const expected = [
+      ["react", "App-managed integration", "React 19+"],
+      ["next", "Integrated head APIs", "Metadata API"],
+      ["tanstack-start", "Integrated head APIs", "configured sitemap"],
+      ["vue", "App-managed integration", "Assemble SSR"],
+      ["nuxt", "Integrated head APIs", "useHead/useSeoMeta"],
+      ["angular", "Metadata services", "Title/Meta"],
+      ["sveltekit", "Document head markup", "<svelte:head>"],
+      ["astro", "Document head markup", "@astrojs/sitemap"],
+      ["remix", "Document head markup", "Server-rendered JSX"],
+    ];
+    for (const [id, label, detail] of expected) {
+      const fact = javascriptTools[id].facts[index];
+      expect(fact).toHaveProperty("label", label);
+      expect(fact).not.toHaveProperty("included");
+      expect(fact.detail).toContain(detail);
+    }
+    const { getByRole, container } = renderApp(frameworksTopic.path);
+    fireEvent.click(getByRole("button", { name: "Features" }));
+    const row = getByRole("row", { name: /^SEO & discoverability/ });
+    expect(row.querySelectorAll("td")).toHaveLength(9);
+    expect(row.querySelectorAll(".tool-capability-status")).toHaveLength(0);
+    expect(
+      [...row.querySelectorAll(".tool-feature-label")].map(
+        (cell) => cell.textContent,
+      ),
+    ).toEqual(expected.map(([, label]) => label));
+    expect(
+      [...row.querySelectorAll("td")].flatMap((cell, position) =>
+        cell.classList.contains("different") ? [position] : [],
+      ),
+    ).toEqual([0, 3, 5]);
+    expect(container.querySelectorAll("dialog")).toHaveLength(14);
+    const button = getByRole("button", { name: "About SEO & discoverability" });
+    const dialog = container.querySelector<HTMLDialogElement>(
+      `#${button.getAttribute("aria-controls")}`,
+    )!;
+    const showModal = vi.fn();
+    dialog.showModal = showModal;
+    fireEvent.click(button);
+    expect(showModal).toHaveBeenCalledOnce();
+    for (const text of [
+      "canonical URLs",
+      "link-preview bots",
+      "JSON-LD",
+      "HTTP redirects/404",
+      "neither guarantees indexing or rankings",
+    ])
+      expect(dialog.textContent).toContain(text);
+    expect(frameworksTopic.note).toContain("not Remix v2 meta/links exports");
+    expect(frameworksTopic.note).toContain(
+      "not automatic discovery of dynamic SSR routes",
+    );
+    const sources = frameworksTopic.sources!.map(({ url }) => url);
+    for (const url of [
+      "https://tanstack.com/start/latest/docs/framework/react/guide/seo",
+      "https://svelte.dev/docs/kit/seo",
+      "https://docs.astro.build/en/guides/integrations-guide/sitemap/",
+      "https://github.com/remix-run/remix/blob/main/packages/remix/guides/04-rendering-ui.md",
+    ])
+      expect(sources).toContain(url);
+  });
+
+  it("compares forms support for all frameworks without equating submissions with validation", () => {
+    const index = frameworksTopic.dimensions.findIndex(
+      ({ label }) => label === "Forms support",
+    );
+    expect(index).toBe(8);
+    const expected = [
+      ["react", "Basic support", "Extra tools for complex forms."],
+      ["next", "Built-in submissions", "Add validation rules."],
+      ["tanstack-start", "Built-in submissions", "Add validation rules."],
+      ["vue", "Basic support", "Extra tools for complex forms."],
+      ["nuxt", "Built-in server handling", "Add validation rules."],
+      ["angular", "Built-in forms", "Form management and validation."],
+      ["sveltekit", "Built-in submissions", "Add validation rules."],
+      ["astro", "Built-in submissions", "Schema validation."],
+      ["remix", "Built-in submissions", "Validation tools."],
+    ];
+    for (const [id, label, detail] of expected)
+      expect(javascriptTools[id].facts[index]).toEqual({ label, detail });
+    const { getByRole, container } = renderApp(frameworksTopic.path);
+    fireEvent.click(getByRole("button", { name: "Features" }));
+    const row = getByRole("row", { name: /^Forms support/ });
+    expect(row.querySelectorAll("td")).toHaveLength(9);
+    expect(row.querySelectorAll(".tool-capability-status")).toHaveLength(0);
+    expect(
+      [...row.querySelectorAll(".tool-feature-label")].map(
+        (cell) => cell.textContent,
+      ),
+    ).toEqual(expected.map(([, label]) => label));
+    const button = getByRole("button", { name: "About Forms support" });
+    const dialog = container.querySelector<HTMLDialogElement>(
+      `#${button.getAttribute("aria-controls")}`,
+    )!;
+    const showModal = vi.fn();
+    dialog.showModal = showModal;
+    fireEvent.click(button);
+    expect(showModal).toHaveBeenCalledOnce();
+    for (const text of [
+      "Visual controls come from HTML or component libraries",
+      "Basic HTML checks work everywhere",
+      "The server must validate submissions and enforce authorization",
+      "server runtime",
+      "TanStack Form is separate",
+    ])
+      expect(dialog.textContent).toContain(text);
+    const sources = frameworksTopic.sources!.map(({ url }) => url);
+    for (const url of [
+      "https://angular.dev/guide/forms/reactive-forms",
+      "https://docs.astro.build/en/guides/actions/",
+      "https://github.com/remix-run/remix/blob/main/packages/remix/guides/09-forms-and-mutations.md",
+    ])
+      expect(sources).toContain(url);
+  });
+
+  it("compares native data loading without requiring a separate query library", () => {
+    const index = frameworksTopic.dimensions.findIndex(
+      ({ label }) => label === "Data fetching",
+    );
+    expect(index).toBe(9);
+    const expected = [
+      ["react", "App-managed", "Use browser fetching or optional tools."],
+      ["next", "Built-in page loading", "Load data on the server."],
+      ["tanstack-start", "Built-in page loading", "Load data through routes."],
+      ["vue", "App-managed", "Use browser fetching or optional tools."],
+      ["nuxt", "Built-in page loading", "Load data on server and client."],
+      ["angular", "Built-in HTTP tools", "Request data in your app."],
+      ["sveltekit", "Built-in page loading", "Load data on server and client."],
+      ["astro", "Server-side fetching", "Load data when pages are generated."],
+      ["remix", "Built-in server loading", "Load data in route handlers."],
+    ];
+    for (const [id, label, detail] of expected)
+      expect(javascriptTools[id].facts[index]).toEqual({ label, detail });
+    const { getByRole, container } = renderApp(frameworksTopic.path);
+    fireEvent.click(getByRole("button", { name: "Features" }));
+    const row = getByRole("row", { name: /^Data fetching/ });
+    expect(row.querySelectorAll("td")).toHaveLength(9);
+    expect(
+      [...row.querySelectorAll(".tool-feature-label")].map(
+        (cell) => cell.textContent,
+      ),
+    ).toEqual(expected.map(([, label]) => label));
+    expect(
+      [...row.querySelectorAll("td")].flatMap((cell, position) =>
+        cell.classList.contains("different") ? [position] : [],
+      ),
+    ).toEqual([0, 3, 5, 7, 8]);
+    const button = getByRole("button", { name: "About Data fetching" });
+    const dialog = container.querySelector<HTMLDialogElement>(
+      `#${button.getAttribute("aria-controls")}`,
+    )!;
+    const showModal = vi.fn();
+    dialog.showModal = showModal;
+    fireEvent.click(button);
+    expect(showModal).toHaveBeenCalledOnce();
+    for (const text of [
+      "Browser fetching works with every framework",
+      "TanStack Query is separate",
+      "at build time",
+      "at request time",
+      "Keep secrets and direct database access in server code",
+      "isolate private cached data by user and request",
+    ])
+      expect(dialog.textContent).toContain(text);
+    expect(frameworksTopic.sources!.map(({ url }) => url)).toContain(
+      "https://tanstack.com/router/latest/docs/framework/react/guide/data-loading",
+    );
+  });
+
   it("keeps framework cells short while retaining detailed row explanations", () => {
     for (const tool of frameworksTopic.tools) {
       for (const cell of [
@@ -712,7 +1357,7 @@ describe("JavaScript / TypeScript", () => {
   it("keeps every framework and its notes available without filtering controls", () => {
     const { getByRole, container } = renderApp("/javascript/ui/");
     fireEvent.click(getByRole("button", { name: "Features" }));
-    expect(container.querySelectorAll("tbody td")).toHaveLength(99);
+    expect(container.querySelectorAll("tbody td")).toHaveLength(126);
     expect(
       container.querySelector(".section-row th")?.getAttribute("colspan"),
     ).toBe("10");
@@ -789,6 +1434,32 @@ describe("JavaScript / TypeScript", () => {
     ).toEqual(["React", "Angular", "Vue", "Svelte"]);
     expect(container.textContent).toContain("in editorial order");
     expect(container.textContent).not.toContain("Ordering source:");
+  });
+
+  it("aligns stack tooling with optional libraries and supported UI ecosystems", () => {
+    const angular = javascriptStacks.find(({ name }) => name === "Angular")!;
+    expect(angular.services[2][0]).toBe("NgRx Store");
+    expect(angular.services[3][0]).toBe("TanStack Query");
+    expect(angular.services[3][3]?.map(([name]) => name)).toEqual(["Axios"]);
+    expect(angular.services[4][0]).toBe("TanStack Form");
+    const react = javascriptStacks.find(({ name }) => name === "React")!;
+    expect(react.services[3][3]?.map(([name]) => name)).toContain("RTK Query");
+    expect(react.services[2][3]?.map(([name]) => name)).toContain("Jotai");
+    expect(react.services[4][3]?.map(([name]) => name)).toContain("Formik");
+    const vue = javascriptStacks.find(({ name }) => name === "Vue")!;
+    expect(vue.services[4][3]?.map(([name]) => name)).toContain("Vuelidate");
+    const svelte = javascriptStacks.find(({ name }) => name === "Svelte")!;
+    expect(svelte.services[4][3]?.map(([name]) => name)).toEqual([
+      "Superforms",
+    ]);
+    const { container } = renderApp(javascriptStacksTopic.path);
+    expect(container.textContent).toContain(
+      "Simple forms and built-in state/fetching may suffice across stacks",
+    );
+    expect(container.textContent).toContain(
+      "cells list optional libraries only",
+    );
+    expect(container.textContent).toContain("supported schema adapter");
   });
 
   it("keeps added choices in their category and supported UI ecosystem", () => {
@@ -890,7 +1561,6 @@ describe("JavaScript / TypeScript", () => {
         }
       }
     }
-    expect(javascriptTools["css-modules"].logo).toBe("js-css-modules.png");
     const { container } = renderApp(javascriptStacksTopic.path);
     const expectedLogos = javascriptStacks
       .flatMap(({ services }) =>

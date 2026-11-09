@@ -28,6 +28,7 @@ export interface JavaScriptTool {
   license: string;
   licenseName: string;
   logo?: string;
+  category?: "Utility-first CSS" | "Animation" | "Icons";
   ecosystems: Ecosystem[];
   purpose: string;
   strength: string;
@@ -83,8 +84,32 @@ const stackToolLogos: Record<string, string> = {
   "angular-material": "js-angular-material.svg",
   skeleton: "js-skeleton.ico",
   tailwind: "js-tailwind.svg",
-  "css-modules": "js-css-modules.png",
-  sass: "js-sass.svg",
+  motion: "js-motion.png",
+  gsap: "js-gsap.png",
+  anime: "js-anime.png",
+  autoanimate: "js-autoanimate.png",
+  lucide: "js-lucide.png",
+  heroicons: "js-heroicons.png",
+  tabler: "js-tabler.ico",
+  phosphor: "js-phosphor.png",
+  "tanstack-query": "js-tanstack-start.svg",
+  swr: "js-swr.svg",
+  "rtk-query": "js-rtk-query.svg",
+  apollo: "js-apollo.svg",
+  urql: "js-urql.png",
+  redux: "js-rtk-query.svg",
+  zustand: "js-zustand.png",
+  pinia: "js-pinia.png",
+  ngrx: "js-ngrx.png",
+  nanostores: "js-nanostores.svg",
+  "react-hook-form": "js-react-hook-form.png",
+  "tanstack-form": "js-tanstack-start.svg",
+  "vee-validate": "js-vee-validate.ico",
+  superforms: "js-superforms.png",
+  jotai: "js-jotai.svg",
+  axios: "js-axios.svg",
+  formik: "js-formik.png",
+  vuelidate: "js-vuelidate.png",
   fastify: "js-fastify.svg",
   nest: "js-nest.svg",
   express: "js-express.svg",
@@ -96,6 +121,19 @@ const stackToolLogos: Record<string, string> = {
   vitest: "js-vitest.svg",
   playwright: "js-playwright.svg",
   vite: "js-vite.svg",
+};
+
+/** Styling discovery labels do not imply equivalent capabilities or native adapters. */
+const stylingCategories: Record<string, JavaScriptTool["category"]> = {
+  tailwind: "Utility-first CSS",
+  motion: "Animation",
+  gsap: "Animation",
+  anime: "Animation",
+  autoanimate: "Animation",
+  lucide: "Icons",
+  heroicons: "Icons",
+  tabler: "Icons",
+  phosphor: "Icons",
 };
 
 /**
@@ -115,12 +153,13 @@ function tools(entries: ToolEntry[]): JavaScriptTool[] {
       strength,
       limitation,
       facts,
-    ]) => ({
+    ]): JavaScriptTool => ({
       id,
       name,
       url,
       license,
       logo: stackToolLogos[id],
+      category: stylingCategories[id],
       licenseName:
         (
           {
@@ -130,7 +169,7 @@ function tools(entries: ToolEntry[]): JavaScriptTool[] {
             prisma: "Apache-2.0",
             drizzle: "Apache-2.0",
             playwright: "Apache-2.0",
-            "css-modules": "Implementation-dependent; linked css-loader is MIT",
+            formik: "Apache-2.0",
           } as Record<string, string>
         )[id] ?? "MIT",
       ecosystems,
@@ -832,31 +871,28 @@ export const javascriptTopics: JavaScriptTopic[] = [
     label: "Styling",
     title: "Styling tools",
     path: "/javascript/styling/",
-    introduction:
-      "Compare approaches to writing and organizing styles. These tools can complement each other rather than replace each other.",
-    note: "Styling support is not a complete accessibility guarantee. Check responsive behavior, contrast, focus and reduced-motion preferences in your own design.",
-    dimensions: [
+    sources: [
       {
-        label: "Approach",
-        explanation:
-          "Utilities, ready-made styles, scoped CSS, preprocessing and CSS-in-JS solve different problems.",
+        label: "Tailwind framework build integrations",
+        url: "https://tailwindcss.com/docs/installation/using-vite",
       },
       {
-        label: "Design defaults",
-        explanation:
-          "Whether visual components are supplied or the design is entirely yours.",
+        label: "Motion JavaScript quick start",
+        url: "https://motion.dev/docs/quick-start",
       },
       {
-        label: "Build & runtime",
-        explanation:
-          "What tooling processes the styles and whether JavaScript runs to generate them.",
+        label: "GSAP framework integration and cleanup",
+        url: "https://gsap.com/resources/frameworks/",
       },
       {
-        label: "Customization",
-        explanation:
-          "How you express shared tokens, themes and local exceptions.",
+        label: "Anime.js framework lifecycle example",
+        url: "https://animejs.com/documentation/getting-started/using-with-react/",
       },
     ],
+    introduction:
+      "Explore Tailwind CSS, animation tools and icon collections in one table. These tools serve different purposes and can complement each other; no feature ranking is implied.",
+    note: "Tailwind produces CSS through a configured build integration. Motion has JavaScript and React APIs; GSAP and Anime.js expose generic JavaScript/DOM APIs, with framework lifecycle integration and cleanup required. AutoAnimate offers React/Vue adapters and a generic DOM API. Icon collections provide SVG assets that can be used across frameworks; Heroicons provides React/Vue packages, while other collections have their own ecosystem packages. Select the maintained package for your framework and release, or use SVG directly; not every framework has a native package and these are not integration-tested pairings. Import only needed icons and inspect bundle output. Respect reduced-motion preferences and clean up effects on navigation. Check responsive behavior, contrast and focus in your design. Decorative icons need empty alternatives or aria-hidden; icon-only controls need accessible names. Core licenses do not cover every paid product or asset notice.",
+    dimensions: [],
     tools: tools([
       [
         "tailwind",
@@ -867,138 +903,8 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "Utility-first CSS framework.",
         "Compose styles in markup with a shared design vocabulary.",
         "Long class lists and shared component boundaries need discipline.",
-        [
-          ["Utility CSS", "Utility classes generated by a build step."],
-          [
-            "No component suite",
-            "Utilities and theme primitives, not a ready-made control suite.",
-          ],
-          [
-            "Build-time CSS",
-            "Build integration generates CSS; no styling runtime required.",
-          ],
-          [
-            "CSS variables / composition",
-            "Theme variables, utilities and reusable components.",
-          ],
-        ],
+        [],
       ],
-      [
-        "bootstrap",
-        "Bootstrap",
-        "https://getbootstrap.com/docs/5.3/getting-started/introduction/",
-        "https://github.com/twbs/bootstrap/blob/main/LICENSE",
-        ["Framework-agnostic"],
-        "CSS framework with layout utilities and styled components.",
-        "Established visual conventions and ready-made component styles.",
-        "Interactive JavaScript plugins must be integrated carefully with reactive UI frameworks.",
-        [
-          [
-            "Component CSS",
-            "Styled CSS components and utilities with JavaScript plugins.",
-          ],
-          ["Styled components", "A supplied visual language and layouts."],
-          [
-            "CSS + optional JS plugins",
-            "CSS works directly; some interactive components need JavaScript.",
-          ],
-          ["CSS variables / Sass", "CSS variables and Sass customization."],
-        ],
-      ],
-      [
-        "css-modules",
-        "CSS Modules",
-        "https://github.com/css-modules/css-modules",
-        "https://github.com/webpack-contrib/css-loader/blob/master/LICENSE",
-        ["Framework-agnostic"],
-        "Build-tool convention for locally scoped CSS names.",
-        "Keep ordinary CSS while reducing accidental class collisions.",
-        "A convention rather than one package: check your build implementation's license. Themes and component design remain yours.",
-        [
-          ["Scoped CSS", "Local class-name scoping, not a design framework."],
-          ["No component suite", "None; write your own CSS."],
-          ["Build-time CSS", "Requires CSS Modules support in your toolchain."],
-          [
-            "CSS variables / composition",
-            "Compose classes and use standard CSS variables.",
-          ],
-        ],
-      ],
-      [
-        "sass",
-        "Sass",
-        "https://sass-lang.com/documentation/",
-        "https://github.com/sass/dart-sass/blob/main/LICENSE",
-        ["Framework-agnostic"],
-        "Stylesheet language compiled into CSS.",
-        "Modules, functions and mixins help organize styles.",
-        "Adds a compilation layer and does not isolate classes by itself.",
-        [
-          ["CSS preprocessor", "CSS preprocessor."],
-          [
-            "No component suite",
-            "None; it can customize another CSS framework.",
-          ],
-          ["Build-time CSS", "Compile Sass before serving CSS."],
-          [
-            "Sass modules / mixins",
-            "Modules, variables, mixins and generated CSS.",
-          ],
-        ],
-      ],
-      [
-        "emotion",
-        "Emotion",
-        "https://emotion.sh/docs/introduction",
-        "https://github.com/emotion-js/emotion/blob/main/LICENSE",
-        ["React"],
-        "CSS-in-JS library with React integrations.",
-        "Co-locate component styling and theme-driven variants.",
-        "Server rendering and runtime style insertion need the documented setup.",
-        [
-          ["CSS-in-JS", "CSS-in-JS; this entry covers React styling APIs."],
-          ["No component suite", "No full control suite."],
-          [
-            "JS styling runtime",
-            "Runtime style generation with build-time optimizations available.",
-          ],
-          [
-            "JS theme / composition",
-            "Theme context, styled components and CSS composition.",
-          ],
-        ],
-      ],
-    ]),
-  },
-  {
-    label: "Animation",
-    title: "Animation libraries",
-    path: "/javascript/animation/",
-    introduction:
-      "Choose by the interaction you need: transitions, layout changes, gestures or timelines. Native CSS may be enough.",
-    note: "Respect reduced motion and clean up animations on navigation. No speed ranking is implied; measure your actual screens and devices.",
-    dimensions: [
-      {
-        label: "Integration",
-        explanation:
-          "Direct DOM APIs and framework-specific bindings have different lifecycle requirements.",
-      },
-      {
-        label: "Motion model",
-        explanation:
-          "What kinds of changes the library is designed to coordinate.",
-      },
-      {
-        label: "Control",
-        explanation: "How much timeline or interaction logic you write.",
-      },
-      {
-        label: "Your responsibilities",
-        explanation:
-          "Motion preferences, cleanup and interaction safety still require application work.",
-      },
-    ],
-    tools: tools([
       [
         "motion",
         "Motion",
@@ -1008,24 +914,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "Animation tools with JavaScript and React APIs.",
         "Declarative animation and interaction APIs for UI work.",
         "Capabilities and paid offerings differ across packages and integrations.",
-        [
-          [
-            "JS + UI bindings",
-            "React components/hooks or JavaScript animation APIs.",
-          ],
-          [
-            "General animation",
-            "Transitions, layout animations and gestures through appropriate APIs.",
-          ],
-          [
-            "Explicit animation APIs",
-            "Use animation values, transitions and sequencing APIs.",
-          ],
-          [
-            "Motion / lifecycle checks",
-            "Follow reduced-motion guidance and clean up manual animations.",
-          ],
-        ],
+        [],
       ],
       [
         "gsap",
@@ -1036,24 +925,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "JavaScript animation engine and plugin ecosystem.",
         "Explicit timelines coordinate complex sequences.",
         "DOM targeting and lifecycle cleanup require care; review current license terms.",
-        [
-          [
-            "JS + UI bindings",
-            "DOM-oriented JavaScript; integrations for component lifecycles.",
-          ],
-          [
-            "General animation",
-            "Tweens, timelines, SVG and plugin-driven effects.",
-          ],
-          [
-            "Explicit animation APIs",
-            "Detailed sequencing and playback control.",
-          ],
-          [
-            "Motion / lifecycle checks",
-            "Use cleanup/context mechanisms and implement reduced-motion behavior.",
-          ],
-        ],
+        [],
       ],
       [
         "anime",
@@ -1064,21 +936,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "JavaScript toolkit for animation and timelines.",
         "Animate DOM properties and coordinate sequences.",
         "You connect lifecycle cleanup and interaction logic to your app.",
-        [
-          ["JavaScript API", "JavaScript APIs for DOM and other values."],
-          [
-            "General animation",
-            "Animations, timelines and layout/scroll tools as documented.",
-          ],
-          [
-            "Explicit animation APIs",
-            "Explicit targets, timing and sequencing.",
-          ],
-          [
-            "Motion / lifecycle checks",
-            "Revert effects and respect motion preferences.",
-          ],
-        ],
+        [],
       ],
       [
         "autoanimate",
@@ -1089,54 +947,8 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "Automatic transitions for changes to a container's children.",
         "Small integration for adding, removing and moving list items.",
         "Less suitable when you need precise multi-step choreography.",
-        [
-          ["JS + UI bindings", "Parent-element API and framework adapters."],
-          [
-            "Container transitions",
-            "Changes to immediate children of a container.",
-          ],
-          [
-            "Automatic defaults",
-            "Defaults with customization rather than a general timeline editor.",
-          ],
-          [
-            "Motion / lifecycle checks",
-            "Check reduced-motion behavior and unusual layout cases.",
-          ],
-        ],
+        [],
       ],
-    ]),
-  },
-  {
-    label: "Icons",
-    title: "Icon collections",
-    path: "/javascript/icons/",
-    introduction:
-      "Compare visual languages and delivery formats, not backend or application features.",
-    note: "Decorative icons should be hidden from assistive technology. Icon-only controls need an accessible name. Loading a collection does not supply those decisions.",
-    dimensions: [
-      {
-        label: "Visual style",
-        explanation:
-          "Weight, shape and variants should match the rest of the interface.",
-      },
-      {
-        label: "Integration",
-        explanation:
-          "Check the maintained package for your UI framework, or use SVG assets.",
-      },
-      {
-        label: "Loading",
-        explanation:
-          "Import only the assets you use; check what your bundler actually includes.",
-      },
-      {
-        label: "Customization",
-        explanation:
-          "Color, stroke and size controls differ by format and icon design.",
-      },
-    ],
-    tools: tools([
       [
         "lucide",
         "Lucide",
@@ -1146,18 +958,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "Open icon collection with a consistent stroke style.",
         "SVG assets and framework packages support varied integrations.",
         "The outlined visual style may not match a filled icon language.",
-        [
-          ["Outline", "Stroke-based icons."],
-          ["SVG + UI packages", "SVG plus framework-specific packages."],
-          [
-            "Selected icons",
-            "Use individual imports and inspect bundle output.",
-          ],
-          [
-            "Size / color / stroke",
-            "Size, color and stroke options through SVG/package APIs.",
-          ],
-        ],
+        [],
       ],
       [
         "heroicons",
@@ -1168,18 +969,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "SVG icon collection with outline and solid variants.",
         "Related icon sizes and styles support consistent interfaces.",
         "Check available sizes and framework integrations for the icons you need.",
-        [
-          [
-            "Outline + filled",
-            "Outline and solid sets at defined design sizes.",
-          ],
-          ["SVG + UI packages", "SVG assets and React/Vue packages."],
-          [
-            "Selected icons",
-            "Import individual icons or embed selected SVG assets.",
-          ],
-          ["Size / color", "Use SVG color and size; preserve intended style."],
-        ],
+        [],
       ],
       [
         "tabler",
@@ -1190,21 +980,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "SVG icon collection with framework integrations.",
         "A broad set of consistently drawn interface symbols.",
         "Similar-looking variants still need a product-wide selection rule.",
-        [
-          [
-            "Outline + filled",
-            "Outline collection with filled icons also available.",
-          ],
-          ["SVG + UI packages", "SVG and framework-specific packages."],
-          [
-            "Selected icons",
-            "Select icons instead of shipping the complete collection.",
-          ],
-          [
-            "Size / color / stroke",
-            "SVG sizing, colors and outline stroke settings.",
-          ],
-        ],
+        [],
       ],
       [
         "phosphor",
@@ -1215,21 +991,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "Icon family with multiple visual weights.",
         "Weight choices help fit icons to different interface densities.",
         "Mixing weights casually can make the design inconsistent.",
-        [
-          [
-            "Multiple weights",
-            "Multiple weights including regular, bold and duotone.",
-          ],
-          ["SVG + UI packages", "SVG assets and ecosystem packages."],
-          [
-            "Selected icons",
-            "Choose an integration and import only needed icons.",
-          ],
-          [
-            "Size / color / weight",
-            "Size, color and weight via assets or package APIs.",
-          ],
-        ],
+        [],
       ],
     ]),
   },
@@ -1240,31 +1002,101 @@ export const javascriptTopics: JavaScriptTopic[] = [
         label: "Nano Stores Svelte store contract and runes integration",
         url: "https://github.com/nanostores/nanostores#svelte",
       },
-    ],
-    title: "Application state management",
-    path: "/javascript/state/",
-    introduction:
-      "Compare shared application state. Local component state, URL state and remote-data caches have different jobs.",
-    note: "Persisting state does not enforce authorization. Isolate user-specific stores during server rendering; not every app needs a global state library.",
-    dimensions: [
       {
-        label: "State model",
-        explanation: "How data is represented and changed.",
+        label: "Redux asynchronous workflow helpers",
+        url: "https://redux-toolkit.js.org/api/createAsyncThunk",
       },
       {
-        label: "Integration",
+        label: "Zustand persistence middleware",
+        url: "https://zustand.docs.pmnd.rs/reference/middlewares/persist",
+      },
+      {
+        label: "Zustand DevTools middleware",
+        url: "https://zustand.docs.pmnd.rs/reference/middlewares/devtools",
+      },
+      {
+        label: "Pinia computed getters",
+        url: "https://pinia.vuejs.org/core-concepts/getters.html",
+      },
+      {
+        label: "Pinia asynchronous actions",
+        url: "https://pinia.vuejs.org/core-concepts/actions.html",
+      },
+      {
+        label: "Pinia plugins and storage integration",
+        url: "https://pinia.vuejs.org/core-concepts/plugins.html",
+      },
+      {
+        label: "NgRx separate Effects package",
+        url: "https://ngrx.io/guide/effects",
+      },
+      {
+        label: "NgRx separate Store Devtools package",
+        url: "https://ngrx.io/guide/store-devtools",
+      },
+      {
+        label: "Nano Stores persistence companion",
+        url: "https://github.com/nanostores/persistent",
+      },
+      {
+        label: "Nano Stores logger companion",
+        url: "https://github.com/nanostores/logger",
+      },
+      {
+        label: "Jotai asynchronous atoms",
+        url: "https://jotai.org/docs/guides/async",
+      },
+      {
+        label: "Jotai bundled storage utilities",
+        url: "https://jotai.org/docs/utilities/storage",
+      },
+      {
+        label: "Jotai separate DevTools package",
+        url: "https://jotai.org/docs/tools/devtools",
+      },
+    ],
+    title: "State management",
+    path: "/javascript/state/",
+    introduction:
+      "Share application state such as preferences and selections. Framework state may already be enough; API-data caching belongs in Data fetching.",
+    note: "Every entry here is an optional library; framework-provided state belongs in Frameworks & libraries, not this comparison. Built-in means supplied behavior, Configurable means enable or define rules, Add-on means a separate package, and Manual means application code. Shared application state is not the same as local component state, URL state or an API-data cache. RTK Query is a separate Redux Toolkit capability compared in Data fetching. Redux and Zustand have framework-independent cores; React needs the appropriate binding. NgRx Store is separately installed, not an Angular default, and is distinct from NgRx SignalStore. Effects and Store Devtools are companion packages. Async actions in Zustand and Pinia are supported, but application code coordinates the work and its pending/error state; they are not complete workflow engines. Jotai provides derived/async atoms, bundled storage utilities and a separate DevTools package; async UI still needs pending/error handling. Persistence needs storage selection, hydration, versioning and cleanup; browser storage is not a database or a safe place for secrets. DevTools integrations may need a browser extension and development build. Persisting state does not enforce authorization. Isolate user-specific stores during server rendering; framework state may already suffice.",
+    overviewPurpose: {
+      label: "Best fit & scope",
+      explanation:
+        "How each optional library organizes shared application state. Reducer-based stores, direct-action stores and atoms have different setup and debugging models. These choices are not a requirement for every app; framework-provided capabilities are explained in Frameworks & libraries.",
+    },
+    columnGroups: [
+      {
+        label: "Stores & reducers",
+        toolIds: ["redux", "zustand", "pinia", "ngrx"],
+      },
+      { label: "Atomic state", toolIds: ["nanostores", "jotai"] },
+    ],
+    dimensions: [
+      {
+        label: "Shared application state",
         explanation:
-          "Which UI ecosystem consumes the state and what setup it needs.",
+          "Share values between components without passing them through every parent. The application still chooses store/provider boundaries, subscriptions and lifecycle. Matching atoms or stores must use the intended scope. Sharing does not persist state or provide a remote-data cache. Server-side state must be isolated per user/request.",
+      },
+      {
+        label: "Derived values",
+        explanation:
+          "Calculate values from existing state, such as filtered items or a total. Some tools track reactive dependencies, while others use explicitly defined selectors and memoization helpers. Built-in APIs still need application-authored calculations. Zustand selectors do not automatically provide a separate memoized computation graph.",
+      },
+      {
+        label: "Async workflows",
+        explanation:
+          "Coordinate asynchronous work and its effects on state, not automatic API-data caching. Redux Toolkit supplies thunk/listener helpers; NgRx Effects is a separate package. Zustand and Pinia support async actions, but the application writes orchestration and pending/error updates. Nano Stores supplies task helpers; Jotai supports async atoms with application-defined pending/error UI. None replaces request handling or business-specific failure logic.",
+      },
+      {
+        label: "Persistence",
+        explanation:
+          "Keep selected state after a reload. Zustand supplies persist middleware and Jotai supplies atomWithStorage utilities; other tools may use companion packages/plugins or custom storage code. Add-on is an available integration path, not a mandatory dependency. Choose what to store, handle hydration and schema changes, and clear user data on logout. Browser storage is not a database, does not authorize access and must not expose secrets.",
       },
       {
         label: "Debugging",
         explanation:
-          "How state changes can be inspected; integrations may need configuration.",
-      },
-      {
-        label: "Persistence & SSR",
-        explanation:
-          "Storage and server rendering need explicit lifecycle and per-request boundaries.",
+          "Inspect state changes with development tools. Bundled integrations may need configuration and a separately installed browser extension; Add-on here means a separate application package. NgRx Store Devtools, Nano Stores logging and jotai-devtools are companions. Different tools expose different snapshots, logs and time-travel behavior; availability depends on the integration and build mode.",
       },
     ],
     tools: tools([
@@ -1274,22 +1106,20 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "https://redux-toolkit.js.org/introduction/getting-started",
         "https://github.com/reduxjs/redux-toolkit/blob/master/LICENSE",
         ["React", "Framework-agnostic"],
-        "Tools for writing Redux application state.",
+        "Structured application state with actions, slices and reducers.",
         "Structured state updates and established debugging conventions.",
         "Store, slice and selector conventions can be more structure than a small app needs.",
         [
+          ["Built-in", "Shared Redux store; React uses React Redux bindings."],
+          ["Configurable", "Define selectors; memoization helpers supplied."],
           [
-            "Actions / reducers",
-            "Slices, reducers and actions; RTK Query is a separate data-fetching capability.",
+            "Configurable",
+            "Thunk and listener helpers; implement the async operation.",
           ],
+          ["Add-on", "Persistence integration, or write custom storage code."],
           [
-            "UI-independent core",
-            "Core is UI-independent; React commonly uses React Redux.",
-          ],
-          ["Devtools integration", "Redux DevTools integration."],
-          [
-            "External persistence",
-            "Persistence is separate; create isolated stores for server requests.",
+            "Configurable",
+            "Redux DevTools integration; browser extension needed.",
           ],
         ],
       ],
@@ -1299,17 +1129,21 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "https://zustand.docs.pmnd.rs/learn/getting-started/introduction.html",
         "https://github.com/pmndrs/zustand/blob/main/LICENSE",
         ["React", "Framework-agnostic"],
-        "Store-based state library with React and vanilla APIs.",
+        "Small stores with direct actions and React or vanilla APIs.",
         "Direct store access and selective subscriptions.",
         "Store boundaries and update conventions are your design decisions.",
         [
-          ["Store / actions", "Stores, actions and selectors."],
-          ["UI-independent core", "React hooks or vanilla stores."],
-          ["Devtools integration", "Devtools middleware can expose changes."],
+          ["Built-in", "Shared stores and selective subscriptions."],
           [
-            "First-party middleware",
-            "Persist middleware needs hydration planning; avoid shared user state on servers.",
+            "Configurable",
+            "Read derived values through application-defined selectors.",
           ],
+          ["Manual", "Write async actions and their pending/error updates."],
+          [
+            "Configurable",
+            "Bundled persist middleware; plan storage and hydration.",
+          ],
+          ["Configurable", "DevTools middleware; browser extension needed."],
         ],
       ],
       [
@@ -1318,19 +1152,17 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "https://pinia.vuejs.org/introduction.html",
         "https://github.com/vuejs/pinia/blob/v3/LICENSE",
         ["Vue"],
-        "Store library for Vue applications.",
+        "Vue stores with reactive getters and actions.",
         "Vue-oriented stores and development-tool integration.",
         "You still design store scope, side effects and persistence.",
         [
-          ["Store / actions", "State, getters and actions in stores."],
+          ["Built-in", "Shared Vue stores; follow Nuxt setup when used there."],
+          ["Built-in", "Getters track reactive dependencies."],
+          ["Manual", "Write async actions and their pending/error updates."],
+          ["Add-on", "Persistence plugin, or write custom storage code."],
           [
-            "Framework-specific",
-            "Vue integration; follow Nuxt guidance when used there.",
-          ],
-          ["Devtools integration", "Vue DevTools support."],
-          [
-            "External persistence",
-            "Use documented SSR setup; persistence is not an automatic database.",
+            "Configurable",
+            "Vue DevTools integration; extension/setup required.",
           ],
         ],
       ],
@@ -1340,23 +1172,18 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "https://ngrx.io/guide/store",
         "https://github.com/ngrx/platform/blob/main/LICENSE",
         ["Angular"],
-        "Reactive state management for Angular.",
+        "Event-driven Angular stores; optional, not Angular's default.",
         "Explicit event-driven state and Angular ecosystem integrations.",
         "Actions, reducers, selectors and effects introduce architectural concepts.",
         [
+          ["Built-in", "Shared observable store with actions and reducers."],
+          ["Built-in", "Memoized selector APIs; supply the calculation."],
+          ["Add-on", "Install Effects for side-effect workflows."],
           [
-            "Actions / reducers",
-            "Observable state with actions, reducers and selectors.",
+            "Manual",
+            "Implement storage synchronization or choose an integration.",
           ],
-          ["Framework-specific", "Angular providers and companion packages."],
-          [
-            "Devtools integration",
-            "Store Devtools through a dedicated integration.",
-          ],
-          [
-            "External persistence",
-            "Persistence is application work; scope server-side state correctly.",
-          ],
+          ["Add-on", "Separate Store Devtools package and browser extension."],
         ],
       ],
       [
@@ -1365,23 +1192,38 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "https://github.com/nanostores/nanostores",
         "https://github.com/nanostores/nanostores/blob/main/LICENSE",
         ["React", "Vue", "Svelte", "Framework-agnostic"],
-        "Small reactive stores with multiple UI integrations.",
+        "Small stores for components or islands across UI frameworks.",
         "Share state across isolated components or UI islands.",
         "Select integrations and organize stores carefully as the app grows.",
         [
-          ["Atomic stores", "Atoms, maps and computed stores."],
+          ["Built-in", "Shared atoms/maps; use the appropriate UI binding."],
+          ["Built-in", "Computed stores with tracked dependencies."],
           [
-            "UI-independent core",
-            "Framework adapters around a UI-independent core; Svelte supports its store contract directly, with a separate runes integration available.",
+            "Configurable",
+            "Task helpers; write the operation and failure handling.",
           ],
+          ["Add-on", "Separate persistent-store package."],
+          ["Add-on", "Logger/devtools companion integrations."],
+        ],
+      ],
+      [
+        "jotai",
+        "Jotai",
+        "https://jotai.org/docs/introduction",
+        "https://github.com/pmndrs/jotai/blob/main/LICENSE",
+        ["React"],
+        "Atomic React state with derived values and async atoms.",
+        "Compose small atoms with tracked dependencies and selective updates.",
+        "Design atom/provider scope, async feedback and storage hydration.",
+        [
+          ["Built-in", "Shared atoms within the chosen store/provider scope."],
+          ["Built-in", "Derived atoms track dependencies."],
           [
-            "Devtools integration",
-            "Use the project's logging/devtools integrations as needed.",
+            "Configurable",
+            "Async atoms; supply pending/error UI and operation logic.",
           ],
-          [
-            "Companion integration",
-            "Persistence and SSR require the appropriate integrations and isolation.",
-          ],
+          ["Configurable", "Bundled atomWithStorage utility; plan hydration."],
+          ["Add-on", "Install jotai-devtools for development inspection."],
         ],
       ],
     ]),
@@ -1393,32 +1235,116 @@ export const javascriptTopics: JavaScriptTopic[] = [
         label: "TanStack Query Svelte adapter and supported versions",
         url: "https://tanstack.com/query/latest/docs/framework/svelte/installation",
       },
+      {
+        label: "TanStack Query caching, refreshing and retry defaults",
+        url: "https://tanstack.com/query/latest/docs/framework/react/guides/important-defaults",
+      },
+      {
+        label: "TanStack Query updates after mutations",
+        url: "https://tanstack.com/query/latest/docs/framework/react/guides/invalidations-from-mutations",
+      },
+      {
+        label: "SWR automatic refreshing",
+        url: "https://swr.vercel.app/docs/revalidation",
+      },
+      {
+        label: "SWR cache updates and revalidation",
+        url: "https://swr.vercel.app/docs/mutation",
+      },
+      {
+        label: "SWR errors and retry rules",
+        url: "https://swr.vercel.app/docs/error-handling",
+      },
+      {
+        label: "RTK Query tag-based invalidation",
+        url: "https://redux-toolkit.js.org/rtk-query/usage/automated-refetching",
+      },
+      {
+        label: "RTK Query configurable retry wrapper",
+        url: "https://redux-toolkit.js.org/rtk-query/usage/customizing-queries",
+      },
+      {
+        label: "Apollo query states, caching and polling",
+        url: "https://www.apollographql.com/docs/react/data/queries",
+      },
+      {
+        label: "Apollo bundled RetryLink",
+        url: "https://www.apollographql.com/docs/react/api/link/apollo-link-retry",
+      },
+      {
+        label: "urql document caching and request policies",
+        url: "https://nearform.com/open-source/urql/docs/basics/document-caching/",
+      },
+      {
+        label: "urql separate retry exchange",
+        url: "https://nearform.com/open-source/urql/docs/advanced/retry-operations/",
+      },
+      {
+        label: "Axios HTTP requests and transport scope",
+        url: "https://axios-http.com/docs/intro",
+      },
+      {
+        label: "Axios request/response interceptors",
+        url: "https://axios-http.com/docs/interceptors",
+      },
+      {
+        label: "Axios error handling",
+        url: "https://axios-http.com/docs/handling_errors",
+      },
     ],
-    title: "Data fetching & server state",
+    title: "Data fetching",
     path: "/javascript/data-fetching/",
     introduction:
-      "Compare remote-data lifecycle tools. General query caches and GraphQL clients are not the same scope.",
-    note: "Client-side caches are not Redis/Valkey services. Define cache keys, invalidation, user isolation and error handling; cached data is not an authorization check.",
+      "Optional tools for caching API data, sharing results and keeping your UI up to date. Your framework may already cover basic loading.",
+    note: "Every entry here is an optional library; framework-provided fetching is explained in Frameworks & libraries. Client-side caches are not Redis/Valkey services. General query caches, GraphQL clients and Axios's HTTP request tooling have different scopes, not rankings. Built-in means the tool supplies the behavior, not zero setup; Configurable means enable or define rules; Add-on means a separate package; Manual means application-written logic. Browser HTTP caching is not a shared application-data cache. Framework support depends on the adapter: Apollo covers React and urql covers React/Vue here; RTK Query has a framework-independent core and first-party React hooks, with Redux store/middleware setup required. Axios is a framework-independent request client, not a shared query cache or loading-state engine; it can be used inside a query library's fetcher. It supplies request/response/error handling and interceptors, while cache sharing, refreshing, synchronization and retry policies need application logic or separate integrations. Define cache keys, invalidation, user isolation and error handling. Shared results apply within the same client/provider/store, not across users or server requests. SSR hydration and request isolation require framework-specific setup. Cached data is not an authorization check; keep secrets server-side and enforce authorization on the server. Retry only appropriate failures, and do not blindly retry non-idempotent writes. The application still renders loading/error UI and decides how saved data affects other results. Extra libraries are optional; no library can infer every business-specific update rule.",
+    overviewPurpose: {
+      label: "Best fit & scope",
+      explanation:
+        "The kind of application data each optional library manages. Query tools accept your request logic; GraphQL clients expect GraphQL operations; Axios sends HTTP requests without supplying a query cache. These tools can be combined, not just substituted. They are optional choices, not a dependency checklist.",
+    },
+    columnGroups: [
+      {
+        label: "General-purpose data management",
+        toolIds: ["tanstack-query", "swr", "rtk-query"],
+      },
+      { label: "GraphQL clients", toolIds: ["apollo", "urql"] },
+      { label: "HTTP client", toolIds: ["axios"] },
+    ],
     dimensions: [
       {
         label: "API focus",
         explanation:
-          "Whether the tool expects GraphQL or calls your own asynchronous fetching function.",
+          "Whether the tool expects GraphQL operations, sends HTTP requests, or runs your asynchronous fetching function. A general-purpose tool can call a GraphQL endpoint too, but does not automatically gain a normalized GraphQL entity cache.",
       },
       {
-        label: "Cache model",
+        label: "Caching",
         explanation:
-          "Query-result caches and normalized entity caches have different update rules.",
+          "Reuse previously fetched results instead of repeating requests. TanStack Query, SWR and RTK Query keep keyed results; Apollo shares normalized entities; urql caches documents by default and optional Graphcache adds normalized entities. Keys, lifetimes and fetch policies still matter. Axios does not supply a shared query cache; add application logic or a caching integration. Browser HTTP caching is a different layer.",
       },
       {
-        label: "Updates",
+        label: "Automatic refreshing",
         explanation:
-          "How writes, invalidation and optimistic UI fit the data model.",
+          "Fetch fresh data after an event or on a schedule, for example on focus, reconnect or a polling interval. Defaults differ: some tools refresh on browser events while others require explicit polling or request policies. Configurable does not mean every trigger is built in or enabled by default. The application chooses an appropriate freshness policy.",
       },
       {
-        label: "Server rendering",
+        label: "Shared requests & results",
         explanation:
-          "Hydration and request isolation depend on the framework and chosen integration.",
+          "Let several components reuse matching requests or cached results within the same client/provider/store. This is not cross-user or cross-tab sharing, nor a promise that all operations are deduplicated. Axios instances share configuration, not an application query-result cache; sharing results requires application logic or another library. Server rendering needs request-isolated caches and compatible hydration setup.",
+      },
+      {
+        label: "Updates after saving",
+        explanation:
+          "Keep displayed data synchronized after a successful write. Tools supply invalidation, cache updates or mutation APIs, but your application defines which results changed. RTK Query uses configured tags; Apollo can merge known entities but needs rules or refetching for affected lists; urql invalidates documents and optional Graphcache adds entity updates. Optimistic UI needs rollback/error handling. Saving does not automatically reveal every affected query.",
+      },
+      {
+        label: "Loading & error states",
+        explanation:
+          "Expose whether a request is loading, succeeded or failed so your app can render feedback. Built-in states do not render a spinner or error message for you. Axios returns promises and structured errors, not reactive loading state; the application manages pending flags and feedback. Your fetcher must report failures correctly, including unsuccessful HTTP responses where necessary.",
+      },
+      {
+        label: "Automatic retries",
+        explanation:
+          "Try again after appropriate request failures, with rules for attempt counts and delays. TanStack Query and SWR provide configurable retry behavior; RTK Query requires its retry wrapper. Apollo RetryLink is a bundled module to configure, while urql's retry exchange is a separately installed package. Axios retry rules require application logic or a separate integration. Not every error is retryable; avoid blindly repeating writes that might already have succeeded.",
       },
     ],
     tools: tools([
@@ -1428,23 +1354,23 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "https://tanstack.com/query/latest/docs/framework/react/overview",
         "https://github.com/TanStack/query/blob/main/LICENSE",
         ["React", "Vue", "Angular", "Svelte"],
-        "Async state and query-cache tooling with framework adapters.",
-        "Centralize fetching status, refetching and invalidation.",
-        "You supply fetching functions and meaningful cache/invalidation rules.",
+        "Shared API data with React, Vue, Angular or Svelte adapters.",
+        "Query caching, refreshing and mutation helpers in one tool.",
+        "Supply fetchers, query keys and update rules; check adapter versions.",
         [
           [
             "Custom fetcher",
             "Promises from your fetcher; not tied to one transport.",
           ],
-          ["Keyed results", "Query-key-based result cache."],
+          ["Built-in", "Keyed query-result cache."],
+          ["Configurable", "Staleness, focus, reconnect and polling rules."],
+          ["Built-in", "Components share matching query keys."],
           [
-            "Mutation / cache APIs",
-            "Mutations, invalidation and optimistic updates through explicit APIs.",
+            "Configurable",
+            "Invalidate or update cached results after mutations.",
           ],
-          [
-            "Explicit SSR integration",
-            "Follow the adapter/framework hydration and per-request cache guidance.",
-          ],
+          ["Built-in", "Query loading, fetching and error states."],
+          ["Configurable", "Retry count, delay and failure rules."],
         ],
       ],
       [
@@ -1453,16 +1379,47 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "https://swr.vercel.app/docs/getting-started",
         "https://github.com/vercel/swr/blob/main/LICENSE",
         ["React"],
-        "React hooks for fetching and revalidating data.",
-        "A compact hook-based approach to remote-data state.",
+        "React apps wanting compact data-fetching and cache hooks.",
+        "Keyed caching with focus/reconnect refreshing and mutation helpers.",
         "Fetcher, cache keys and write coordination remain application decisions.",
         [
           ["Custom fetcher", "Your asynchronous fetcher."],
-          ["Keyed results", "Keyed cache with revalidation."],
-          ["Mutation / cache APIs", "Mutation APIs and cache updates."],
+          ["Built-in", "Keyed result cache with revalidation."],
+          ["Configurable", "Focus, reconnect and polling rules."],
+          ["Built-in", "Hooks share matching keys within a cache provider."],
+          ["Configurable", "Mutate cached results and trigger revalidation."],
+          ["Built-in", "Loading, validating and error states."],
+          ["Configurable", "Error retries with backoff and custom rules."],
+        ],
+      ],
+      [
+        "rtk-query",
+        "RTK Query",
+        "https://redux-toolkit.js.org/rtk-query/overview",
+        "https://github.com/reduxjs/redux-toolkit/blob/master/LICENSE",
+        ["Framework-agnostic", "React"],
+        "Apps using Redux Toolkit for shared API data; React hooks available.",
+        "Shared query results and tag-based refresh after writes.",
+        "Requires Redux store/middleware setup and endpoint definitions.",
+        [
           [
-            "Explicit SSR integration",
-            "Use documented fallback/server-rendering integration.",
+            "Custom fetcher",
+            "HTTP base query or custom asynchronous requests.",
+          ],
+          ["Built-in", "Results keyed by endpoint and arguments."],
+          [
+            "Configurable",
+            "Polling and focus/reconnect rules; listeners need setup.",
+          ],
+          ["Built-in", "Subscribers share matching endpoint/argument results."],
+          [
+            "Configurable",
+            "Configured tags invalidate and refetch active queries.",
+          ],
+          ["Built-in", "Query loading, fetching and error states."],
+          [
+            "Configurable",
+            "Wrap the base query with the supplied retry utility.",
           ],
         ],
       ],
@@ -1472,20 +1429,23 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "https://www.apollographql.com/docs/react",
         "https://github.com/apollographql/apollo-client/blob/main/LICENSE",
         ["React"],
-        "GraphQL client; this comparison covers its React integration.",
+        "GraphQL apps needing a shared entity cache; React integration shown.",
         "GraphQL operations and normalized data can share an entity cache.",
         "Cache identifiers and field policies need design; a GraphQL server is separate.",
         [
           ["GraphQL", "GraphQL queries, mutations and subscriptions."],
-          ["Normalized entities", "Normalized in-memory entity cache."],
           [
-            "Mutation / cache APIs",
-            "Mutation results, cache writes and optimistic responses.",
+            "Built-in",
+            "Normalized entity cache; identifiers and policies matter.",
           ],
+          ["Configurable", "Polling and refetch rules."],
+          ["Built-in", "Shared client cache and query deduplication."],
           [
-            "Explicit SSR integration",
-            "Follow React/framework-specific cache hydration guidance.",
+            "Configurable",
+            "Entity updates plus explicit list/cache/refetch rules.",
           ],
+          ["Built-in", "Query loading, network status and errors."],
+          ["Configurable", "Configure the bundled RetryLink module."],
         ],
       ],
       [
@@ -1494,23 +1454,57 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "https://nearform.com/open-source/urql/docs/",
         "https://github.com/urql-graphql/urql/blob/main/LICENSE",
         ["React", "Vue"],
-        "GraphQL client with an exchange-based architecture.",
+        "GraphQL apps wanting modular caching; React/Vue bindings shown.",
         "Choose caching and request-processing behavior through exchanges.",
         "Different exchanges produce different cache and offline behavior.",
         [
           ["GraphQL", "GraphQL operations with framework bindings."],
           [
-            "Documents / optional entities",
-            "Document cache by default; Graphcache adds normalized caching.",
+            "Built-in",
+            "Document cache; optional Graphcache adds normalized entities.",
           ],
           [
-            "Mutation / cache APIs",
-            "Mutation handling and exchange-specific cache updates.",
+            "Configurable",
+            "Request policies; recurring refresh triggers need setup.",
+          ],
+          ["Built-in", "Matching operations reuse the shared client cache."],
+          [
+            "Configurable",
+            "Document invalidation; extend entity updates with Graphcache.",
+          ],
+          ["Built-in", "Fetching state and operation errors."],
+          ["Add-on", "Install and configure the retry exchange."],
+        ],
+      ],
+      [
+        "axios",
+        "Axios",
+        "https://axios-http.com/docs/intro",
+        "https://github.com/axios/axios/blob/v1.x/LICENSE",
+        ["Framework-agnostic"],
+        "Optional browser/Node HTTP client, not a query cache.",
+        "Request/response interceptors, structured errors and cancellation.",
+        "Manage caching, sharing, refreshing and loading state yourself.",
+        [
+          [
+            "HTTP requests",
+            "Promise-based HTTP methods for browser and Node.js.",
           ],
           [
-            "Explicit SSR integration",
-            "SSR exchanges and framework integration require setup.",
+            "Manual",
+            "No shared query cache; browser HTTP caching is separate.",
           ],
+          ["Manual", "Schedule or trigger new requests in app code."],
+          [
+            "Manual",
+            "Share promises/results in app code or use a query library.",
+          ],
+          ["Manual", "Reload or update displayed data after saving."],
+          [
+            "Manual",
+            "Structured errors supplied; track loading and render feedback yourself.",
+          ],
+          ["Manual", "Implement retry rules or choose a separate integration."],
         ],
       ],
     ]),
@@ -1522,31 +1516,109 @@ export const javascriptTopics: JavaScriptTopic[] = [
         label: "TanStack Form Svelte adapter",
         url: "https://tanstack.com/form/latest/docs/framework/svelte/quick-start",
       },
+      {
+        label: "React Hook Form field and submission state",
+        url: "https://react-hook-form.com/docs/useform/formstate",
+      },
+      {
+        label: "React Hook Form repeated fields",
+        url: "https://react-hook-form.com/docs/usefieldarray",
+      },
+      {
+        label: "TanStack Form array fields",
+        url: "https://tanstack.com/form/latest/docs/framework/react/guides/arrays",
+      },
+      {
+        label: "TanStack Form submission handling",
+        url: "https://tanstack.com/form/latest/docs/framework/react/guides/submission-handling",
+      },
+      {
+        label: "vee-validate v4 form and submission handling",
+        url: "https://vee-validate.logaretm.com/v4/guide/composition-api/handling-forms/",
+      },
+      {
+        label: "vee-validate v4 nested objects and arrays",
+        url: "https://vee-validate.logaretm.com/v4/guide/composition-api/nested-objects-and-arrays/",
+      },
+      {
+        label: "Superforms client/server setup",
+        url: "https://superforms.rocks/get-started",
+      },
+      {
+        label: "Superforms nested and array data",
+        url: "https://superforms.rocks/concepts/nested-data",
+      },
+      {
+        label: "Superforms tainted-field tracking",
+        url: "https://superforms.rocks/concepts/tainted",
+      },
+      {
+        label: "Superforms submission timers",
+        url: "https://superforms.rocks/concepts/timers",
+      },
+      {
+        label: "Formik values, validation and submitting state",
+        url: "https://formik.org/docs/api/formik",
+      },
+      {
+        label: "Formik field-array helpers",
+        url: "https://formik.org/docs/api/fieldarray",
+      },
+      {
+        label: "Vuelidate validation state and dirty tracking",
+        url: "https://vuelidate-next.netlify.app/guide.html",
+      },
+      {
+        label: "Vuelidate application values and collection validation",
+        url: "https://vuelidate-next.netlify.app/advanced_usage.html",
+      },
     ],
-    title: "Form libraries",
+    title: "Forms",
     path: "/javascript/forms/",
     introduction:
-      "Choose within your UI ecosystem. Form state, schema validation and accessible controls are separate responsibilities.",
-    note: "Server-side validation and authorization are still required. Test labels, error announcements, focus movement and pending/failed submission states.",
+      "Manage field values, validation and submission feedback. These tools do not supply your visual component library or replace validation on the server.",
+    note: "Every entry here is an optional library; framework-provided and native HTML capabilities belong in Frameworks & libraries. Built-in means supplied behavior, Configurable means enable or define rules, Add-on means a separate package, and Manual means application code. Basic required/email-format checks already work in HTML. Supply application-specific validation rules even when helpers are built in; schemas, validation libraries and resolver packages may require separate installation. This comparison covers Formik 2.x, vee-validate v4 and Vuelidate 2.x. Vuelidate validates application-owned Vue values and supplies dirty/error metadata; it is not a complete form-value or submission-state manager. Its $pending tracks async validation, not an HTTP submission. Configure @vuelidate/core with validators/custom rules and wire the UI yourself. Superforms coordinates SvelteKit actions and enhanced forms, but your server action still validates, authorizes and saves data; live actions need a supported runtime/adapter. Other client-form submit helpers track callbacks, not a supplied backend. Form logic is separate from visual controls: configure field value, blur, error and accessibility wiring for custom components. Error data is not automatically accessible feedback. Server-side validation and authorization are still required. Test labels, error announcements, focus movement and pending/failed submission states. Libraries are optional, not a requirement for every form.",
+    overviewPurpose: {
+      label: "Best fit & scope",
+      explanation:
+        "Which UI ecosystem and form responsibilities each optional library targets. Client field state, server submissions, schema validation and visual controls are distinct. Vuelidate focuses on validation over application-owned values; Superforms integrates SvelteKit actions. Simple forms may not need any optional tool.",
+    },
+    columnGroups: [
+      { label: "React", toolIds: ["react-hook-form", "formik"] },
+      { label: "Multi-framework", toolIds: ["tanstack-form"] },
+      { label: "Vue", toolIds: ["vee-validate", "vuelidate"] },
+      { label: "SvelteKit forms", toolIds: ["superforms"] },
+    ],
     dimensions: [
       {
-        label: "Form model",
-        explanation: "How fields connect to form state and trigger updates.",
+        label: "Field values & state",
+        explanation:
+          "Track current values and metadata such as edited (dirty/tainted) or visited (touched) fields. These concepts are not identical across tools; initialize values correctly. Vuelidate attaches validation dirtiness and errors to application-owned Vue values rather than storing the whole form itself. Superforms tracks tainted fields rather than promising the same touched model as every client library.",
       },
       {
         label: "Validation",
         explanation:
-          "Built-in rules and schema adapters have different setup and compatibility requirements.",
+          "You define the rules. Basic required/email-format checks are native HTML; form libraries add rule functions or supported schema integrations. Configurable does not mean every validator is bundled. Schema libraries and resolver/adapter packages may require installation and matching versions. Client validation is user feedback, not security; validate and authorize on the server too.",
       },
       {
-        label: "Dynamic forms",
+        label: "Errors & messages",
         explanation:
-          "Nested values, repeated fields and conditional inputs need explicit modeling.",
+          "Keep validation errors associated with fields and provide messages. Error data is separate from accessible rendering: the app still chooses placement, labels, announcements and focus behavior. Vuelidate exposes validation error objects and message helpers, not a finished form UI. Form libraries do not automatically supply your styled controls or complete error UI.",
       },
       {
-        label: "Submission",
+        label: "Repeated fields",
         explanation:
-          "The library coordinates state; your code performs and authorizes the actual request.",
+          "Add or remove repeated rows such as addresses or invoice items. Field-array helpers or schema-based arrays provide data mechanics, not a finished interface. Conditional sections still need explicit rendering, stable identities and validation rules. Superforms nested/array data needs appropriate serialization and schema setup. Vuelidate can validate collections, but the application still owns their values and repeated-control structure.",
+      },
+      {
+        label: "Submission & pending state",
+        explanation:
+          "A client form helper can track an asynchronous callback without providing a server. Supply the actual request and failure handling. Superforms integrates SvelteKit actions and enhancement after setup; server validation, authorization and persistence remain your code. Vuelidate's $pending tracks asynchronous validation, not a network submission; manage submitting state yourself.",
+      },
+      {
+        label: "UI control integration",
+        explanation:
+          "Form logic and visual controls are separate. Native inputs work with the appropriate registration or binding. Custom widgets need correct value, blur, error and accessibility wiring: React Hook Form has controlled-input helpers; Formik, TanStack Form and vee-validate connect field APIs; Vuelidate attaches validation to the values and events you bind. The app still supplies accessible controls and layout.",
       },
     ],
     tools: tools([
@@ -1556,19 +1628,48 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "https://react-hook-form.com/get-started",
         "https://github.com/react-hook-form/react-hook-form/blob/master/LICENSE",
         ["React"],
-        "Hook-based form state for React.",
+        "React form logic, field registration and controlled-input helpers.",
         "Register standard fields and connect controlled custom inputs when needed.",
         "Controlled widgets and schema resolvers need correct integration.",
         [
+          ["Built-in", "Values, dirty and touched state."],
+          ["Configurable", "Field rules; optional schema resolver package."],
+          ["Built-in", "Field errors; render your messages."],
+          ["Built-in", "Field-array helpers and nested values."],
           [
-            "Registered fields",
-            "Registered fields, subscriptions and Controller for controlled widgets.",
+            "Built-in",
+            "Submit helper and submitting state; supply the request.",
           ],
-          ["Rules + schema integration", "Rules or separate schema resolvers."],
-          ["Nested values / arrays", "Field arrays and nested values."],
+          ["Configurable", "Register inputs or connect controlled widgets."],
+        ],
+      ],
+      [
+        "formik",
+        "Formik",
+        "https://formik.org/docs/overview",
+        "https://github.com/jaredpalmer/formik/blob/main/LICENSE",
+        ["React"],
+        "React form values, validation and submission state; Formik 2.x.",
+        "Field bindings, error helpers and array-field operations.",
+        "Supply validation rules, network requests and accessible UI.",
+        [
+          ["Built-in", "Values, dirty and touched state."],
           [
-            "Application callback",
-            "Submission handler with validation and pending/error state to wire.",
+            "Configurable",
+            "Custom validation or a separately installed schema library.",
+          ],
+          [
+            "Built-in",
+            "Field errors and message helpers; render accessible feedback.",
+          ],
+          ["Built-in", "FieldArray helpers and nested values."],
+          [
+            "Built-in",
+            "Submit handler and isSubmitting; supply the actual request.",
+          ],
+          [
+            "Configurable",
+            "Connect field props or hooks to your chosen controls.",
           ],
         ],
       ],
@@ -1582,16 +1683,18 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "Form logic is separate from your choice of visual components.",
         "You supply the fields, layout and accessible error presentation.",
         [
-          ["Subscribed fields", "Typed form/field APIs and subscriptions."],
+          ["Built-in", "Values and field metadata."],
           [
-            "Rules + schema integration",
-            "Field/form validation with supported schema integrations.",
+            "Configurable",
+            "Custom rules or supported schemas; check library versions.",
           ],
-          ["Nested values / arrays", "Nested fields and array-oriented APIs."],
+          ["Built-in", "Field errors; render your messages."],
+          ["Built-in", "Array-field helpers and nested values."],
           [
-            "Application callback",
-            "Explicit submission callbacks and async validation workflows.",
+            "Built-in",
+            "Submit callback and submitting state; supply the request.",
           ],
+          ["Configurable", "Connect field APIs to your chosen controls."],
         ],
       ],
       [
@@ -1600,45 +1703,85 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "https://vee-validate.logaretm.com/v4/guide/overview/",
         "https://github.com/logaretm/vee-validate/blob/main/LICENSE",
         ["Vue"],
-        "Form validation and state tools for Vue.",
+        "Vue form state and validation; vee-validate v4 APIs shown.",
         "Composition APIs and components integrate with Vue forms.",
         "Custom inputs and chosen schema adapters must match your version.",
         [
+          ["Built-in", "Values, dirty and touched state."],
+          ["Configurable", "Field rules or supported schema integration."],
           [
-            "Composition / components",
-            "Composition APIs or form/field components.",
+            "Built-in",
+            "Error state and message helpers; choose accessible UI.",
+          ],
+          ["Built-in", "Field-array helpers and nested values."],
+          [
+            "Built-in",
+            "Submit helper and submitting state; supply the request.",
+          ],
+          ["Configurable", "Bind fields to native or custom inputs."],
+        ],
+      ],
+      [
+        "vuelidate",
+        "Vuelidate",
+        "https://vuelidate-next.netlify.app/",
+        "https://github.com/vuelidate/vuelidate/blob/next/LICENSE",
+        ["Vue"],
+        "Validation over application-owned Vue values; Vuelidate 2.x.",
+        "Reactive validation rules, dirty tracking and error metadata.",
+        "LTS mode; own values, repeated-field UI and submission state.",
+        [
+          [
+            "Configurable",
+            "Vue owns values; validation dirty/error metadata supplied.",
+          ],
+          ["Configurable", "Configure core with validators or custom rules."],
+          [
+            "Built-in",
+            "Validation error objects/messages; render your feedback.",
           ],
           [
-            "Rules + schema integration",
-            "Field rules and supported schema integrations.",
+            "Configurable",
+            "Collection validation; repeated-field UI remains app code.",
           ],
-          ["Nested values / arrays", "Nested values and field arrays."],
           [
-            "Application callback",
-            "Submission helpers; implement request failures and accessible feedback.",
+            "Manual",
+            "Manage the request and submitting state; $pending is validation.",
+          ],
+          [
+            "Configurable",
+            "Bind Vue values and validation/blur events to controls.",
           ],
         ],
       ],
       [
-        "angular-forms",
-        "Angular reactive forms",
-        "https://angular.dev/guide/forms/reactive-forms",
-        "https://github.com/angular/angular/blob/main/LICENSE",
-        ["Angular"],
-        "First-party model-driven form APIs in Angular.",
-        "Explicit control groups and validation fit Angular applications.",
-        "Choose the supported form APIs for your Angular version; do not mix models casually.",
+        "superforms",
+        "Superforms",
+        "https://superforms.rocks/get-started",
+        "https://github.com/ciscoheat/sveltekit-superforms/blob/main/LICENSE",
+        ["Svelte"],
+        "SvelteKit client/server form coordination with schema adapters.",
+        "Validation feedback, tainted fields and enhanced action handling.",
+        "Configure schemas and server actions; requires SvelteKit integration.",
         [
-          ["Control tree", "FormControl, FormGroup and related reactive APIs."],
+          ["Built-in", "Form data and tainted-field tracking."],
           [
-            "Built-in / custom validators",
-            "Built-in and custom synchronous/asynchronous validators.",
+            "Configurable",
+            "Configure a supported schema adapter and validation library.",
           ],
-          ["Nested values / arrays", "Nested groups and FormArray."],
           [
-            "Application callback",
-            "Your component handles the validated request and response states.",
+            "Built-in",
+            "Validation errors and server feedback; render messages.",
           ],
+          [
+            "Configurable",
+            "Nested/array data with schema and serialization setup.",
+          ],
+          [
+            "Configurable",
+            "SvelteKit actions, enhancement and submission timers.",
+          ],
+          ["Configurable", "Bind Svelte inputs or custom controls."],
         ],
       ],
     ]),

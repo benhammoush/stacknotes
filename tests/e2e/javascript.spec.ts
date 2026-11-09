@@ -44,43 +44,62 @@ for (const width of [390, 1440]) {
         page
           .getByRole("navigation", { name: "JavaScript / TypeScript topics" })
           .getByRole("link"),
-      ).toHaveCount(14);
+      ).toHaveCount(12);
       await expect(page.getByRole("columnheader")).toHaveCount(
         topic.tools.length + 1 + (topic.columnGroups?.length ?? 0),
       );
       await expect(page.getByRole("cell")).toHaveCount(topic.tools.length * 4);
-      await expect(
-        page.getByRole("button", { name: "Features", exact: true }),
-      ).toHaveAttribute("aria-expanded", "false");
-      await page.getByRole("button", { name: "Features", exact: true }).click();
-      await expect(page.getByRole("cell")).toHaveCount(
-        topic.tools.length * (topic.dimensions.length + 4),
-      );
-      await expect(
-        page.locator("#technical-rows .tool-feature-label"),
-      ).toHaveCount(topic.tools.length * topic.dimensions.length);
-      await expect(
-        page.locator("tbody:first-of-type td.different"),
-      ).toHaveCount(0);
-      await expect(page.locator("#tool-help")).toContainText(
-        "not better or worse",
-      );
-      const marked = page.locator("#technical-rows td.different");
-      const markedCount = await marked.count();
-      expect(markedCount).toBeGreaterThan(0);
-      await expect(
-        marked.locator('.difference-mark[aria-hidden="true"]'),
-      ).toHaveCount(markedCount);
-      await expect(marked.locator(".sr-only")).toHaveCount(markedCount);
-      await expect(marked.first().locator(".difference-mark")).toHaveText("≠");
-      await expect(marked.first().locator(".sr-only")).toContainText(
-        "less-common feature label",
-      );
-      await expect(marked.first().locator(".tool-feature-label")).toHaveCSS(
-        "color",
-        "rgb(158, 200, 255)",
-      );
+      if (topic.dimensions.length) {
+        await expect(
+          page.getByRole("button", { name: "Features", exact: true }),
+        ).toHaveAttribute("aria-expanded", "false");
+        await page
+          .getByRole("button", { name: "Features", exact: true })
+          .click();
+        await expect(page.getByRole("cell")).toHaveCount(
+          topic.tools.length * (topic.dimensions.length + 4),
+        );
+        await expect(
+          page.locator("#technical-rows .tool-feature-label"),
+        ).toHaveCount(topic.tools.length * topic.dimensions.length);
+        await expect(
+          page.locator("tbody:first-of-type td.different"),
+        ).toHaveCount(0);
+        await expect(page.locator("#tool-help")).toContainText(
+          "not better or worse",
+        );
+        const marked = page.locator("#technical-rows td.different");
+        const markedCount = await marked.count();
+        expect(markedCount).toBeGreaterThan(0);
+        await expect(
+          marked.locator('.difference-mark[aria-hidden="true"]'),
+        ).toHaveCount(markedCount);
+        await expect(marked.locator(".sr-only")).toHaveCount(markedCount);
+        await expect(marked.first().locator(".difference-mark")).toHaveText(
+          "≠",
+        );
+        await expect(marked.first().locator(".sr-only")).toContainText(
+          "less-common feature label",
+        );
+        await expect(marked.first().locator(".tool-feature-label")).toHaveCSS(
+          "color",
+          "rgb(158, 200, 255)",
+        );
+      } else {
+        await expect(
+          page.getByRole("button", { name: "Features", exact: true }),
+        ).toHaveCount(0);
+        await expect(
+          page.locator("#technical-rows, .difference-mark"),
+        ).toHaveCount(0);
+        await expect(page.locator("#tool-help")).not.toContainText(
+          "less-common",
+        );
+      }
       await expect(page.locator(".legend")).toHaveCount(0);
+      await expect(
+        page.locator(".tool-feature-guide, .tool-feature-legend"),
+      ).toHaveCount(0);
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,
@@ -112,6 +131,241 @@ for (const width of [390, 1440]) {
     expect(errors).toEqual([]);
   });
 
+  test(`data fetching compares optional lifecycle libraries and an HTTP client at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/javascript/data-fetching/");
+    const table = page.getByRole("table");
+    await expect(table.locator(".provider-logo")).toHaveCount(6);
+    for (const image of await table.locator(".provider-logo").all()) {
+      await expect(image).toHaveAttribute("alt", "");
+      expect(
+        await image.evaluate(
+          (element: HTMLImageElement) =>
+            element.complete && element.naturalWidth > 0,
+        ),
+      ).toBe(true);
+    }
+    await expect(table.locator('th[scope="colgroup"]')).toHaveText([
+      "General-purpose data management",
+      "GraphQL clients",
+      "HTTP client",
+    ]);
+    await expect(table.locator(".tool-column-headers th a")).toHaveText([
+      "TanStack Query ↗",
+      "SWR ↗",
+      "RTK Query ↗",
+      "Apollo Client ↗",
+      "urql ↗",
+      "Axios ↗",
+    ]);
+    await expect(table.getByRole("cell")).toHaveCount(24);
+    await page.getByRole("button", { name: "Features", exact: true }).click();
+    await expect(table.getByRole("cell")).toHaveCount(66);
+    await expect(
+      table
+        .getByRole("row", { name: /^Caching/ })
+        .locator(".tool-feature-label"),
+    ).toHaveText([
+      "Built-in",
+      "Built-in",
+      "Built-in",
+      "Built-in",
+      "Built-in",
+      "Manual",
+    ]);
+    await expect(
+      table
+        .getByRole("row", { name: /^Automatic retries/ })
+        .locator(".tool-feature-label"),
+    ).toHaveText([
+      "Configurable",
+      "Configurable",
+      "Configurable",
+      "Configurable",
+      "Add-on",
+      "Manual",
+    ]);
+    const button = page.getByRole("button", {
+      name: "About Automatic retries",
+      exact: true,
+    });
+    await button.focus();
+    await page.keyboard.press("Enter");
+    const dialog = page.getByRole("dialog", {
+      name: "Automatic retries",
+      exact: true,
+    });
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toContainText("bundled module");
+    await expect(dialog).toContainText("separately installed package");
+    await page.keyboard.press("Escape");
+    await expect(button).toBeFocused();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await page.locator("#comparison").evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
+    await expect(table.locator("#tool-axios")).toBeInViewport();
+    await page.reload();
+    await expect(
+      page.getByRole("button", { name: "Features", exact: true }),
+    ).toHaveAttribute("aria-expanded", "false");
+  });
+
+  for (const comparison of [
+    {
+      slug: "state",
+      last: "jotai",
+      cells: 54,
+      explanation: "Async workflows",
+      boundary: "NgRx Effects is a separate package",
+    },
+    {
+      slug: "forms",
+      last: "superforms",
+      cells: 60,
+      explanation: "Submission & pending state",
+      boundary:
+        "$pending tracks asynchronous validation, not a network submission",
+    },
+  ]) {
+    test(`${comparison.slug} compares optional library capabilities and icons at ${width}px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`/javascript/${comparison.slug}/`);
+      const table = page.getByRole("table");
+      await expect(table.getByRole("cell")).toHaveCount(24);
+      await expect(
+        page.locator(".tool-feature-guide, .tool-feature-legend"),
+      ).toHaveCount(0);
+      await expect(table.locator(".provider-logo")).toHaveCount(6);
+      await expect(
+        table.locator(
+          "#tool-angular-signals, #tool-angular-httpclient, #tool-angular-forms, #tool-html-forms",
+        ),
+      ).toHaveCount(0);
+      for (const image of await table.locator(".provider-logo").all()) {
+        await expect(image).toHaveAttribute("alt", "");
+        await expect
+          .poll(() =>
+            image.evaluate((element: HTMLImageElement) => element.naturalWidth),
+          )
+          .toBeGreaterThan(0);
+      }
+      await page.getByRole("button", { name: "Features", exact: true }).click();
+      await expect(table.getByRole("cell")).toHaveCount(comparison.cells);
+      const button = page.getByRole("button", {
+        name: `About ${comparison.explanation}`,
+        exact: true,
+      });
+      await button.focus();
+      await page.keyboard.press("Enter");
+      const dialog = page.getByRole("dialog", {
+        name: comparison.explanation,
+        exact: true,
+      });
+      await expect(dialog).toBeVisible();
+      await expect(dialog).toContainText(comparison.boundary);
+      await page.keyboard.press("Escape");
+      await expect(button).toBeFocused();
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      await page.locator("#comparison").evaluate((element) => {
+        element.scrollLeft = element.scrollWidth;
+      });
+      await expect(table.locator(`#tool-${comparison.last}`)).toBeInViewport();
+      await page.goto("/javascript/ui/");
+      await expect(
+        page.getByRole("button", { name: "Features", exact: true }),
+      ).toHaveAttribute("aria-expanded", "false");
+    });
+  }
+
+  test(`unified Styling keeps tool logos, redirects and overview dialogs at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    for (const path of [
+      "/javascript/animation/",
+      "/javascript/icons/",
+      "/javascript/styling/",
+    ]) {
+      await page.goto(path);
+      await expect(page).toHaveURL(/\/javascript\/styling\/$/);
+      await page.reload();
+      await expect(page).toHaveTitle("Styling tools · Stacknotes");
+    }
+    await expect(page.getByRole("cell")).toHaveCount(36);
+    await expect(page.locator("thead .provider-logo")).toHaveCount(9);
+    await expect(page.locator("thead .company")).toHaveText([
+      "Utility-first CSS",
+      "Animation",
+      "Animation",
+      "Animation",
+      "Animation",
+      "Icons",
+      "Icons",
+      "Icons",
+      "Icons",
+    ]);
+    await expect(
+      page.getByRole("row", { name: /^Framework compatibility/ }),
+    ).toHaveCount(0);
+    await expect(page.locator("tbody img")).toHaveCount(0);
+    for (const image of await page.locator("#comparison img").all())
+      await expect
+        .poll(() =>
+          image.evaluate(
+            (element) => (element as HTMLImageElement).naturalWidth,
+          ),
+        )
+        .toBeGreaterThan(0);
+    await expect(
+      page.getByText("Scroll horizontally to see all nine tools →"),
+    ).toHaveCount(0);
+    const nav = page.getByRole("navigation", {
+      name: "JavaScript / TypeScript topics",
+    });
+    for (const name of ["Animation", "Icons"])
+      await expect(nav.getByRole("link", { name, exact: true })).toHaveCount(0);
+    for (const label of [
+      "Primary purpose",
+      "Strengths",
+      "Limitations",
+      "License & operating costs",
+    ]) {
+      const button = page.getByRole("button", {
+        name: `About ${label}`,
+        exact: true,
+      });
+      await button.focus();
+      await page.keyboard.press("Enter");
+      await expect(
+        page.getByRole("dialog", { name: label, exact: true }),
+      ).toBeVisible();
+      await page.keyboard.press("Escape");
+      await expect(button).toBeFocused();
+    }
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await page.locator("#comparison").evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
+    await expect(page.locator("#tool-phosphor")).toBeInViewport();
+  });
+
   test(`grouped frameworks preserve inclusion, sticky headers and row explanations at ${width}px`, async ({
     page,
   }) => {
@@ -141,9 +395,102 @@ for (const width of [390, 1440]) {
       "Other foundations",
     ]);
     await expect(table.locator(".tool-column-headers th")).toHaveCount(9);
-    await expect(table.getByRole("cell")).toHaveCount(99);
-    await expect(table.locator(".tool-feature-status")).toHaveCount(63);
+    await expect(table.getByRole("cell")).toHaveCount(126);
+    await expect(table.locator(".tool-feature-status")).toHaveCount(90);
     await expect(table.locator(".tool-capability-status")).toHaveCount(27);
+    const seo = table.getByRole("row", { name: /^SEO & discoverability/ });
+    await expect(seo.getByRole("cell")).toHaveCount(9);
+    await expect(seo.locator(".tool-feature-label")).toHaveText([
+      "App-managed integration",
+      "Integrated head APIs",
+      "Integrated head APIs",
+      "App-managed integration",
+      "Integrated head APIs",
+      "Metadata services",
+      "Document head markup",
+      "Document head markup",
+      "Document head markup",
+    ]);
+    await expect(seo.locator(".tool-capability-status")).toHaveCount(0);
+    const seoButton = page.getByRole("button", {
+      name: "About SEO & discoverability",
+      exact: true,
+    });
+    await seoButton.focus();
+    await page.keyboard.press("Enter");
+    const seoDialog = page.getByRole("dialog", {
+      name: "SEO & discoverability",
+      exact: true,
+    });
+    await expect(seoDialog).toBeVisible();
+    await expect(seoDialog).toContainText(
+      "neither guarantees indexing or rankings",
+    );
+    await page.keyboard.press("Escape");
+    await expect(seoDialog).toBeHidden();
+    await expect(seoButton).toBeFocused();
+    const forms = table.getByRole("row", { name: /^Forms support/ });
+    await expect(forms.getByRole("cell")).toHaveCount(9);
+    await expect(forms.locator(".tool-feature-label")).toHaveText([
+      "Basic support",
+      "Built-in submissions",
+      "Built-in submissions",
+      "Basic support",
+      "Built-in server handling",
+      "Built-in forms",
+      "Built-in submissions",
+      "Built-in submissions",
+      "Built-in submissions",
+    ]);
+    const formsButton = page.getByRole("button", {
+      name: "About Forms support",
+      exact: true,
+    });
+    await formsButton.focus();
+    await page.keyboard.press("Enter");
+    const formsDialog = page.getByRole("dialog", {
+      name: "Forms support",
+      exact: true,
+    });
+    await expect(formsDialog).toBeVisible();
+    await expect(formsDialog).toContainText(
+      "Basic HTML checks work everywhere",
+    );
+    await expect(formsDialog).toContainText(
+      "The server must validate submissions and enforce authorization",
+    );
+    await page.keyboard.press("Escape");
+    await expect(formsDialog).toBeHidden();
+    await expect(formsButton).toBeFocused();
+    const fetching = table.getByRole("row", { name: /^Data fetching/ });
+    await expect(fetching.locator(".tool-feature-label")).toHaveText([
+      "App-managed",
+      "Built-in page loading",
+      "Built-in page loading",
+      "App-managed",
+      "Built-in page loading",
+      "Built-in HTTP tools",
+      "Built-in page loading",
+      "Server-side fetching",
+      "Built-in server loading",
+    ]);
+    const fetchingButton = page.getByRole("button", {
+      name: "About Data fetching",
+      exact: true,
+    });
+    await fetchingButton.focus();
+    await page.keyboard.press("Enter");
+    const fetchingDialog = page.getByRole("dialog", {
+      name: "Data fetching",
+      exact: true,
+    });
+    await expect(fetchingDialog).toBeVisible();
+    await expect(fetchingDialog).toContainText("TanStack Query is separate");
+    await expect(fetchingDialog).toContainText("at build time");
+    await expect(fetchingDialog).toContainText("at request time");
+    await page.keyboard.press("Escape");
+    await expect(fetchingDialog).toBeHidden();
+    await expect(fetchingButton).toBeFocused();
     await expect(page.locator("#tool-tanstack-start a")).toContainText(
       "TanStack Start",
     );
@@ -283,12 +630,17 @@ for (const width of [390, 1440]) {
       name: "Tools by application stack",
     });
     await expect(table.getByRole("rowheader")).toHaveCount(4);
-    await expect(table.getByRole("cell")).toHaveCount(24);
+    await expect(table.getByRole("cell")).toHaveCount(20);
+    await expect(
+      table.getByRole("columnheader", { name: "Styling", exact: true }),
+    ).toHaveCount(0);
+    await expect(
+      table.getByRole("link", { name: "Tailwind CSS", exact: true }),
+    ).toHaveCount(0);
     await expect(table.getByRole("columnheader")).toHaveText([
       "Application stack",
       "Application framework",
       "Component-library candidates",
-      "Styling",
       "State management",
       "Data fetching",
       "Forms",
@@ -308,8 +660,7 @@ for (const width of [390, 1440]) {
     for (const label of [
       "Backend frameworks",
       "Build tools",
-      "Animation",
-      "Icons",
+      "Styling",
       "Database tools",
       "Validation",
       "Testing",
@@ -327,14 +678,28 @@ for (const width of [390, 1440]) {
     for (const name of [
       "SvelteKit",
       "Skeleton",
-      "Tailwind CSS",
       "Nano Stores",
       "TanStack Query",
       "TanStack Form",
+      "Superforms",
     ])
       await expect(svelte.getByRole("link", { name, exact: true })).toHaveCount(
         1,
       );
+    const angular = table.getByRole("row", { name: /^Angular / });
+    for (const name of [
+      "NgRx Store",
+      "TanStack Query",
+      "Axios",
+      "TanStack Form",
+    ])
+      await expect(
+        angular.getByRole("link", { name, exact: true }),
+      ).toHaveCount(1);
+    const react = table.getByRole("row", { name: /^React / });
+    await expect(
+      react.getByRole("link", { name: "RTK Query", exact: true }),
+    ).toHaveCount(1);
     const images = table.locator("img.provider-logo");
     const expectedLogos = javascriptStacks
       .flatMap(({ services }) =>
@@ -365,11 +730,9 @@ for (const width of [390, 1440]) {
       const row = table.getByRole("row").filter({
         has: page.getByRole("rowheader", { name: ui, exact: true }),
       });
-      const styling = row.getByRole("cell").nth(2);
-      await expect(styling.getByRole("link").first()).toHaveText(
-        "Tailwind CSS",
-      );
-      const styles = await styling
+      const components = row.getByRole("cell").nth(1);
+      await expect(components.getByRole("link")).toHaveCount(3);
+      const styles = await components
         .locator(".provider-heading")
         .evaluateAll((elements) =>
           elements.map((element) => ({

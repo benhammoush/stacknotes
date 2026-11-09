@@ -11,7 +11,7 @@ export const frameworksTopic: JavaScriptTopic = {
   path: "/javascript/ui/",
   introduction:
     "Compare by ecosystem. Included = core or an official first-party feature; — = an external solution is needed. Click ⓘ for explanations and requirements.",
-  note: "Included does not mean enabled by default or supplied in the same package. React and Vue provide SSR APIs, not an assembled server application. Angular Router is included by the current CLI; Vue Router is a separate official package. TanStack Start's React integration adds server features around TanStack Router; it is not the router alone. SvelteKit builds applications with Svelte components. Astro supports React or Vue through official integrations; install the matching integration and explicitly hydrate interactive islands. These are not its only supported UI libraries. Request-time rendering and endpoints need a server runtime; static output cannot run them. Remix v3 has its own component model and belongs outside the React group. You still own application authorization, input validation, persistence and deployment. Choices are not rankings or tested integration recipes.",
+  note: "Included does not mean enabled by default or supplied in the same package. React and Vue provide SSR APIs, not an assembled server application. Angular Router is included by the current CLI; Vue Router is a separate official package. TanStack Start's React integration adds server features around TanStack Router; it is not the router alone. SvelteKit builds applications with Svelte components. Astro supports React or Vue through official integrations; install the matching integration and explicitly hydrate interactive islands. These are not its only supported UI libraries. Request-time rendering and endpoints need a server runtime; static output cannot run them. Remix v3 has its own component model and belongs outside the React group. You still own application authorization, input validation, persistence and deployment. Choices are not rankings or tested integration recipes. SEO & discoverability describes technical integration, not a ranking guarantee. Configure unique metadata, canonicals, social previews, sitemap/robots files and safe structured data for public pages; verify the initial HTML, HTTP redirects/404 responses and deployment behavior with your target crawlers. React's native head-element support targets React 19+, not every React release. TanStack Start sitemap generation needs configuration and prerendered/crawled routes; dynamic routes may need explicit entries or a server sitemap. Astro's sitemap integration covers generated static routes, not automatic discovery of dynamic SSR routes. Nuxt SEO modules are separate from core head APIs. SvelteKit sitemaps are application-authored. Remix v3 uses explicit document head markup, not Remix v2 meta/links exports. SSR/prerendering does not guarantee indexing or rankings; content, links and performance remain essential.",
   columnGroups: [
     { label: "React-based", toolIds: ["react", "next", "tanstack-start"] },
     { label: "Vue-based", toolIds: ["vue", "nuxt"] },
@@ -55,6 +55,21 @@ export const frameworksTopic: JavaScriptTopic = {
       explanation:
         "What has to run after you publish the application. Static files can be hosted without an application server, while request-time HTML rendering and API handlers need a supported server runtime or adapter. Choose the output mode for the features you use; a development server is not a production deployment and a static export cannot keep server-only features alive.",
     },
+    {
+      label: "SEO & discoverability",
+      explanation:
+        "Technical tools for making public pages understandable to search crawlers and link-preview bots: rendered HTML, page titles/descriptions, canonical URLs, social metadata, sitemap/robots files and structured data (JSON-LD). Labels describe integration approaches, not SEO quality scores. SSR or prerendering can expose content without browser JavaScript, but neither guarantees indexing or rankings. Content, internal links, performance and correct HTTP redirects/404 status codes still matter. A client-side route change is not an HTTP redirect. Configure the actual rendered output, metadata and deployment for your public routes; private dashboards may not need indexing.",
+    },
+    {
+      label: "Forms support",
+      explanation:
+        "What the framework provides for collecting, checking and submitting user input. Visual controls come from HTML or component libraries; submission handling is not the same as managing field values, errors and validation. Basic HTML checks work everywhere. Add your application's validation rules even when validation tools are built in. The server must validate submissions and enforce authorization; client checks can be bypassed. Live server submissions require a server runtime. React form Actions target React 19+; TanStack Form is separate from TanStack Start. Angular's built-in forms manage client state and validation, not server enforcement. Extra libraries are optional, not a requirement for every complex form.",
+    },
+    {
+      label: "Data fetching",
+      explanation:
+        "Getting data from an API or database into your pages. Browser fetching works with every framework; some also organize page loading for you. Loading is not the same as a shared application-data cache. Frameworks may include caching, while optional libraries add more control over shared results, refreshing and updates after saving. TanStack Start uses TanStack Router loaders; TanStack Query is separate. Astro fetches during page generation: at build time for prerendered pages or at request time for on-demand pages. Live server loading needs a server runtime. Keep secrets and direct database access in server code, enforce authorization, and isolate private cached data by user and request. A browser must use an authorized API rather than direct database credentials.",
+    },
   ],
   tools: [
     {
@@ -96,6 +111,19 @@ export const frameworksTopic: JavaScriptTopic = {
         {
           label: "Static / custom server",
           detail: "Static for client apps; custom server for SSR.",
+        },
+        {
+          label: "App-managed integration",
+          detail:
+            "React 19+ title/meta/link; SSR and sitemap/robots setup belong to your app/framework.",
+        },
+        {
+          label: "Basic support",
+          detail: "Extra tools for complex forms.",
+        },
+        {
+          label: "App-managed",
+          detail: "Use browser fetching or optional tools.",
         },
       ],
     },
@@ -140,6 +168,19 @@ export const frameworksTopic: JavaScriptTopic = {
           detail:
             "Supported server runtime; static export for compatible routes only.",
         },
+        {
+          label: "Integrated head APIs",
+          detail:
+            "Metadata API, SSR/prerendering and sitemap/robots conventions; configure canonicals and JSON-LD.",
+        },
+        {
+          label: "Built-in submissions",
+          detail: "Add validation rules.",
+        },
+        {
+          label: "Built-in page loading",
+          detail: "Load data on the server.",
+        },
       ],
     },
     {
@@ -180,6 +221,19 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "Server / static output",
           detail:
             "Server integration for live SSR/functions; prerendered static output without live server features.",
+        },
+        {
+          label: "Integrated head APIs",
+          detail:
+            "Route head, SSR/prerendering; configured sitemap generation; author robots and JSON-LD.",
+        },
+        {
+          label: "Built-in submissions",
+          detail: "Add validation rules.",
+        },
+        {
+          label: "Built-in page loading",
+          detail: "Load data through routes.",
         },
       ],
     },
@@ -224,6 +278,19 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "Static / custom server",
           detail: "Static for client apps; custom server for SSR.",
         },
+        {
+          label: "App-managed integration",
+          detail:
+            "Assemble SSR and head management; canonicals, sitemap/robots and JSON-LD are app work.",
+        },
+        {
+          label: "Basic support",
+          detail: "Extra tools for complex forms.",
+        },
+        {
+          label: "App-managed",
+          detail: "Use browser fetching or optional tools.",
+        },
       ],
     },
     {
@@ -267,6 +334,19 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "Server / static output",
           detail:
             "Nitro preset for server features; static generation without live endpoints.",
+        },
+        {
+          label: "Integrated head APIs",
+          detail:
+            "useHead/useSeoMeta with SSR; sitemap/robots via files, routes or modules; author JSON-LD.",
+        },
+        {
+          label: "Built-in server handling",
+          detail: "Add validation rules.",
+        },
+        {
+          label: "Built-in page loading",
+          detail: "Load data on server and client.",
         },
       ],
     },
@@ -313,6 +393,19 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "Server / static output",
           detail:
             "Static for client/prerendered apps; supported server for SSR.",
+        },
+        {
+          label: "Metadata services",
+          detail:
+            "Title/Meta services; configure @angular/ssr; canonicals, sitemap/robots and JSON-LD are app work.",
+        },
+        {
+          label: "Built-in forms",
+          detail: "Form management and validation.",
+        },
+        {
+          label: "Built-in HTTP tools",
+          detail: "Request data in your app.",
         },
       ],
     },
@@ -361,6 +454,19 @@ export const frameworksTopic: JavaScriptTopic = {
           detail:
             "Target adapter for server features; static adapter for compatible output.",
         },
+        {
+          label: "Document head markup",
+          detail:
+            "<svelte:head> with SSR/prerendering; author canonicals/JSON-LD and sitemap/robots routes or files.",
+        },
+        {
+          label: "Built-in submissions",
+          detail: "Add validation rules.",
+        },
+        {
+          label: "Built-in page loading",
+          detail: "Load data on server and client.",
+        },
       ],
     },
     {
@@ -407,6 +513,19 @@ export const frameworksTopic: JavaScriptTopic = {
           detail:
             "Static by default; runtime adapter for live pages and endpoints.",
         },
+        {
+          label: "Document head markup",
+          detail:
+            "<head> in HTML-first pages; add @astrojs/sitemap for static routes; author robots and JSON-LD.",
+        },
+        {
+          label: "Built-in submissions",
+          detail: "Schema validation.",
+        },
+        {
+          label: "Server-side fetching",
+          detail: "Load data when pages are generated.",
+        },
       ],
     },
     {
@@ -452,10 +571,135 @@ export const frameworksTopic: JavaScriptTopic = {
           detail:
             "Server runtime for requests, UI rendering and asset compilation.",
         },
+        {
+          label: "Document head markup",
+          detail:
+            "Server-rendered JSX document; author head tags, canonicals, sitemap/robots responses and JSON-LD.",
+        },
+        {
+          label: "Built-in submissions",
+          detail: "Validation tools.",
+        },
+        {
+          label: "Built-in server loading",
+          detail: "Load data in route handlers.",
+        },
       ],
     },
   ],
   sources: [
+    {
+      label: "React fetching and framework-loading guidance",
+      url: "https://react.dev/learn/synchronizing-with-effects",
+    },
+    {
+      label: "Next.js data fetching and streaming",
+      url: "https://nextjs.org/docs/app/getting-started/fetching-data",
+    },
+    {
+      label: "TanStack Router loaders and route caching used by Start",
+      url: "https://tanstack.com/router/latest/docs/framework/react/guide/data-loading",
+    },
+    {
+      label: "Vue watchers and asynchronous fetching",
+      url: "https://vuejs.org/guide/essentials/watchers.html",
+    },
+    {
+      label: "Nuxt server and client data fetching",
+      url: "https://nuxt.com/docs/4.x/getting-started/data-fetching",
+    },
+    {
+      label: "Angular HTTP requests and error handling",
+      url: "https://angular.dev/guide/http/making-requests",
+    },
+    {
+      label: "SvelteKit universal and server loading",
+      url: "https://svelte.dev/docs/kit/load",
+    },
+    {
+      label: "Astro build-time and request-time fetching",
+      url: "https://docs.astro.build/en/guides/data-fetching/",
+    },
+    {
+      label: "Remix v3 reading data in route actions",
+      url: "https://github.com/remix-run/remix/blob/main/packages/remix/guides/08-data-and-validation.md",
+    },
+    {
+      label: "React form Actions and submission state",
+      url: "https://react.dev/reference/react-dom/components/form",
+    },
+    {
+      label: "Next.js forms and Server Actions",
+      url: "https://nextjs.org/docs/app/guides/forms",
+    },
+    {
+      label: "TanStack Start server functions and input validation",
+      url: "https://tanstack.com/start/latest/docs/framework/react/guide/server-functions",
+    },
+    {
+      label: "Vue form input bindings",
+      url: "https://vuejs.org/guide/essentials/forms.html",
+    },
+    {
+      label: "Nuxt server routes and request validation",
+      url: "https://nuxt.com/docs/4.x/directory-structure/server",
+    },
+    {
+      label: "Angular reactive forms and validators",
+      url: "https://angular.dev/guide/forms/reactive-forms",
+    },
+    {
+      label: "SvelteKit form actions and validation errors",
+      url: "https://svelte.dev/docs/kit/form-actions",
+    },
+    {
+      label: "Astro Actions and form schema validation",
+      url: "https://docs.astro.build/en/guides/actions/",
+    },
+    {
+      label: "Remix v3 forms, mutations and data-schema validation",
+      url: "https://github.com/remix-run/remix/blob/main/packages/remix/guides/09-forms-and-mutations.md",
+    },
+    {
+      label: "React 19+ document title and metadata",
+      url: "https://react.dev/reference/react-dom/components/title",
+    },
+    {
+      label: "React metadata elements",
+      url: "https://react.dev/reference/react-dom/components/meta",
+    },
+    {
+      label: "Next.js metadata, social previews and sitemap/robots conventions",
+      url: "https://nextjs.org/docs/app/getting-started/metadata-and-og-images",
+    },
+    {
+      label: "TanStack Start SEO, route head and configured sitemap generation",
+      url: "https://tanstack.com/start/latest/docs/framework/react/guide/seo",
+    },
+    {
+      label: "Nuxt head management and SEO metadata",
+      url: "https://nuxt.com/docs/4.x/getting-started/seo-meta",
+    },
+    {
+      label: "Angular document Title service",
+      url: "https://angular.dev/api/platform-browser/Title",
+    },
+    {
+      label: "SvelteKit SEO, head markup and manual sitemaps",
+      url: "https://svelte.dev/docs/kit/seo",
+    },
+    {
+      label: "Astro page layouts and document head",
+      url: "https://docs.astro.build/en/basics/layouts/",
+    },
+    {
+      label: "Astro official sitemap integration and SSR route limits",
+      url: "https://docs.astro.build/en/guides/integrations-guide/sitemap/",
+    },
+    {
+      label: "Remix v3 document shells and explicit head content",
+      url: "https://github.com/remix-run/remix/blob/main/packages/remix/guides/04-rendering-ui.md",
+    },
     {
       label: "React standalone build choices",
       url: "https://react.dev/learn/build-a-react-app-from-scratch",

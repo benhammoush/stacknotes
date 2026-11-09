@@ -36,16 +36,33 @@ its strengths and limitations, and what you still need to manage.
   Services may require separate payment and configuration; a common column does
   not imply equal capabilities. [Inventory scope](docs/cloud-services.md).
 - Monochrome design, colored logos and a locally hosted Inter font.
-- JavaScript / TypeScript has thirteen focused comparisons: frameworks and
-  libraries, components, styling, animation, icons, state, data fetching, forms,
+- JavaScript / TypeScript has eleven focused comparisons: frameworks and
+  libraries, components, styling (including animation and icons), state, data fetching, forms,
   validation, backend frameworks, database tools, testing and build tools.
   Comparisons always show all tools in compact tables, without page banners,
   ecosystem selectors or jump controls. Comparisons follow the Cloud/Self-hosted layout: Overview shows Primary
-  purpose (Default look & feel for component libraries), Strengths, Limitations and License & operating costs, followed by a
+  purpose (Default look & feel for component libraries; Best fit & scope for state, data fetching and forms), Strengths, Limitations and License & operating costs, followed by a
   collapsed Features section with comparable labels and explanatory notes. Costs depend on setup
   and are not priced in license cells. ⓘ explains every row; cloud-provider
   responsibility scores are not applied to libraries. Supporting caveats and
-  references stay in a collapsed Notes & sources disclosure.
+  references stay in a collapsed Notes & sources disclosure, including the meanings
+  of Built-in, Configurable, Add-on and Manual support.
+- Data fetching compares optional TanStack Query, SWR, RTK Query, Apollo Client,
+  urql and Axios. Features explain caching,
+  refreshing, shared results, updates after saving, loading/errors and retries.
+  Framework support and API scope distinguish optional query tools from GraphQL clients
+  and basic HTTP requests; extra libraries are not required for every app.
+- State management compares shared state, derived values, async workflows,
+  persistence and debugging, including Jotai. Forms
+  separates field state, validation, errors, repeated fields, submissions and UI
+  wiring, including Formik, Vuelidate and Superforms. These three tabs list optional
+  libraries only; native framework capabilities stay in Frameworks & libraries.
+  All tool headers include local icons, and package/configuration boundaries are explicit.
+- Styling is a single table of Tailwind CSS, Motion, GSAP, Anime.js, AutoAnimate,
+  Lucide, Heroicons, Tabler Icons and Phosphor, without a Features section.
+  Tool marks and category subtitles identify columns; only the four Overview
+  rows are shown, with no framework-compatibility row. Integration and
+  accessibility caveats stay in Notes & sources. Former Animation and Icons URLs redirect to Styling.
 - Component libraries compares three suites each for React, Vue and Angular, plus Skeleton for Svelte,
   with the same candidates in Application stacks; core and commercial license
   boundaries remain explicit. Default look & feel replaces Primary purpose in
@@ -58,22 +75,29 @@ its strengths and limitations, and what you still need to manage.
   is React- or Vue-capable through official integrations. Included and —
   distinguish first-party capabilities from missing features, with package and
   runtime requirements kept visible. UI authoring, build defaults, alternative
-  tooling and deployment sit beside routing, SSR and API endpoints. Every row has
-  an ⓘ explanation. The former application-framework URL redirects to this page.
-- Application stacks is the JavaScript / TypeScript entry topic. Three rows—React,
-  Angular and Vue—group framework and library alternatives and distinguish integrated server capabilities from separately deployed
+  tooling and deployment sit beside routing, SSR and API endpoints. SEO & discoverability
+  distinguishes head APIs, metadata services and app-authored markup, not ranking quality. Every row has
+  an ⓘ explanation. Forms support distinguishes basic input handling, built-in
+  submissions and form management/validation. Data fetching distinguishes native
+  page loading and HTTP tools from app-managed requests and optional query caches.
+  The former application-framework URL redirects to this page.
+- Application stacks is the JavaScript / TypeScript entry topic. Four rows—React,
+  Angular, Vue and Svelte—group framework and library alternatives and distinguish integrated server capabilities from separately deployed
   JavaScript backends. Choices are curated candidates, not exclusive pairings
   or an exhaustive compatibility matrix. Every named tool links to documentation;
   stack rows have no explanation buttons. Alternatives are not a ranking,
-  and the table covers application frameworks, components, styling, state, data
+  and the table covers application frameworks, components, state, data
   fetching and forms, in that order. The Frameworks & libraries comparison
   explains build tooling by project setup rather than presenting it as an independent stack choice.
   Backend, validation, database-tool,
-  testing, animation and icon choices stay in their dedicated comparisons.
+  and testing choices stay in their dedicated comparisons; styling, animation and icons live in the separate Styling tab.
   Columns link to detailed comparisons; choices are optional candidates,
   not required dependencies. These are guides,
   not tested deployment recipes. Python is outside this section.
   Stack rows use editorial order, not measured usage of exact stacks.
+  Angular includes optional NgRx, TanStack Query and TanStack Form choices; React
+  includes Jotai, Formik and RTK Query, Vue includes Vuelidate, and Svelte includes
+  Superforms alongside TanStack Form. Built-in capabilities can make extra libraries unnecessary.
   Stack choices and their matching tool headers use locally hosted project icons where available;
   equal alternatives stay equally styled and independently linked.
 - Blue ≠ marks identify less-common responsibility or JS/TS feature labels, not

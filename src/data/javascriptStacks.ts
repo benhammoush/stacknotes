@@ -36,7 +36,7 @@ export const javascriptStackRoles = [
   { label: "Component-library candidates", path: "/javascript/components/" },
   ...javascriptTopics
     .filter(({ path }) =>
-      ["styling", "state", "data-fetching", "forms"].some(
+      ["state", "data-fetching", "forms"].some(
         (slug) => path === `/javascript/${slug}/`,
       ),
     )
@@ -54,10 +54,9 @@ export const javascriptStacks: Combination[] = [
     services: [
       choice("next", ["tanstack-start", "astro"]),
       choice("mui", ["ant-design", "mantine"]),
-      choice("tailwind", ["css-modules", "emotion"]),
-      choice("zustand", ["redux", "nanostores"]),
-      choice("tanstack-query", ["swr", "apollo", "urql"]),
-      choice("react-hook-form", ["tanstack-form"]),
+      choice("zustand", ["redux", "nanostores", "jotai"]),
+      choice("tanstack-query", ["swr", "rtk-query", "apollo", "urql"]),
+      choice("react-hook-form", ["formik", "tanstack-form"]),
     ],
   },
   {
@@ -70,10 +69,9 @@ export const javascriptStacks: Combination[] = [
     services: [
       choice("angular"),
       choice("angular-material", ["primeng", "ng-zorro"]),
-      choice("tailwind", ["sass"]),
       choice("ngrx"),
-      choice("tanstack-query"),
-      choice("angular-forms", ["tanstack-form"]),
+      choice("tanstack-query", ["axios"]),
+      choice("tanstack-form"),
     ],
   },
   {
@@ -86,10 +84,9 @@ export const javascriptStacks: Combination[] = [
     services: [
       choice("nuxt", ["astro"]),
       choice("primevue", ["vuetify", "element-plus"]),
-      choice("tailwind", ["css-modules", "sass"]),
       choice("pinia", ["nanostores"]),
       choice("tanstack-query", ["urql"]),
-      choice("vee-validate", ["tanstack-form"]),
+      choice("vee-validate", ["vuelidate", "tanstack-form"]),
     ],
   },
   {
@@ -102,10 +99,9 @@ export const javascriptStacks: Combination[] = [
     services: [
       choice("sveltekit"),
       choice("skeleton"),
-      choice("tailwind"),
       choice("nanostores"),
       choice("tanstack-query"),
-      choice("tanstack-form"),
+      choice("tanstack-form", ["superforms"]),
     ],
   },
 ];
@@ -118,10 +114,11 @@ export const javascriptStackContent = {
     "Curated candidates that fit together, not fixed pairings or an exhaustive compatibility matrix. One row per UI ecosystem: React, Angular, Vue and Svelte, in editorial order. Choices within a cell remain equal alternatives, not a ranking. Architecture and integration boundaries are explained below the table.",
   notes: [
     "React framework alternatives are Next.js, TanStack Start and Astro; Vue alternatives are Nuxt and Astro. Astro needs the matching React/Vue integration and explicit hydration for interactive islands. TanStack Start hosting depends on its build tool and target. Next.js handlers, Nuxt/Nitro routes, Astro endpoints and SvelteKit routes/actions need a supported server runtime or deployment adapter; static output cannot execute them. Vite is build tooling, not a backend.",
-    "For Svelte, use @skeletonlabs/skeleton-svelte with compatible Svelte/Tailwind versions; some controls are headless and need styling. Skeleton form utility classes require @tailwindcss/forms, not a form-state engine. Nano Stores implements the Svelte store contract; runes integration is separate. Choose @tanstack/svelte-query (currently Svelte 5.25+) and @tanstack/svelte-form, and follow their SSR guidance with per-request stores and caches. SvelteKit load functions and form actions can make extra client libraries unnecessary.",
+    "For Svelte, use @skeletonlabs/skeleton-svelte with compatible Svelte/Tailwind versions; some controls are headless and need styling. Skeleton form utility classes require @tailwindcss/forms, not a form-state engine. Nano Stores implements the Svelte store contract; runes integration is separate. Choose @tanstack/svelte-query (currently Svelte 5.25+) and @tanstack/svelte-form, or Superforms for SvelteKit form/action coordination with a supported schema adapter. Follow their SSR guidance with per-request stores and caches. SvelteKit load functions and form actions can make extra client libraries unnecessary.",
+    "State management, data fetching and forms cells list optional libraries only; native framework capabilities are explained in Frameworks & libraries. Angular's NgRx Store, TanStack Query and TanStack Form choices require separate installation, not use in every app. Axios is an optional HTTP client, not a query cache; it can also supply requests inside a query library. Jotai and Formik are React choices; Vuelidate validates Vue-owned values but leaves submission state to the application. React RTK Query needs Redux store/middleware setup; Apollo Client and urql are GraphQL choices, not requirements for REST requests. Simple forms and built-in state/fetching may suffice across stacks. Form libraries manage values, validation or feedback; component libraries provide the visual controls. Every server still needs validation and authorization.",
     "These are good starting candidates; unlisted pairings can also work. These guides are not installation recipes or claims that every pairing has been integration-tested. Integrated server features need a suitable runtime; separate backends need explicit API, authentication and deployment boundaries.",
     "This is a candidate map, not a dependency checklist. Each category links to its detailed comparison. Choose ecosystem-specific adapters and check supported versions; framework-agnostic tools still require integration and lifecycle cleanup. State and fetching libraries are optional; use framework features when sufficient. Database tools belong in trusted server code, not browser bundles. Client validation never replaces server validation or authorization.",
-    "Backend, validation, database-tool, testing, animation and icon choices remain in their dedicated comparisons in the topic navigation rather than in this table. Hosting and database-provider comparisons remain in Cloud services; Python is outside this section.",
+    "Backend, validation, database-tool and testing choices remain in their dedicated comparisons in the topic navigation rather than in this table. Styling choices, animation and icon tools remain in the separate Styling tab, not a stack column. Hosting and database-provider comparisons remain in Cloud services; Python is outside this section.",
   ],
   sourceLabel: "UI documentation",
 };
