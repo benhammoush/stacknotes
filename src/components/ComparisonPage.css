@@ -174,33 +174,6 @@ h2 {
 .provenance {
   font-size: 0.75rem;
 }
-.term-popover {
-  position: fixed;
-  inset: auto 0 1.5rem;
-  width: min(32rem, calc(100% - 2rem));
-  max-height: 60vh;
-  overflow: auto;
-  padding: 1.25rem;
-  background: var(--surface-raised);
-  color: var(--foreground);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 16px 60px #0008;
-}
-.term-popover > div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-.term-popover h2 {
-  font-size: 1rem;
-  margin: 0;
-}
-.term-popover p {
-  font-size: 0.9rem;
-  margin: 0.5rem 0 0;
-}
 .close-button {
   flex-shrink: 0;
   width: 2.75rem;
@@ -230,7 +203,8 @@ h2 {
   }
 }
 
-.different .status {
+.different .status,
+.different .tool-feature-status {
   color: var(--accent);
 }
 td.different,

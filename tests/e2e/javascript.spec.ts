@@ -5,7 +5,6 @@
 import { test, expect } from "@playwright/test";
 import {
   javascriptTopics,
-  javascriptTools,
   javascriptStacksTopic,
 } from "../../src/data/javascript";
 import { javascriptStacks } from "../../src/data/javascriptStacks";
@@ -57,6 +56,30 @@ for (const width of [390, 1440]) {
       await expect(page.getByRole("cell")).toHaveCount(
         topic.tools.length * (topic.dimensions.length + 4),
       );
+      await expect(
+        page.locator("#technical-rows .tool-feature-label"),
+      ).toHaveCount(topic.tools.length * topic.dimensions.length);
+      await expect(
+        page.locator("tbody:first-of-type td.different"),
+      ).toHaveCount(0);
+      await expect(page.locator("#tool-help")).toContainText(
+        "not better or worse",
+      );
+      const marked = page.locator("#technical-rows td.different");
+      const markedCount = await marked.count();
+      expect(markedCount).toBeGreaterThan(0);
+      await expect(
+        marked.locator('.difference-mark[aria-hidden="true"]'),
+      ).toHaveCount(markedCount);
+      await expect(marked.locator(".sr-only")).toHaveCount(markedCount);
+      await expect(marked.first().locator(".difference-mark")).toHaveText("≠");
+      await expect(marked.first().locator(".sr-only")).toContainText(
+        "less-common feature label",
+      );
+      await expect(marked.first().locator(".tool-feature-label")).toHaveCSS(
+        "color",
+        "rgb(158, 200, 255)",
+      );
       await expect(page.locator(".legend")).toHaveCount(0);
       expect(
         await page.evaluate(
@@ -64,11 +87,11 @@ for (const width of [390, 1440]) {
         ),
       ).toBe(true);
       const info = page.getByRole("button", {
-        name: "About Primary purpose",
+        name: `About ${topic.overviewPurpose?.label ?? "Primary purpose"}`,
         exact: true,
       });
       const dialog = page.getByRole("dialog", {
-        name: "Primary purpose",
+        name: topic.overviewPurpose?.label ?? "Primary purpose",
         exact: true,
       });
       await info.hover();
@@ -96,25 +119,50 @@ for (const width of [390, 1440]) {
     await page.goto("/javascript/app-frameworks/");
     await expect(page).toHaveURL(/\/javascript\/ui\/$/);
     const table = page.getByRole("table");
-    await expect(table.getByRole("cell")).toHaveCount(32);
+    await expect(table.getByRole("cell")).toHaveCount(36);
+    await expect(table.locator("thead img.provider-logo")).toHaveCount(9);
+    for (const [id, filename] of [
+      ["tanstack-start", "js-tanstack-start.svg"],
+      ["sveltekit", "js-sveltekit.png"],
+      ["remix", "js-remix.svg"],
+    ]) {
+      await expect(page.locator(`#tool-${id} img`)).toHaveAttribute(
+        "src",
+        `/providers/${filename}`,
+      );
+      await expect(page.locator(`#tool-${id} img`)).toHaveAttribute("alt", "");
+    }
     await page.getByRole("button", { name: "Features", exact: true }).click();
     await expect(table.locator('th[scope="colgroup"]')).toHaveText([
       "React-based",
       "Vue-based",
       "Angular",
+      "Svelte-based",
       "Other foundations",
     ]);
-    await expect(table.locator(".tool-column-headers th")).toHaveCount(8);
-    await expect(table.getByRole("cell")).toHaveCount(88);
-    await expect(table.locator(".tool-feature-status")).toHaveCount(24);
-    for (const status of await table.locator(".tool-feature-status").all())
+    await expect(table.locator(".tool-column-headers th")).toHaveCount(9);
+    await expect(table.getByRole("cell")).toHaveCount(99);
+    await expect(table.locator(".tool-feature-status")).toHaveCount(63);
+    await expect(table.locator(".tool-capability-status")).toHaveCount(27);
+    await expect(page.locator("#tool-tanstack-start a")).toContainText(
+      "TanStack Start",
+    );
+    await expect(page.locator("#tool-sveltekit a")).toContainText("SvelteKit");
+    await expect(page.locator("#tool-react-router")).toHaveCount(0);
+    await expect(page.locator("#tool-astro .company")).toHaveText(
+      "React · Vue",
+    );
+    for (const status of await table
+      .locator(".tool-capability-status .tool-feature-label")
+      .all())
       expect(["Included", "—"]).toContain(await status.textContent());
     await expect(
       table
         .getByRole("row", { name: /^Routing/ })
-        .locator(".tool-feature-status"),
+        .locator(".tool-feature-label"),
     ).toHaveText([
       "—",
+      "Included",
       "Included",
       "Included",
       "Included",
@@ -172,18 +220,38 @@ for (const width of [390, 1440]) {
       "React-based",
       "Vue-based",
       "Angular",
+      "Svelte",
     ]);
-    for (const group of await page.locator('th[scope="colgroup"]').all())
-      await expect(group).toHaveAttribute("colspan", "3");
-    await expect(page.getByRole("cell")).toHaveCount(36);
-    await expect(page.getByRole("columnheader")).toHaveCount(13);
+    const groups = page.locator('th[scope="colgroup"]');
+    for (let index = 0; index < 4; index++)
+      await expect(groups.nth(index)).toHaveAttribute(
+        "colspan",
+        index === 3 ? "1" : "3",
+      );
+    await expect(page.getByRole("cell")).toHaveCount(40);
+    await expect(page.getByRole("columnheader")).toHaveCount(15);
     await expect(page.getByRole("combobox")).toHaveCount(0);
+    const visual = page.getByRole("row", { name: /^Default look & feel/ });
+    await expect(visual.getByRole("cell")).toHaveCount(10);
+    await expect(visual.locator(".different, .difference-mark")).toHaveCount(0);
+    await expect(
+      page.getByRole("button", { name: "About Primary purpose", exact: true }),
+    ).toHaveCount(0);
     await page.getByRole("button", { name: "Features", exact: true }).click();
-    await expect(page.getByRole("cell")).toHaveCount(72);
+    await expect(page.getByRole("cell")).toHaveCount(130);
+    await expect(page.locator('#technical-rows th[scope="row"]')).toHaveCount(
+      9,
+    );
+    await expect(
+      page.getByRole("row", { name: /^Interaction utilities/ }),
+    ).toContainText("@mantine/hooks");
+    await expect(
+      page.getByRole("row", { name: /^Forms & validation integration/ }),
+    ).toContainText("@primevue/forms");
     await page.locator("#comparison").evaluate((element) => {
       element.scrollLeft = element.scrollWidth;
     });
-    await expect(page.locator("#tool-ng-zorro")).toBeInViewport();
+    await expect(page.locator("#tool-skeleton")).toBeInViewport();
     await expect(page.locator(".sources > p").first()).toBeHidden();
     await page.getByText("Notes & sources", { exact: true }).click();
     await expect(page.locator(".sources > p").first()).toBeVisible();
@@ -214,8 +282,8 @@ for (const width of [390, 1440]) {
     const table = page.getByRole("table", {
       name: "Tools by application stack",
     });
-    await expect(table.getByRole("rowheader")).toHaveCount(3);
-    await expect(table.getByRole("cell")).toHaveCount(18);
+    await expect(table.getByRole("rowheader")).toHaveCount(4);
+    await expect(table.getByRole("cell")).toHaveCount(24);
     await expect(table.getByRole("columnheader")).toHaveText([
       "Application stack",
       "Application framework",
@@ -253,7 +321,20 @@ for (const width of [390, 1440]) {
       "React",
       "Angular",
       "Vue",
+      "Svelte",
     ]);
+    const svelte = table.getByRole("row", { name: /^Svelte / });
+    for (const name of [
+      "SvelteKit",
+      "Skeleton",
+      "Tailwind CSS",
+      "Nano Stores",
+      "TanStack Query",
+      "TanStack Form",
+    ])
+      await expect(svelte.getByRole("link", { name, exact: true })).toHaveCount(
+        1,
+      );
     const images = table.locator("img.provider-logo");
     const expectedLogos = javascriptStacks
       .flatMap(({ services }) =>
@@ -281,11 +362,9 @@ for (const width of [390, 1440]) {
       ),
     ).toBe(true);
     for (const ui of ["React", "Vue", "Angular"]) {
-      const infoButton = page.getByRole("button", {
-        name: `About ${ui}`,
-        exact: true,
+      const row = table.getByRole("row").filter({
+        has: page.getByRole("rowheader", { name: ui, exact: true }),
       });
-      const row = table.getByRole("row").filter({ has: infoButton });
       const styling = row.getByRole("cell").nth(2);
       await expect(styling.getByRole("link").first()).toHaveText(
         "Tailwind CSS",
@@ -305,28 +384,8 @@ for (const width of [390, 1440]) {
       ).toBe(true);
     }
     await expect(page.getByText(/Within means/)).toHaveCount(0);
-    for (const stack of javascriptStacks) {
-      const info = table.getByRole("button", {
-        name: `About ${stack.name}`,
-        exact: true,
-      });
-      const dialog = page.getByRole("dialog", {
-        name: stack.name,
-        exact: true,
-      });
-      await info.hover();
-      await expect(dialog).toBeHidden();
-      await info.focus();
-      await expect(dialog).toBeHidden();
-      await page.keyboard.press("Enter");
-      await expect(dialog).toBeVisible();
-      await expect(dialog).toContainText(stack.note);
-      await expect(
-        dialog.getByRole("link", { name: "UI documentation ↗" }),
-      ).toHaveAttribute("href", javascriptTools[stack.name.toLowerCase()].url);
-      await page.keyboard.press("Escape");
-      await expect(info).toBeFocused();
-    }
+    await expect(table.getByRole("button")).toHaveCount(0);
+    await expect(page.locator("dialog")).toHaveCount(0);
     await page
       .getByRole("link", { name: "Cloud services", exact: true })
       .click();
@@ -357,18 +416,7 @@ test("JavaScript dialogs open by touch and close without navigating", async ({
     await page.goto("/javascript/stacks/");
     await page.locator(".combination-name").first().tap();
     await expect(page.locator("dialog:modal")).toHaveCount(0);
-    await page.getByRole("button", { name: "About React", exact: true }).tap();
-    const dialog = page.getByRole("dialog", {
-      name: "React",
-      exact: true,
-    });
-    await expect(dialog).toBeVisible();
-    const bounds = await dialog.boundingBox();
-    expect(Math.abs(bounds!.x + bounds!.width / 2 - 195)).toBeLessThanOrEqual(
-      2,
-    );
-    await dialog.getByRole("button", { name: "Close combination guide" }).tap();
-    await expect(dialog).toBeHidden();
+    await expect(page.getByRole("table").getByRole("button")).toHaveCount(0);
     await page.goto("/javascript/ui/");
     await page.getByRole("button", { name: "Features", exact: true }).tap();
     await page

@@ -1,5 +1,5 @@
 /**
- * Compares compact service associations with click-only, plain-English guidance dialogs.
+ * Compares compact application-stack associations with linked tools and source notes.
  * @packageDocumentation
  */
 import { Link } from "react-router-dom";
@@ -19,9 +19,9 @@ interface CombinationsPageProps {
 }
 
 /**
- * Render suggested associations and their benefits and trade-offs without implying automatic integration.
+ * Render suggested associations without implying automatic integration.
  * @param props - Application-stack content and linked role categories.
- * @returns An accessible comparison table with centered, keyboard-dismissible dialogs.
+ * @returns An accessible comparison table with linked tools and collapsed notes.
  */
 export default function CombinationsPage(props: CombinationsPageProps) {
   const { roles, combinations, title } = props;
@@ -60,21 +60,6 @@ export default function CombinationsPage(props: CombinationsPageProps) {
                       <span className="combination-name">
                         {combination.name}
                       </span>
-                      <button
-                        className="combination-info"
-                        aria-label={`About ${combination.name}`}
-                        aria-haspopup="dialog"
-                        aria-controls={`choice-${combination.id}`}
-                        onClick={() =>
-                          (
-                            document.getElementById(
-                              `choice-${combination.id}`,
-                            ) as HTMLDialogElement
-                          )?.showModal()
-                        }
-                      >
-                        ⓘ
-                      </button>
                     </div>
                   </th>
                   {combination.services.map(
@@ -159,55 +144,6 @@ export default function CombinationsPage(props: CombinationsPageProps) {
           ))}
         </details>
       </main>
-      {combinations.map((combination) => (
-        <dialog
-          key={combination.id}
-          id={`choice-${combination.id}`}
-          className="combination-dialog"
-          aria-labelledby={`choice-title-${combination.id}`}
-          aria-describedby={`choice-text-${combination.id} choice-note-${combination.id}`}
-          onClick={(event) => {
-            if (event.target === event.currentTarget)
-              event.currentTarget.close();
-          }}
-        >
-          <div className="combination-dialog-header">
-            <div>
-              <span className="combination-dialog-kicker">
-                Combination guide
-              </span>
-              <h2 id={`choice-title-${combination.id}`}>{combination.name}</h2>
-            </div>
-            <button
-              className="close-button"
-              aria-label="Close combination guide"
-              onClick={(event) =>
-                event.currentTarget.closest("dialog")?.close()
-              }
-            >
-              ×
-            </button>
-          </div>
-          <div className="combination-dialog-body">
-            <p id={`choice-text-${combination.id}`}>
-              {combination.whenToChoose}
-            </p>
-            <p
-              id={`choice-note-${combination.id}`}
-              className="combination-tradeoff"
-            >
-              {combination.note}
-            </p>
-          </div>
-          {combination.sourceUrl ? (
-            <footer className="combination-dialog-footer">
-              <a href={combination.sourceUrl}>
-                {props.sourceLabel ?? "Hosting documentation"} ↗
-              </a>
-            </footer>
-          ) : null}
-        </dialog>
-      ))}
     </>
   );
 }

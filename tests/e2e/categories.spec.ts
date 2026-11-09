@@ -313,6 +313,7 @@ test("resets route state, closes old explanations and handles unknown pages", as
     })
     .click();
   await expect(page.locator("#term-0")).toBeVisible();
+  await page.keyboard.press("Escape");
   await page
     .getByRole("navigation", { name: "Cloud services topics" })
     .getByRole("link", { name: "Hosting", exact: true })

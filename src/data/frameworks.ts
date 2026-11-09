@@ -11,11 +11,12 @@ export const frameworksTopic: JavaScriptTopic = {
   path: "/javascript/ui/",
   introduction:
     "Compare by ecosystem. Included = core or an official first-party feature; — = an external solution is needed. Click ⓘ for explanations and requirements.",
-  note: "Included does not mean enabled by default or supplied in the same package. React and Vue provide SSR APIs, not an assembled server application. Angular Router is included by the current CLI; Vue Router is a separate official package. Request-time rendering and endpoints need a server runtime; static output cannot run them. React Router v7 Framework Mode continues the React-based Remix v2 line. Remix v3 has its own component model and belongs outside the React group. You still own application authorization, input validation, persistence and deployment. Choices are not rankings or tested integration recipes.",
+  note: "Included does not mean enabled by default or supplied in the same package. React and Vue provide SSR APIs, not an assembled server application. Angular Router is included by the current CLI; Vue Router is a separate official package. TanStack Start's React integration adds server features around TanStack Router; it is not the router alone. SvelteKit builds applications with Svelte components. Astro supports React or Vue through official integrations; install the matching integration and explicitly hydrate interactive islands. These are not its only supported UI libraries. Request-time rendering and endpoints need a server runtime; static output cannot run them. Remix v3 has its own component model and belongs outside the React group. You still own application authorization, input validation, persistence and deployment. Choices are not rankings or tested integration recipes.",
   columnGroups: [
-    { label: "React-based", toolIds: ["react", "next", "react-router"] },
+    { label: "React-based", toolIds: ["react", "next", "tanstack-start"] },
     { label: "Vue-based", toolIds: ["vue", "nuxt"] },
     { label: "Angular", toolIds: ["angular"] },
+    { label: "Svelte-based", toolIds: ["sveltekit"] },
     { label: "Other foundations", toolIds: ["astro", "remix"] },
   ],
   dimensions: [
@@ -68,7 +69,10 @@ export const frameworksTopic: JavaScriptTopic = {
       strength: "Flexible architecture; broad ecosystem.",
       limitation: "Assemble routing, builds and server integration.",
       facts: [
-        "JSX/TSX · components, state and hooks.",
+        {
+          label: "React components",
+          detail: "JSX/TSX · components, state and hooks.",
+        },
         {
           included: false,
           detail: "External router, e.g. React Router.",
@@ -81,9 +85,18 @@ export const frameworksTopic: JavaScriptTopic = {
           included: false,
           detail: "External server or application framework.",
         },
-        "No default · Vite common for standalone apps.",
-        "Parcel · Rsbuild · custom webpack.",
-        "Static for client apps; custom server for SSR.",
+        {
+          label: "Choose your tooling",
+          detail: "No default · Vite common for standalone apps.",
+        },
+        {
+          label: "Custom toolchain",
+          detail: "Parcel · Rsbuild · custom webpack.",
+        },
+        {
+          label: "Static / custom server",
+          detail: "Static for client apps; custom server for SSR.",
+        },
       ],
     },
     {
@@ -98,7 +111,10 @@ export const frameworksTopic: JavaScriptTopic = {
       strength: "Integrated rendering, routing and server features.",
       limitation: "Server/client boundaries and caching need care.",
       facts: [
-        "React JSX/TSX · Server and Client Components.",
+        {
+          label: "React components",
+          detail: "React JSX/TSX · Server and Client Components.",
+        },
         {
           included: true,
           detail: "File-based pages and nested layouts.",
@@ -111,38 +127,60 @@ export const frameworksTopic: JavaScriptTopic = {
           included: true,
           detail: "Route Handlers; Server Functions for mutations.",
         },
-        "Next.js 16+: Turbopack for dev and production.",
-        "webpack via --webpack; check plugin compatibility.",
-        "Supported server runtime; static export for compatible routes only.",
+        {
+          label: "Turbopack",
+          detail: "Next.js 16+: Turbopack for dev and production.",
+        },
+        {
+          label: "Alternative builder",
+          detail: "webpack via --webpack; check plugin compatibility.",
+        },
+        {
+          label: "Server / static output",
+          detail:
+            "Supported server runtime; static export for compatible routes only.",
+        },
       ],
     },
     {
-      id: "react-router",
-      name: "React Router v7",
-      url: "https://reactrouter.com/start/framework/installation",
-      license: "https://github.com/remix-run/react-router/blob/main/LICENSE.md",
+      id: "tanstack-start",
+      name: "TanStack Start",
+      logo: "js-tanstack-start.svg",
+      url: "https://tanstack.com/start/latest/docs/framework/react/overview",
+      license: "https://github.com/TanStack/router/blob/main/LICENSE",
       licenseName: "MIT",
       ecosystems: ["React"],
-      purpose: "React app framework · Framework Mode, Remix v2 successor.",
-      strength: "Route loaders, actions and pending states.",
-      limitation: "Framework Mode owns build and server conventions.",
+      purpose: "Full-stack app framework · React integration.",
+      strength: "Type-safe routing, SSR and server functions.",
+      limitation: "Server boundaries and hosting setup need care.",
       facts: [
-        "React JSX/TSX · typed route modules.",
         {
-          included: true,
-          detail: "Nested route modules and code splitting.",
+          label: "React components",
+          detail: "React JSX/TSX · powered by TanStack Router.",
         },
         {
           included: true,
-          detail: "Configure SSR, SPA or static prerendering.",
+          detail: "TanStack Router · typed routes, params and search state.",
         },
         {
           included: true,
-          detail: "Resource routes and server loaders/actions.",
+          detail: "Full-document SSR and streaming; configurable per route.",
         },
-        "Vite · Framework Mode plugin.",
-        "Data/Declarative modes: own your tooling, fewer framework features.",
-        "Server for runtime SSR/actions; static for SPA or prerendered output.",
+        {
+          included: true,
+          detail: "Server routes for HTTP endpoints; typed server functions.",
+        },
+        { label: "Vite", detail: "Vite · TanStack Start and React plugins." },
+        {
+          label: "Alternative builder",
+          detail:
+            "Official Rsbuild integration; deployment setup differs by build tool.",
+        },
+        {
+          label: "Server / static output",
+          detail:
+            "Server integration for live SSR/functions; prerendered static output without live server features.",
+        },
       ],
     },
     {
@@ -157,7 +195,10 @@ export const frameworksTopic: JavaScriptTopic = {
       strength: "Single-file components; progressive adoption.",
       limitation: "Choose app architecture and production SSR setup.",
       facts: [
-        "Templates · reactive state · TypeScript SFCs.",
+        {
+          label: "Vue components",
+          detail: "Templates · reactive state · TypeScript SFCs.",
+        },
         {
           included: true,
           detail: "Official Vue Router; separate package.",
@@ -170,9 +211,19 @@ export const frameworksTopic: JavaScriptTopic = {
           included: false,
           detail: "External server or app framework, e.g. Nuxt.",
         },
-        "Vite · official create-vue starter, not a Vue-core requirement.",
-        "Custom toolchain with Vue compilation integration.",
-        "Static for client apps; custom server for SSR.",
+        {
+          label: "Vite",
+          detail:
+            "Vite · official create-vue starter, not a Vue-core requirement.",
+        },
+        {
+          label: "Custom toolchain",
+          detail: "Custom toolchain with Vue compilation integration.",
+        },
+        {
+          label: "Static / custom server",
+          detail: "Static for client apps; custom server for SSR.",
+        },
       ],
     },
     {
@@ -187,7 +238,10 @@ export const frameworksTopic: JavaScriptTopic = {
       strength: "Integrated data fetching and server conventions.",
       limitation: "Auto-imports, modules and deployment presets to learn.",
       facts: [
-        "Vue SFCs · pages, layouts and composables.",
+        {
+          label: "Vue components",
+          detail: "Vue SFCs · pages, layouts and composables.",
+        },
         {
           included: true,
           detail: "File-based pages via Vue Router.",
@@ -200,9 +254,20 @@ export const frameworksTopic: JavaScriptTopic = {
           included: true,
           detail: "Nitro server routes and middleware.",
         },
-        "Vite for the app · Nitro for server output.",
-        "webpack · Rspack · custom Nuxt builder; install/configure separately.",
-        "Nitro preset for server features; static generation without live endpoints.",
+        {
+          label: "Vite",
+          detail: "Vite for the app · Nitro for server output.",
+        },
+        {
+          label: "Alternative builder",
+          detail:
+            "webpack · Rspack · custom Nuxt builder; install/configure separately.",
+        },
+        {
+          label: "Server / static output",
+          detail:
+            "Nitro preset for server features; static generation without live endpoints.",
+        },
       ],
     },
     {
@@ -217,7 +282,11 @@ export const frameworksTopic: JavaScriptTopic = {
       strength: "First-party routing, forms, DI and tooling.",
       limitation: "More framework conventions; no built-in API layer.",
       facts: [
-        "TypeScript · templates, signals and DI; RxJS for observables.",
+        {
+          label: "Angular components",
+          detail:
+            "TypeScript · templates, signals and DI; RxJS for observables.",
+        },
         {
           included: true,
           detail:
@@ -231,9 +300,67 @@ export const frameworksTopic: JavaScriptTopic = {
           included: false,
           detail: "External server handlers; SSR is not an API layer.",
         },
-        "esbuild · default Angular CLI application builder.",
-        "Other CLI builders: browser-esbuild, webpack-based browser or custom; check compatibility.",
-        "Static for client/prerendered apps; supported server for SSR.",
+        {
+          label: "esbuild",
+          detail: "esbuild · default Angular CLI application builder.",
+        },
+        {
+          label: "Alternative builder",
+          detail:
+            "Other CLI builders: browser-esbuild, webpack-based browser or custom; check compatibility.",
+        },
+        {
+          label: "Server / static output",
+          detail:
+            "Static for client/prerendered apps; supported server for SSR.",
+        },
+      ],
+    },
+    {
+      id: "sveltekit",
+      name: "SvelteKit",
+      logo: "js-sveltekit.png",
+      url: "https://svelte.dev/docs/kit/introduction",
+      license: "https://github.com/sveltejs/kit/blob/main/LICENSE",
+      licenseName: "MIT",
+      ecosystems: ["Svelte"],
+      purpose: "Svelte app framework · integrated pages and server routes.",
+      strength: "Compiled components, data loading and form actions.",
+      limitation: "Learn Svelte conventions and choose a deployment adapter.",
+      facts: [
+        {
+          label: "Svelte components",
+          detail:
+            "Svelte components · HTML templates, CSS and JavaScript/TypeScript.",
+        },
+        {
+          included: true,
+          detail: "File-based pages, nested layouts and route parameters.",
+        },
+        {
+          included: true,
+          detail:
+            "SSR by default; per-route client rendering and prerendering options.",
+        },
+        {
+          included: true,
+          detail:
+            "+server handlers for endpoints; server form actions for mutations.",
+        },
+        {
+          label: "Vite",
+          detail: "Vite · SvelteKit plugin builds client and server output.",
+        },
+        {
+          label: "Framework configuration",
+          detail:
+            "Configure Vite and the deployment adapter; no independent bundler switch.",
+        },
+        {
+          label: "Server / static output",
+          detail:
+            "Target adapter for server features; static adapter for compatible output.",
+        },
       ],
     },
     {
@@ -243,12 +370,16 @@ export const frameworksTopic: JavaScriptTopic = {
       license: "https://github.com/withastro/astro/blob/main/LICENSE",
       licenseName: "MIT",
       logo: "js-astro.svg",
-      ecosystems: ["Framework-agnostic"],
-      purpose: "Content-oriented framework · multiple UI integrations.",
+      ecosystems: ["React", "Vue"],
+      purpose: "Content-oriented framework · React or Vue capable.",
       strength: "HTML-first pages; selective interactive islands.",
       limitation: "Whole-page app interactivity needs extra design.",
       facts: [
-        "Astro components + UI integrations; explicit island hydration.",
+        {
+          label: "Astro + UI integrations",
+          detail:
+            "Astro components + React or Vue integrations; explicit island hydration.",
+        },
         {
           included: true,
           detail: "File-based pages and endpoints.",
@@ -262,14 +393,26 @@ export const frameworksTopic: JavaScriptTopic = {
           included: true,
           detail: "Endpoints and actions; runtime adapter for live requests.",
         },
-        "Astro-managed development and production build.",
-        "Configure through Astro integrations; not an independent bundler choice.",
-        "Static by default; runtime adapter for live pages and endpoints.",
+        {
+          label: "Framework-managed",
+          detail: "Astro-managed development and production build.",
+        },
+        {
+          label: "Framework configuration",
+          detail:
+            "Configure through Astro integrations; not an independent bundler choice.",
+        },
+        {
+          label: "Server / static output",
+          detail:
+            "Static by default; runtime adapter for live pages and endpoints.",
+        },
       ],
     },
     {
       id: "remix",
       name: "Remix v3",
+      logo: "js-remix.svg",
       url: "https://remix.run/docs/",
       license: "https://github.com/remix-run/remix/blob/main/LICENSE",
       licenseName: "MIT",
@@ -278,7 +421,11 @@ export const frameworksTopic: JavaScriptTopic = {
       strength: "Composable server, UI, data and asset modules.",
       limitation: "Not React; differs from the Remix v2 model.",
       facts: [
-        "Own JSX model · ordinary state, explicit updates; not React hooks.",
+        {
+          label: "Remix components",
+          detail:
+            "Own JSX model · ordinary state, explicit updates; not React hooks.",
+        },
         {
           included: true,
           detail: "Typed routes, controllers and middleware.",
@@ -291,9 +438,20 @@ export const frameworksTopic: JavaScriptTopic = {
           included: true,
           detail: "Controllers and Web Request/Response handlers.",
         },
-        "No application build step: on-demand TS/JSX/CSS compilation.",
-        "Remix asset pipeline; no Vite/webpack switch listed.",
-        "Server runtime for requests, UI rendering and asset compilation.",
+        {
+          label: "On-demand compilation",
+          detail:
+            "No application build step: on-demand TS/JSX/CSS compilation.",
+        },
+        {
+          label: "Framework configuration",
+          detail: "Remix asset pipeline; no Vite/webpack switch listed.",
+        },
+        {
+          label: "Server runtime",
+          detail:
+            "Server runtime for requests, UI rendering and asset compilation.",
+        },
       ],
     },
   ],
@@ -314,18 +472,17 @@ export const frameworksTopic: JavaScriptTopic = {
       label: "Next.js Route Handlers",
       url: "https://nextjs.org/docs/app/getting-started/route-handlers",
     },
-    { label: "React Router modes", url: "https://reactrouter.com/start/modes" },
     {
-      label: "React Router rendering strategies",
-      url: "https://reactrouter.com/start/framework/rendering",
+      label: "TanStack Start routing, rendering and server features",
+      url: "https://tanstack.com/start/latest/docs/framework/react/overview",
     },
     {
-      label: "React Router resource routes",
-      url: "https://reactrouter.com/how-to/resource-routes",
+      label: "TanStack Start build and hosting integrations",
+      url: "https://tanstack.com/start/latest/docs/framework/react/guide/hosting",
     },
     {
-      label: "Remix v2 to React Router lineage",
-      url: "https://v2.remix.run/docs",
+      label: "TanStack Start static prerendering",
+      url: "https://tanstack.com/start/latest/docs/framework/react/guide/static-prerendering",
     },
     {
       label: "Vue official starter",
@@ -358,6 +515,18 @@ export const frameworksTopic: JavaScriptTopic = {
     {
       label: "Angular CLI builders",
       url: "https://angular.dev/tools/cli/build",
+    },
+    {
+      label: "SvelteKit routing, endpoints and form actions",
+      url: "https://svelte.dev/docs/kit/routing",
+    },
+    {
+      label: "SvelteKit builds and adapters",
+      url: "https://svelte.dev/docs/kit/building-your-app",
+    },
+    {
+      label: "Astro React, Vue and other UI integrations",
+      url: "https://docs.astro.build/en/guides/framework-components/",
     },
     {
       label: "Astro on-demand rendering and endpoints",

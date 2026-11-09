@@ -4,6 +4,7 @@
  */
 import { useState, type CSSProperties } from "react";
 import type { JavaScriptTopic } from "../data/javascript";
+import { differences } from "../utils/comparison";
 import "./ToolComparisonPage.css";
 
 /** A single source-linked tool comparison, distinct from cloud service data. */
@@ -21,10 +22,13 @@ export default function ToolComparisonPage(props: ToolComparisonPageProps) {
   const [expanded, setExpanded] = useState(false);
   const tools = topic.tools;
   const groups = topic.columnGroups;
+  const differenceHelp =
+    "The blue ≠ mark means a less-common feature label across this row, not better or worse. Explanatory wording is not compared; uniform rows and ties for the most-common label remain neutral.";
   const rows = [
     {
-      label: "Primary purpose",
+      label: topic.overviewPurpose?.label ?? "Primary purpose",
       explanation:
+        topic.overviewPurpose?.explanation ??
         "The tool's purpose and scope; similar names do not mean equivalent products.",
       values: tools.map((tool) => tool.purpose),
     },
@@ -58,48 +62,77 @@ export default function ToolComparisonPage(props: ToolComparisonPageProps) {
    * @param index - Stable position used by the explanation dialog.
    * @returns One semantic comparison row with an activation-only explanation.
    */
-  const renderRow = (row: (typeof rows)[number], index: number) => (
-    <tr key={row.label}>
-      <th scope="row">
-        {row.label}
-        <button
-          className="info-button"
-          aria-label={`About ${row.label}`}
-          aria-haspopup="dialog"
-          aria-controls={`tool-explanation-${index}`}
-          onClick={() =>
-            (
-              document.getElementById(
-                `tool-explanation-${index}`,
-              ) as HTMLDialogElement
-            )?.showModal()
-          }
-        >
-          ⓘ
-        </button>
-      </th>
-      {row.values.map((value, cell) => (
-        <td key={tools[cell].id}>
-          {typeof value === "string" ? (
-            value
-          ) : (
-            <>
-              <span className="tool-feature-status">
-                {value.included ? "Included" : "—"}
-              </span>
-              <span className="cell-note">{value.detail}</span>
-            </>
-          )}
-        </td>
-      ))}
-    </tr>
-  );
+  const renderRow = (row: (typeof rows)[number], index: number) => {
+    const labels = row.values.map((value) =>
+      typeof value === "string"
+        ? value
+        : "included" in value
+          ? value.included
+            ? "Included"
+            : "—"
+          : value.label,
+    );
+    const cues = index >= 4 ? differences(labels) : labels.map(() => false);
+    return (
+      <tr key={row.label}>
+        <th scope="row">
+          {row.label}
+          <button
+            className="info-button"
+            aria-label={`About ${row.label}`}
+            aria-haspopup="dialog"
+            aria-controls={`tool-explanation-${index}`}
+            onClick={() =>
+              (
+                document.getElementById(
+                  `tool-explanation-${index}`,
+                ) as HTMLDialogElement
+              )?.showModal()
+            }
+          >
+            ⓘ
+          </button>
+        </th>
+        {row.values.map((value, cell) => (
+          <td
+            key={tools[cell].id}
+            className={cues[cell] ? "different" : undefined}
+          >
+            {typeof value === "string" ? (
+              value
+            ) : (
+              <>
+                <span
+                  className={`tool-feature-status${"included" in value ? " tool-capability-status" : ""}`}
+                >
+                  <span className="tool-feature-label">{labels[cell]}</span>
+                  {cues[cell] ? (
+                    <>
+                      <span aria-hidden="true" className="difference-mark">
+                        {" "}
+                        ≠
+                      </span>
+                      <span className="sr-only">
+                        {" "}
+                        — less-common feature label in this row
+                      </span>
+                    </>
+                  ) : null}
+                </span>
+                <span className="cell-note">{value.detail}</span>
+              </>
+            )}
+          </td>
+        ))}
+      </tr>
+    );
+  };
   return (
     <>
       <main tabIndex={-1}>
         <h1 className="sr-only">{topic.title}</h1>
         <p className="sr-only" id="tool-help">
-          {topic.introduction}
+          {topic.introduction} {differenceHelp}
         </p>
         <div
           id="comparison"
@@ -111,7 +144,9 @@ export default function ToolComparisonPage(props: ToolComparisonPageProps) {
         >
           <table style={{ "--provider-count": tools.length } as CSSProperties}>
             <caption className="sr-only">
-              {topic.title}: purpose, trade-offs and capabilities
+              {topic.title}:{" "}
+              {topic.overviewPurpose?.label.toLowerCase() ?? "purpose"},
+              trade-offs and capabilities
             </caption>
             <thead>
               {groups ? (
@@ -199,6 +234,7 @@ export default function ToolComparisonPage(props: ToolComparisonPageProps) {
           <details className="sources">
             <summary>Notes & sources</summary>
             <p>{topic.note}</p>
+            <p>{differenceHelp}</p>
             <p>
               License cells show core terms only. Infrastructure, operations,
               paid add-ons and external services depend on your setup; their

@@ -1,5 +1,5 @@
 /**
- * Calculates responsibility differences without comparing editorial note text.
+ * Calculates categorical differences without comparing editorial note text.
  * @packageDocumentation
  */
 
