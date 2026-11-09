@@ -28,6 +28,7 @@ export interface JavaScriptTool {
   license: string;
   licenseName: string;
   logo?: string;
+  category?: "Utility-first CSS" | "Animation" | "Icons";
   ecosystems: Ecosystem[];
   purpose: string;
   strength: string;
@@ -83,8 +84,14 @@ const stackToolLogos: Record<string, string> = {
   "angular-material": "js-angular-material.svg",
   skeleton: "js-skeleton.ico",
   tailwind: "js-tailwind.svg",
-  "css-modules": "js-css-modules.png",
-  sass: "js-sass.svg",
+  motion: "js-motion.png",
+  gsap: "js-gsap.png",
+  anime: "js-anime.png",
+  autoanimate: "js-autoanimate.png",
+  lucide: "js-lucide.png",
+  heroicons: "js-heroicons.png",
+  tabler: "js-tabler.ico",
+  phosphor: "js-phosphor.png",
   fastify: "js-fastify.svg",
   nest: "js-nest.svg",
   express: "js-express.svg",
@@ -96,6 +103,19 @@ const stackToolLogos: Record<string, string> = {
   vitest: "js-vitest.svg",
   playwright: "js-playwright.svg",
   vite: "js-vite.svg",
+};
+
+/** Styling discovery labels do not imply equivalent capabilities or native adapters. */
+const stylingCategories: Record<string, JavaScriptTool["category"]> = {
+  tailwind: "Utility-first CSS",
+  motion: "Animation",
+  gsap: "Animation",
+  anime: "Animation",
+  autoanimate: "Animation",
+  lucide: "Icons",
+  heroicons: "Icons",
+  tabler: "Icons",
+  phosphor: "Icons",
 };
 
 /**
@@ -115,12 +135,13 @@ function tools(entries: ToolEntry[]): JavaScriptTool[] {
       strength,
       limitation,
       facts,
-    ]) => ({
+    ]): JavaScriptTool => ({
       id,
       name,
       url,
       license,
       logo: stackToolLogos[id],
+      category: stylingCategories[id],
       licenseName:
         (
           {
@@ -130,7 +151,6 @@ function tools(entries: ToolEntry[]): JavaScriptTool[] {
             prisma: "Apache-2.0",
             drizzle: "Apache-2.0",
             playwright: "Apache-2.0",
-            "css-modules": "Implementation-dependent; linked css-loader is MIT",
           } as Record<string, string>
         )[id] ?? "MIT",
       ecosystems,
@@ -832,31 +852,28 @@ export const javascriptTopics: JavaScriptTopic[] = [
     label: "Styling",
     title: "Styling tools",
     path: "/javascript/styling/",
-    introduction:
-      "Compare approaches to writing and organizing styles. These tools can complement each other rather than replace each other.",
-    note: "Styling support is not a complete accessibility guarantee. Check responsive behavior, contrast, focus and reduced-motion preferences in your own design.",
-    dimensions: [
+    sources: [
       {
-        label: "Approach",
-        explanation:
-          "Utilities, ready-made styles, scoped CSS, preprocessing and CSS-in-JS solve different problems.",
+        label: "Tailwind framework build integrations",
+        url: "https://tailwindcss.com/docs/installation/using-vite",
       },
       {
-        label: "Design defaults",
-        explanation:
-          "Whether visual components are supplied or the design is entirely yours.",
+        label: "Motion JavaScript quick start",
+        url: "https://motion.dev/docs/quick-start",
       },
       {
-        label: "Build & runtime",
-        explanation:
-          "What tooling processes the styles and whether JavaScript runs to generate them.",
+        label: "GSAP framework integration and cleanup",
+        url: "https://gsap.com/resources/frameworks/",
       },
       {
-        label: "Customization",
-        explanation:
-          "How you express shared tokens, themes and local exceptions.",
+        label: "Anime.js framework lifecycle example",
+        url: "https://animejs.com/documentation/getting-started/using-with-react/",
       },
     ],
+    introduction:
+      "Explore Tailwind CSS, animation tools and icon collections in one table. These tools serve different purposes and can complement each other; no feature ranking is implied.",
+    note: "Tailwind produces CSS through a configured build integration. Motion has JavaScript and React APIs; GSAP and Anime.js expose generic JavaScript/DOM APIs, with framework lifecycle integration and cleanup required. AutoAnimate offers React/Vue adapters and a generic DOM API. Icon collections provide SVG assets that can be used across frameworks; Heroicons provides React/Vue packages, while other collections have their own ecosystem packages. Select the maintained package for your framework and release, or use SVG directly; not every framework has a native package and these are not integration-tested pairings. Import only needed icons and inspect bundle output. Respect reduced-motion preferences and clean up effects on navigation. Check responsive behavior, contrast and focus in your design. Decorative icons need empty alternatives or aria-hidden; icon-only controls need accessible names. Core licenses do not cover every paid product or asset notice.",
+    dimensions: [],
     tools: tools([
       [
         "tailwind",
@@ -867,138 +884,8 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "Utility-first CSS framework.",
         "Compose styles in markup with a shared design vocabulary.",
         "Long class lists and shared component boundaries need discipline.",
-        [
-          ["Utility CSS", "Utility classes generated by a build step."],
-          [
-            "No component suite",
-            "Utilities and theme primitives, not a ready-made control suite.",
-          ],
-          [
-            "Build-time CSS",
-            "Build integration generates CSS; no styling runtime required.",
-          ],
-          [
-            "CSS variables / composition",
-            "Theme variables, utilities and reusable components.",
-          ],
-        ],
+        [],
       ],
-      [
-        "bootstrap",
-        "Bootstrap",
-        "https://getbootstrap.com/docs/5.3/getting-started/introduction/",
-        "https://github.com/twbs/bootstrap/blob/main/LICENSE",
-        ["Framework-agnostic"],
-        "CSS framework with layout utilities and styled components.",
-        "Established visual conventions and ready-made component styles.",
-        "Interactive JavaScript plugins must be integrated carefully with reactive UI frameworks.",
-        [
-          [
-            "Component CSS",
-            "Styled CSS components and utilities with JavaScript plugins.",
-          ],
-          ["Styled components", "A supplied visual language and layouts."],
-          [
-            "CSS + optional JS plugins",
-            "CSS works directly; some interactive components need JavaScript.",
-          ],
-          ["CSS variables / Sass", "CSS variables and Sass customization."],
-        ],
-      ],
-      [
-        "css-modules",
-        "CSS Modules",
-        "https://github.com/css-modules/css-modules",
-        "https://github.com/webpack-contrib/css-loader/blob/master/LICENSE",
-        ["Framework-agnostic"],
-        "Build-tool convention for locally scoped CSS names.",
-        "Keep ordinary CSS while reducing accidental class collisions.",
-        "A convention rather than one package: check your build implementation's license. Themes and component design remain yours.",
-        [
-          ["Scoped CSS", "Local class-name scoping, not a design framework."],
-          ["No component suite", "None; write your own CSS."],
-          ["Build-time CSS", "Requires CSS Modules support in your toolchain."],
-          [
-            "CSS variables / composition",
-            "Compose classes and use standard CSS variables.",
-          ],
-        ],
-      ],
-      [
-        "sass",
-        "Sass",
-        "https://sass-lang.com/documentation/",
-        "https://github.com/sass/dart-sass/blob/main/LICENSE",
-        ["Framework-agnostic"],
-        "Stylesheet language compiled into CSS.",
-        "Modules, functions and mixins help organize styles.",
-        "Adds a compilation layer and does not isolate classes by itself.",
-        [
-          ["CSS preprocessor", "CSS preprocessor."],
-          [
-            "No component suite",
-            "None; it can customize another CSS framework.",
-          ],
-          ["Build-time CSS", "Compile Sass before serving CSS."],
-          [
-            "Sass modules / mixins",
-            "Modules, variables, mixins and generated CSS.",
-          ],
-        ],
-      ],
-      [
-        "emotion",
-        "Emotion",
-        "https://emotion.sh/docs/introduction",
-        "https://github.com/emotion-js/emotion/blob/main/LICENSE",
-        ["React"],
-        "CSS-in-JS library with React integrations.",
-        "Co-locate component styling and theme-driven variants.",
-        "Server rendering and runtime style insertion need the documented setup.",
-        [
-          ["CSS-in-JS", "CSS-in-JS; this entry covers React styling APIs."],
-          ["No component suite", "No full control suite."],
-          [
-            "JS styling runtime",
-            "Runtime style generation with build-time optimizations available.",
-          ],
-          [
-            "JS theme / composition",
-            "Theme context, styled components and CSS composition.",
-          ],
-        ],
-      ],
-    ]),
-  },
-  {
-    label: "Animation",
-    title: "Animation libraries",
-    path: "/javascript/animation/",
-    introduction:
-      "Choose by the interaction you need: transitions, layout changes, gestures or timelines. Native CSS may be enough.",
-    note: "Respect reduced motion and clean up animations on navigation. No speed ranking is implied; measure your actual screens and devices.",
-    dimensions: [
-      {
-        label: "Integration",
-        explanation:
-          "Direct DOM APIs and framework-specific bindings have different lifecycle requirements.",
-      },
-      {
-        label: "Motion model",
-        explanation:
-          "What kinds of changes the library is designed to coordinate.",
-      },
-      {
-        label: "Control",
-        explanation: "How much timeline or interaction logic you write.",
-      },
-      {
-        label: "Your responsibilities",
-        explanation:
-          "Motion preferences, cleanup and interaction safety still require application work.",
-      },
-    ],
-    tools: tools([
       [
         "motion",
         "Motion",
@@ -1008,24 +895,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "Animation tools with JavaScript and React APIs.",
         "Declarative animation and interaction APIs for UI work.",
         "Capabilities and paid offerings differ across packages and integrations.",
-        [
-          [
-            "JS + UI bindings",
-            "React components/hooks or JavaScript animation APIs.",
-          ],
-          [
-            "General animation",
-            "Transitions, layout animations and gestures through appropriate APIs.",
-          ],
-          [
-            "Explicit animation APIs",
-            "Use animation values, transitions and sequencing APIs.",
-          ],
-          [
-            "Motion / lifecycle checks",
-            "Follow reduced-motion guidance and clean up manual animations.",
-          ],
-        ],
+        [],
       ],
       [
         "gsap",
@@ -1036,24 +906,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "JavaScript animation engine and plugin ecosystem.",
         "Explicit timelines coordinate complex sequences.",
         "DOM targeting and lifecycle cleanup require care; review current license terms.",
-        [
-          [
-            "JS + UI bindings",
-            "DOM-oriented JavaScript; integrations for component lifecycles.",
-          ],
-          [
-            "General animation",
-            "Tweens, timelines, SVG and plugin-driven effects.",
-          ],
-          [
-            "Explicit animation APIs",
-            "Detailed sequencing and playback control.",
-          ],
-          [
-            "Motion / lifecycle checks",
-            "Use cleanup/context mechanisms and implement reduced-motion behavior.",
-          ],
-        ],
+        [],
       ],
       [
         "anime",
@@ -1064,21 +917,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "JavaScript toolkit for animation and timelines.",
         "Animate DOM properties and coordinate sequences.",
         "You connect lifecycle cleanup and interaction logic to your app.",
-        [
-          ["JavaScript API", "JavaScript APIs for DOM and other values."],
-          [
-            "General animation",
-            "Animations, timelines and layout/scroll tools as documented.",
-          ],
-          [
-            "Explicit animation APIs",
-            "Explicit targets, timing and sequencing.",
-          ],
-          [
-            "Motion / lifecycle checks",
-            "Revert effects and respect motion preferences.",
-          ],
-        ],
+        [],
       ],
       [
         "autoanimate",
@@ -1089,54 +928,8 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "Automatic transitions for changes to a container's children.",
         "Small integration for adding, removing and moving list items.",
         "Less suitable when you need precise multi-step choreography.",
-        [
-          ["JS + UI bindings", "Parent-element API and framework adapters."],
-          [
-            "Container transitions",
-            "Changes to immediate children of a container.",
-          ],
-          [
-            "Automatic defaults",
-            "Defaults with customization rather than a general timeline editor.",
-          ],
-          [
-            "Motion / lifecycle checks",
-            "Check reduced-motion behavior and unusual layout cases.",
-          ],
-        ],
+        [],
       ],
-    ]),
-  },
-  {
-    label: "Icons",
-    title: "Icon collections",
-    path: "/javascript/icons/",
-    introduction:
-      "Compare visual languages and delivery formats, not backend or application features.",
-    note: "Decorative icons should be hidden from assistive technology. Icon-only controls need an accessible name. Loading a collection does not supply those decisions.",
-    dimensions: [
-      {
-        label: "Visual style",
-        explanation:
-          "Weight, shape and variants should match the rest of the interface.",
-      },
-      {
-        label: "Integration",
-        explanation:
-          "Check the maintained package for your UI framework, or use SVG assets.",
-      },
-      {
-        label: "Loading",
-        explanation:
-          "Import only the assets you use; check what your bundler actually includes.",
-      },
-      {
-        label: "Customization",
-        explanation:
-          "Color, stroke and size controls differ by format and icon design.",
-      },
-    ],
-    tools: tools([
       [
         "lucide",
         "Lucide",
@@ -1146,18 +939,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "Open icon collection with a consistent stroke style.",
         "SVG assets and framework packages support varied integrations.",
         "The outlined visual style may not match a filled icon language.",
-        [
-          ["Outline", "Stroke-based icons."],
-          ["SVG + UI packages", "SVG plus framework-specific packages."],
-          [
-            "Selected icons",
-            "Use individual imports and inspect bundle output.",
-          ],
-          [
-            "Size / color / stroke",
-            "Size, color and stroke options through SVG/package APIs.",
-          ],
-        ],
+        [],
       ],
       [
         "heroicons",
@@ -1168,18 +950,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "SVG icon collection with outline and solid variants.",
         "Related icon sizes and styles support consistent interfaces.",
         "Check available sizes and framework integrations for the icons you need.",
-        [
-          [
-            "Outline + filled",
-            "Outline and solid sets at defined design sizes.",
-          ],
-          ["SVG + UI packages", "SVG assets and React/Vue packages."],
-          [
-            "Selected icons",
-            "Import individual icons or embed selected SVG assets.",
-          ],
-          ["Size / color", "Use SVG color and size; preserve intended style."],
-        ],
+        [],
       ],
       [
         "tabler",
@@ -1190,21 +961,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "SVG icon collection with framework integrations.",
         "A broad set of consistently drawn interface symbols.",
         "Similar-looking variants still need a product-wide selection rule.",
-        [
-          [
-            "Outline + filled",
-            "Outline collection with filled icons also available.",
-          ],
-          ["SVG + UI packages", "SVG and framework-specific packages."],
-          [
-            "Selected icons",
-            "Select icons instead of shipping the complete collection.",
-          ],
-          [
-            "Size / color / stroke",
-            "SVG sizing, colors and outline stroke settings.",
-          ],
-        ],
+        [],
       ],
       [
         "phosphor",
@@ -1215,21 +972,7 @@ export const javascriptTopics: JavaScriptTopic[] = [
         "Icon family with multiple visual weights.",
         "Weight choices help fit icons to different interface densities.",
         "Mixing weights casually can make the design inconsistent.",
-        [
-          [
-            "Multiple weights",
-            "Multiple weights including regular, bold and duotone.",
-          ],
-          ["SVG + UI packages", "SVG assets and ecosystem packages."],
-          [
-            "Selected icons",
-            "Choose an integration and import only needed icons.",
-          ],
-          [
-            "Size / color / weight",
-            "Size, color and weight via assets or package APIs.",
-          ],
-        ],
+        [],
       ],
     ]),
   },

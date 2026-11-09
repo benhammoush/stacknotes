@@ -36,8 +36,8 @@ its strengths and limitations, and what you still need to manage.
   Services may require separate payment and configuration; a common column does
   not imply equal capabilities. [Inventory scope](docs/cloud-services.md).
 - Monochrome design, colored logos and a locally hosted Inter font.
-- JavaScript / TypeScript has thirteen focused comparisons: frameworks and
-  libraries, components, styling, animation, icons, state, data fetching, forms,
+- JavaScript / TypeScript has eleven focused comparisons: frameworks and
+  libraries, components, styling (including animation and icons), state, data fetching, forms,
   validation, backend frameworks, database tools, testing and build tools.
   Comparisons always show all tools in compact tables, without page banners,
   ecosystem selectors or jump controls. Comparisons follow the Cloud/Self-hosted layout: Overview shows Primary
@@ -46,6 +46,11 @@ its strengths and limitations, and what you still need to manage.
   and are not priced in license cells. ⓘ explains every row; cloud-provider
   responsibility scores are not applied to libraries. Supporting caveats and
   references stay in a collapsed Notes & sources disclosure.
+- Styling is a single table of Tailwind CSS, Motion, GSAP, Anime.js, AutoAnimate,
+  Lucide, Heroicons, Tabler Icons and Phosphor, without a Features section.
+  Tool marks and category subtitles identify columns; only the four Overview
+  rows are shown, with no framework-compatibility row. Integration and
+  accessibility caveats stay in Notes & sources. Former Animation and Icons URLs redirect to Styling.
 - Component libraries compares three suites each for React, Vue and Angular, plus Skeleton for Svelte,
   with the same candidates in Application stacks; core and commercial license
   boundaries remain explicit. Default look & feel replaces Primary purpose in
@@ -60,8 +65,8 @@ its strengths and limitations, and what you still need to manage.
   runtime requirements kept visible. UI authoring, build defaults, alternative
   tooling and deployment sit beside routing, SSR and API endpoints. Every row has
   an ⓘ explanation. The former application-framework URL redirects to this page.
-- Application stacks is the JavaScript / TypeScript entry topic. Three rows—React,
-  Angular and Vue—group framework and library alternatives and distinguish integrated server capabilities from separately deployed
+- Application stacks is the JavaScript / TypeScript entry topic. Four rows—React,
+  Angular, Vue and Svelte—group framework and library alternatives and distinguish integrated server capabilities from separately deployed
   JavaScript backends. Choices are curated candidates, not exclusive pairings
   or an exhaustive compatibility matrix. Every named tool links to documentation;
   stack rows have no explanation buttons. Alternatives are not a ranking,
@@ -69,7 +74,7 @@ its strengths and limitations, and what you still need to manage.
   fetching and forms, in that order. The Frameworks & libraries comparison
   explains build tooling by project setup rather than presenting it as an independent stack choice.
   Backend, validation, database-tool,
-  testing, animation and icon choices stay in their dedicated comparisons.
+  and testing choices stay in their dedicated comparisons; animation and icons live in Styling.
   Columns link to detailed comparisons; choices are optional candidates,
   not required dependencies. These are guides,
   not tested deployment recipes. Python is outside this section.

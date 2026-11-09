@@ -7,7 +7,7 @@ those names and links. Topic-specific dimensions compare capabilities, not manag
 service responsibilities. No performance or quality scores are used; equal
 alternatives within a cell are not ranked.
 
-All JavaScript comparisons except Application stacks follow the Cloud/Self-hosted
+All JavaScript comparisons except Application stacks and Styling follow the Cloud/Self-hosted
 table structure: an always-visible Overview with Primary purpose, Strengths,
 Limitations and License & operating costs, followed by a collapsed Features
 section. Component libraries replaces Primary purpose with Default look & feel
@@ -50,9 +50,7 @@ candidate lists compare different roles rather than one shared feature axis.
 
 Categories are editorial summaries of the detailed notes, not automatically
 inferred from wording. Component accessibility labels describe supplied behavior,
-not a compliance score; all suites still require application checks. Styling
-defaults distinguish supplied components from utilities and tools without a
-component suite. Data-fetching labels retain the
+not a compliance score; all suites still require application checks. Data-fetching labels retain the
 distinction between keyed results, normalized entities and urql's document cache
 with optional Graphcache. Database tools retain ORM versus query-builder scope.
 
@@ -61,17 +59,41 @@ with optional Graphcache. Database tools retain ORM versus query-builder scope.
 Official documentation was consulted in November 2026. Linked repository license
 files were read through the projects' raw GitHub endpoints when the GitHub HTML
 frontend returned gateway errors. Documentation paths for PrimeVue and Zustand
-were updated after checking their current official sites. CSS Modules is a
-convention, not one licensed runtime; its implementation-dependent license cell
-links to the css-loader implementation. GSAP's own Standard License is not labeled
+were updated after checking their current official sites. GSAP's own Standard License is not labeled
 as an MIT license. Core licenses do not establish the terms of every add-on.
 
-Comparison entries are intentionally scoped: Apollo covers its React integration,
-Emotion its React styling APIs, and Angular forms
+Comparison entries are intentionally scoped: Apollo covers its React integration, and Angular forms
 the documented reactive-forms APIs. Framework-agnostic means the core approach can
 be used without a UI-framework binding, not that every adapter exists. The
 ecosystem labels describe compatibility; they do not filter the visible tools or
 promise an integration with every framework.
+
+## Styling
+
+Styling combines styling, animation and icon discovery in one ungrouped table,
+in this order: Tailwind CSS, Motion, GSAP, Anime.js, AutoAnimate, Lucide, Heroicons,
+Tabler Icons and Phosphor. Bootstrap, CSS Modules, Sass and Emotion are not catalog
+entries or stack choices; mentions of Sass or other implementation details inside
+component-library explanations are not independent recommendations.
+
+Its four always-visible Overview rows are Primary purpose, Strengths, Limitations,
+and License & operating costs. No framework-compatibility row, Features toggle, feature
+rows, difference highlighting/help or horizontal-scroll instruction is rendered.
+Keep the existing compact table, sticky headers/labels, row explanation dialogs
+and collapsed Notes & sources. Each column has a documented local project mark
+and a category subtitle (Utility-first CSS, Animation or Icons), not a section group.
+
+Shared notes explain build integration, package selection, lifecycle cleanup
+and generic SVG support without implying that every framework has a native
+package or that every pairing is integration-tested. Retain reduced-motion,
+accessible icon names, individual imports, license and paid-product boundaries.
+Other tool comparisons retain their existing feature sections and explanations.
+
+The navigation has eleven comparisons plus Application stacks. The former
+`/javascript/animation/` and `/javascript/icons/` URLs redirect with replacement to
+`/javascript/styling/`, preserving deep links without retaining duplicate topics.
+Each stack offers Tailwind CSS as its styling candidate; animation/icon tools
+remain optional discoveries in Styling rather than added stack dependencies.
 
 ## Component libraries
 
@@ -196,8 +218,8 @@ must run on the server. Angular client-form checks are not server enforcement;
 Angular CLI is application tooling, and Angular/Material versions must be compatible.
 The stack table has six role columns, in order: application framework,
 component-library candidates, styling, state management,
-data fetching and forms. Backend, validation, database-tool, testing, animation
-and icon choices remain in their dedicated topic comparisons instead of
+data fetching and forms. Backend, validation, database-tool and testing
+choices remain in their dedicated topic comparisons; animation and icons are in Styling instead of
 being repeated in each UI row. Each displayed role links to its dedicated comparison. Entries are optional
 candidates, not a dependency checklist. Database tools run in trusted server code;
 client validation does not replace server enforcement. Use compatible ecosystem
@@ -224,7 +246,5 @@ hosting and database-provider choices. Stack choices use verified local marks wh
 and remain linked text when no verified mark is present;
 catalog headers reuse available marks, including those for tools whose stack columns
 were removed. Framework-feature/tooling cells use the
-parent project's mark, not an invented sub-product logo. CSS Modules uses its own
-project mark from its documented logo repository, not css-loader's or GitHub's
-brand. Catalog entries without a verified mark remain text-linked. Asset origins and licenses live
+parent project's mark, not an invented sub-product logo. Catalog entries without a verified mark remain text-linked. Asset origins and licenses live
 in `THIRD_PARTY_NOTICES.txt`; images are decorative beside visible linked names.

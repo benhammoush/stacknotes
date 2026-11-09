@@ -44,42 +44,58 @@ for (const width of [390, 1440]) {
         page
           .getByRole("navigation", { name: "JavaScript / TypeScript topics" })
           .getByRole("link"),
-      ).toHaveCount(14);
+      ).toHaveCount(12);
       await expect(page.getByRole("columnheader")).toHaveCount(
         topic.tools.length + 1 + (topic.columnGroups?.length ?? 0),
       );
       await expect(page.getByRole("cell")).toHaveCount(topic.tools.length * 4);
-      await expect(
-        page.getByRole("button", { name: "Features", exact: true }),
-      ).toHaveAttribute("aria-expanded", "false");
-      await page.getByRole("button", { name: "Features", exact: true }).click();
-      await expect(page.getByRole("cell")).toHaveCount(
-        topic.tools.length * (topic.dimensions.length + 4),
-      );
-      await expect(
-        page.locator("#technical-rows .tool-feature-label"),
-      ).toHaveCount(topic.tools.length * topic.dimensions.length);
-      await expect(
-        page.locator("tbody:first-of-type td.different"),
-      ).toHaveCount(0);
-      await expect(page.locator("#tool-help")).toContainText(
-        "not better or worse",
-      );
-      const marked = page.locator("#technical-rows td.different");
-      const markedCount = await marked.count();
-      expect(markedCount).toBeGreaterThan(0);
-      await expect(
-        marked.locator('.difference-mark[aria-hidden="true"]'),
-      ).toHaveCount(markedCount);
-      await expect(marked.locator(".sr-only")).toHaveCount(markedCount);
-      await expect(marked.first().locator(".difference-mark")).toHaveText("≠");
-      await expect(marked.first().locator(".sr-only")).toContainText(
-        "less-common feature label",
-      );
-      await expect(marked.first().locator(".tool-feature-label")).toHaveCSS(
-        "color",
-        "rgb(158, 200, 255)",
-      );
+      if (topic.dimensions.length) {
+        await expect(
+          page.getByRole("button", { name: "Features", exact: true }),
+        ).toHaveAttribute("aria-expanded", "false");
+        await page
+          .getByRole("button", { name: "Features", exact: true })
+          .click();
+        await expect(page.getByRole("cell")).toHaveCount(
+          topic.tools.length * (topic.dimensions.length + 4),
+        );
+        await expect(
+          page.locator("#technical-rows .tool-feature-label"),
+        ).toHaveCount(topic.tools.length * topic.dimensions.length);
+        await expect(
+          page.locator("tbody:first-of-type td.different"),
+        ).toHaveCount(0);
+        await expect(page.locator("#tool-help")).toContainText(
+          "not better or worse",
+        );
+        const marked = page.locator("#technical-rows td.different");
+        const markedCount = await marked.count();
+        expect(markedCount).toBeGreaterThan(0);
+        await expect(
+          marked.locator('.difference-mark[aria-hidden="true"]'),
+        ).toHaveCount(markedCount);
+        await expect(marked.locator(".sr-only")).toHaveCount(markedCount);
+        await expect(marked.first().locator(".difference-mark")).toHaveText(
+          "≠",
+        );
+        await expect(marked.first().locator(".sr-only")).toContainText(
+          "less-common feature label",
+        );
+        await expect(marked.first().locator(".tool-feature-label")).toHaveCSS(
+          "color",
+          "rgb(158, 200, 255)",
+        );
+      } else {
+        await expect(
+          page.getByRole("button", { name: "Features", exact: true }),
+        ).toHaveCount(0);
+        await expect(
+          page.locator("#technical-rows, .difference-mark"),
+        ).toHaveCount(0);
+        await expect(page.locator("#tool-help")).not.toContainText(
+          "less-common",
+        );
+      }
       await expect(page.locator(".legend")).toHaveCount(0);
       expect(
         await page.evaluate(
@@ -110,6 +126,82 @@ for (const width of [390, 1440]) {
       );
     }
     expect(errors).toEqual([]);
+  });
+
+  test(`unified Styling keeps tool logos, redirects and overview dialogs at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    for (const path of [
+      "/javascript/animation/",
+      "/javascript/icons/",
+      "/javascript/styling/",
+    ]) {
+      await page.goto(path);
+      await expect(page).toHaveURL(/\/javascript\/styling\/$/);
+      await page.reload();
+      await expect(page).toHaveTitle("Styling tools · Stacknotes");
+    }
+    await expect(page.getByRole("cell")).toHaveCount(36);
+    await expect(page.locator("thead .provider-logo")).toHaveCount(9);
+    await expect(page.locator("thead .company")).toHaveText([
+      "Utility-first CSS",
+      "Animation",
+      "Animation",
+      "Animation",
+      "Animation",
+      "Icons",
+      "Icons",
+      "Icons",
+      "Icons",
+    ]);
+    await expect(
+      page.getByRole("row", { name: /^Framework compatibility/ }),
+    ).toHaveCount(0);
+    await expect(page.locator("tbody img")).toHaveCount(0);
+    for (const image of await page.locator("#comparison img").all())
+      await expect
+        .poll(() =>
+          image.evaluate(
+            (element) => (element as HTMLImageElement).naturalWidth,
+          ),
+        )
+        .toBeGreaterThan(0);
+    await expect(
+      page.getByText("Scroll horizontally to see all nine tools →"),
+    ).toHaveCount(0);
+    const nav = page.getByRole("navigation", {
+      name: "JavaScript / TypeScript topics",
+    });
+    for (const name of ["Animation", "Icons"])
+      await expect(nav.getByRole("link", { name, exact: true })).toHaveCount(0);
+    for (const label of [
+      "Primary purpose",
+      "Strengths",
+      "Limitations",
+      "License & operating costs",
+    ]) {
+      const button = page.getByRole("button", {
+        name: `About ${label}`,
+        exact: true,
+      });
+      await button.focus();
+      await page.keyboard.press("Enter");
+      await expect(
+        page.getByRole("dialog", { name: label, exact: true }),
+      ).toBeVisible();
+      await page.keyboard.press("Escape");
+      await expect(button).toBeFocused();
+    }
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await page.locator("#comparison").evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
+    await expect(page.locator("#tool-phosphor")).toBeInViewport();
   });
 
   test(`grouped frameworks preserve inclusion, sticky headers and row explanations at ${width}px`, async ({
@@ -308,8 +400,7 @@ for (const width of [390, 1440]) {
     for (const label of [
       "Backend frameworks",
       "Build tools",
-      "Animation",
-      "Icons",
+      "Styling",
       "Database tools",
       "Validation",
       "Testing",

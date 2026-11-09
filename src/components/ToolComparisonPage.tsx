@@ -22,9 +22,10 @@ export default function ToolComparisonPage(props: ToolComparisonPageProps) {
   const [expanded, setExpanded] = useState(false);
   const tools = topic.tools;
   const groups = topic.columnGroups;
+  const hasFeatures = topic.dimensions.length > 0;
   const differenceHelp =
     "The blue ≠ mark means a less-common feature label across this row, not better or worse. Explanatory wording is not compared; uniform rows and ties for the most-common label remain neutral.";
-  const rows = [
+  const overviewRows = [
     {
       label: topic.overviewPurpose?.label ?? "Primary purpose",
       explanation:
@@ -50,6 +51,9 @@ export default function ToolComparisonPage(props: ToolComparisonPageProps) {
         "Core software license terms, not a hosted-service price. Infrastructure, operations, paid add-ons and external services depend on your setup and are not priced here. Core terms do not cover every extension or asset; follow the linked license and verify the release you adopt.",
       values: tools.map((tool) => tool.licenseName),
     },
+  ];
+  const rows = [
+    ...overviewRows,
     ...topic.dimensions.map((dimension, index) => ({
       ...dimension,
       values: tools.map((tool) => tool.facts[index]),
@@ -72,7 +76,10 @@ export default function ToolComparisonPage(props: ToolComparisonPageProps) {
             : "—"
           : value.label,
     );
-    const cues = index >= 4 ? differences(labels) : labels.map(() => false);
+    const cues =
+      index >= overviewRows.length
+        ? differences(labels)
+        : labels.map(() => false);
     return (
       <tr key={row.label}>
         <th scope="row">
@@ -132,7 +139,7 @@ export default function ToolComparisonPage(props: ToolComparisonPageProps) {
       <main tabIndex={-1}>
         <h1 className="sr-only">{topic.title}</h1>
         <p className="sr-only" id="tool-help">
-          {topic.introduction} {differenceHelp}
+          {topic.introduction} {hasFeatures ? differenceHelp : ""}
         </p>
         <div
           id="comparison"
@@ -187,7 +194,7 @@ export default function ToolComparisonPage(props: ToolComparisonPageProps) {
                           </span>
                         </a>
                         <span className="company">
-                          {tool.ecosystems.join(" · ")}
+                          {tool.category ?? tool.ecosystems.join(" · ")}
                         </span>
                       </div>
                     </div>
@@ -201,40 +208,48 @@ export default function ToolComparisonPage(props: ToolComparisonPageProps) {
                   Overview
                 </th>
               </tr>
-              {rows.slice(0, 4).map(renderRow)}
+              {overviewRows.map(renderRow)}
             </tbody>
-            <tbody>
-              <tr className="section-row">
-                <th scope="rowgroup" colSpan={tools.length + 1}>
-                  <button
-                    id="technical-toggle"
-                    className="section-toggle"
-                    aria-expanded={expanded}
-                    aria-controls="technical-rows"
-                    onClick={() => setExpanded(!expanded)}
-                  >
-                    <span className="section-chevron" aria-hidden="true">
-                      ›
-                    </span>
-                    Features
-                  </button>
-                </th>
-              </tr>
-            </tbody>
-            <tbody
-              id="technical-rows"
-              aria-labelledby="technical-toggle"
-              hidden={!expanded}
-            >
-              {rows.slice(4).map((row, index) => renderRow(row, index + 4))}
-            </tbody>
+            {hasFeatures ? (
+              <>
+                <tbody>
+                  <tr className="section-row">
+                    <th scope="rowgroup" colSpan={tools.length + 1}>
+                      <button
+                        id="technical-toggle"
+                        className="section-toggle"
+                        aria-expanded={expanded}
+                        aria-controls="technical-rows"
+                        onClick={() => setExpanded(!expanded)}
+                      >
+                        <span className="section-chevron" aria-hidden="true">
+                          ›
+                        </span>
+                        Features
+                      </button>
+                    </th>
+                  </tr>
+                </tbody>
+                <tbody
+                  id="technical-rows"
+                  aria-labelledby="technical-toggle"
+                  hidden={!expanded}
+                >
+                  {rows
+                    .slice(overviewRows.length)
+                    .map((row, index) =>
+                      renderRow(row, index + overviewRows.length),
+                    )}
+                </tbody>
+              </>
+            ) : null}
           </table>
         </div>
         <section className="reading-notes" aria-label="Comparison notes">
           <details className="sources">
             <summary>Notes & sources</summary>
             <p>{topic.note}</p>
-            <p>{differenceHelp}</p>
+            {hasFeatures ? <p>{differenceHelp}</p> : null}
             <p>
               License cells show core terms only. Infrastructure, operations,
               paid add-ons and external services depend on your setup; their

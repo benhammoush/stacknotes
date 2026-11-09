@@ -2,6 +2,29 @@ Provider logos are trademarks of their respective owners, used for identificatio
 only, without endorsement or affiliation. The software license below does not
 grant trademark rights. Review applicable brand guidelines before public launch.
 
+Styling header marks, retrieved November 9, 2026, unmodified and locally hosted:
+js-motion.png = https://motion.dev/favicon-32.png
+  Identity source: https://motion.dev/docs (official favicon link).
+js-gsap.png = https://gsap.com/favicon-32x32.png
+  Identity source: https://gsap.com/docs/v3/ (official favicon link).
+js-anime.png = https://animejs.com/assets/images/favicon.png
+  Identity source: https://animejs.com/documentation/ (official favicon link).
+js-autoanimate.png = https://auto-animate.formkit.com/assets/favicon-vrVmGPPs.png
+  Identity source: https://auto-animate.formkit.com/ (official favicon link).
+js-lucide.png = https://raw.githubusercontent.com/lucide-icons/lucide/main/docs/public/favicon-32x32.png
+  Identity source: https://github.com/lucide-icons/lucide/tree/main/docs/public
+  (official documentation-site favicon in the project repository).
+js-heroicons.png = https://heroicons.com/_next/static/media/favicon-32x32.2a23e45f.png
+  Identity source: https://heroicons.com/ (official favicon link).
+js-tabler.ico = https://tabler.io/favicon.ico?favicon.1wwitlnk8ws_k.ico
+  Identity source: https://tabler.io/icons (official favicon link).
+  Uses the Tabler parent-project mark shown on its Icons site.
+js-phosphor.png = https://phosphoricons.com/favicon-32.png
+  Identity source: https://phosphoricons.com/ (official favicon link).
+These project images are not collection-licensed artwork; the software license
+of a represented tool does not grant rights to its mark. No additional trademark
+rights, endorsement or affiliation are implied.
+
 JavaScript stack marks, retrieved November 8, 2026, unmodified and locally hosted.
 js-skeleton.ico: https://www.skeleton.dev/_astro/favicon.oeNx7Nna.png
   Identity source: https://www.skeleton.dev/docs/svelte/get-started/introduction

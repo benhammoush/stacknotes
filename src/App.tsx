@@ -104,6 +104,13 @@ export default function App() {
           path="/javascript/app-frameworks/"
           element={<Navigate to="/javascript/ui/" replace />}
         />
+        {["/javascript/animation/", "/javascript/icons/"].map((path) => (
+          <Route
+            key={path}
+            path={path}
+            element={<Navigate to="/javascript/styling/" replace />}
+          />
+        ))}
         <Route
           path={javascriptStacksTopic.path}
           element={
