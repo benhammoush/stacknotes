@@ -43,6 +43,15 @@ Original copyright: (c) 2021 Vitaly Rtishchev; (c) 2025 Colin McDonnell, respect
 
 Official project images (not covered by either collection license):
 js-sveltekit.png: https://svelte.dev/favicon.png
+  Identity source: https://svelte.dev/docs/kit/introduction (official favicon link).
+js-tanstack-start.svg: https://tanstack.com/favicon-light.svg
+  Identity source: https://tanstack.com/start/latest (official light-mode favicon).
+  This is the TanStack parent-project mark used on the Start site.
+js-remix.svg: https://remix.run/favicon.svg
+  Identity source: https://remix.run/ (current official Remix v3 site favicon).
+These three framework marks were retrieved November 8, 2026, with geometry and
+colors unchanged. They are official project images, not collection-licensed
+artwork; no additional trademark rights are implied.
 js-css-modules.png: https://raw.githubusercontent.com/css-modules/logos/master/css-modules-logo.png
   Identity source: https://github.com/css-modules/css-modules (README logo).
 js-kysely.ico: https://kysely.dev/img/favicon.ico

@@ -3,7 +3,7 @@
  * Guards compact tool comparisons, ecosystem grouping and JavaScript-only stack boundaries.
  * @packageDocumentation
  */
-import { fireEvent, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, waitFor, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -19,6 +19,8 @@ import {
 import { categoryGroups } from "../../src/data/categories";
 import { renderApp } from "./render";
 import { frameworksTopic } from "../../src/data/frameworks";
+import ToolComparisonPage from "../../src/components/ToolComparisonPage";
+import type { JavaScriptTopic } from "../../src/data/javascript";
 
 describe("JavaScript / TypeScript", () => {
   it("registers thirteen distinct comparisons and a separate application-stacks entry", () => {
@@ -34,14 +36,13 @@ describe("JavaScript / TypeScript", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(JSON.stringify(group)).not.toMatch(/python|django|flask|fastapi/i);
     const tools = javascriptTopics.flatMap((topic) => topic.tools);
-    expect(tools).toHaveLength(64);
+    expect(tools).toHaveLength(65);
     expect(javascriptTools.solid).toBeUndefined();
     expect(tools.flatMap(({ ecosystems }) => ecosystems)).not.toContain(
       "Solid",
     );
-    expect(JSON.stringify([tools, javascriptStacks])).not.toMatch(
-      /svelte|skeleton/i,
-    );
+    expect(javascriptTools.sveltekit.ecosystems).toEqual(["Svelte"]);
+    expect(javascriptTools.skeleton).toBeUndefined();
     for (const id of [
       "autoanimate",
       "nanostores",
@@ -59,9 +60,24 @@ describe("JavaScript / TypeScript", () => {
     it(`${topic.label} has complete, sourced cells without provider-operation claims`, () => {
       expect(topic.tools.length).toBeGreaterThanOrEqual(3);
       expect(topic.note.length).toBeGreaterThan(60);
-      expect(topic.dimensions).toHaveLength(topic === frameworksTopic ? 7 : 4);
+      expect(topic.dimensions).toHaveLength(
+        topic === frameworksTopic
+          ? 7
+          : topic.path === "/javascript/components/"
+            ? 9
+            : 4,
+      );
       for (const tool of topic.tools) {
         expect(tool.facts).toHaveLength(topic.dimensions.length);
+        for (const fact of tool.facts) {
+          if ("label" in fact) {
+            expect(fact.label.trim()).toBe(fact.label);
+            expect(fact.label.length).toBeGreaterThan(0);
+            expect(fact.label.length).toBeLessThanOrEqual(40);
+          } else {
+            expect(typeof fact.included).toBe("boolean");
+          }
+        }
         for (const cell of [
           tool.purpose,
           tool.strength,
@@ -96,7 +112,7 @@ describe("JavaScript / TypeScript", () => {
           ...container.querySelectorAll("tbody:first-of-type th[scope='row']"),
         ].map((row) => row.childNodes[0].textContent),
       ).toEqual([
-        "Primary purpose",
+        topic.overviewPurpose?.label ?? "Primary purpose",
         "Strengths",
         "Limitations",
         "License & operating costs",
@@ -117,6 +133,25 @@ describe("JavaScript / TypeScript", () => {
       expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(
         topic.tools.length * (topic.dimensions.length + 4),
       );
+      expect(
+        container.querySelectorAll("#technical-rows .tool-feature-label"),
+      ).toHaveLength(topic.tools.length * topic.dimensions.length);
+      expect(
+        container.querySelectorAll("tbody:first-of-type .different"),
+      ).toHaveLength(0);
+      expect(container.querySelector("#tool-help")?.textContent).toContain(
+        "not better or worse",
+      );
+      for (const cell of container.querySelectorAll("td.different")) {
+        expect(cell.closest("tbody")?.id).toBe("technical-rows");
+        expect(
+          cell.querySelector('.difference-mark[aria-hidden="true"]')
+            ?.textContent,
+        ).toContain("≠");
+        expect(cell.querySelector(".sr-only")?.textContent).toContain(
+          "less-common feature label",
+        );
+      }
       expect(queryByRole("button", { name: "Who handles what" })).toBeNull();
       expect(container.querySelector('option[value="Svelte"]')).toBeNull();
       expect(container.querySelector('option[value="Solid"]')).toBeNull();
@@ -149,22 +184,231 @@ describe("JavaScript / TypeScript", () => {
       ["Angular", "3"],
     ]);
     expect(getByRole("table").querySelectorAll("thead th")).toHaveLength(13);
-    expect(container.querySelectorAll("tbody td")).toHaveLength(72);
-    expect(container.querySelectorAll(".sources a")).toHaveLength(18);
+    expect(container.querySelectorAll("tbody td")).toHaveLength(117);
+    const topic = javascriptTopics.find(
+      ({ path }) => path === "/javascript/components/",
+    )!;
+    expect(container.querySelectorAll(".sources a")).toHaveLength(
+      18 + topic.sources!.length,
+    );
     expect(container.querySelectorAll("select")).toHaveLength(0);
     expect(getByRole("link", { name: "Angular Material" })).toBeTruthy();
   });
 
   it("preserves role distinctions and runtime/security caveats", () => {
     expect(javascriptTools.primeng.licenseName).toContain("commercial/LTS");
-    expect(javascriptTools["testing-library"].facts[0]).toContain(
+    expect(javascriptTools["testing-library"].facts[0].detail).toContain(
       "not a standalone test runner",
     );
-    expect(javascriptTools.esbuild.facts[3]).toContain("without type checking");
+    expect(javascriptTools.esbuild.facts[3].detail).toContain(
+      "without type checking",
+    );
     expect(
       javascriptTopics.find(({ path }) => path.endsWith("data-fetching/"))!
         .note,
     ).toContain("not Redis/Valkey");
+  });
+
+  it.each([
+    { labels: ["A", "A", "B"], marked: [2] },
+    { labels: ["A", "A", "A"], marked: [] },
+    { labels: ["A", "A", "B", "B"], marked: [] },
+    { labels: ["A", "B", "C"], marked: [] },
+    { labels: ["A", "A", "B", "B", "C"], marked: [4] },
+  ])(
+    "marks only less-common feature labels in $labels",
+    ({ labels, marked }) => {
+      const topic: JavaScriptTopic = {
+        ...frameworksTopic,
+        columnGroups: undefined,
+        dimensions: [
+          { label: "Category", explanation: "Compare labels, not notes." },
+        ],
+        tools: frameworksTopic.tools
+          .slice(0, labels.length)
+          .map((tool, index) => ({
+            ...tool,
+            purpose: index === 0 ? "Different overview" : "Same overview",
+            facts: [
+              { label: labels[index], detail: `Unique explanation ${index}` },
+            ],
+          })),
+      };
+      const { container, rerender } = render(
+        <ToolComparisonPage topic={topic} />,
+      );
+      const cells = [...container.querySelectorAll("#technical-rows td")];
+      expect(
+        cells.flatMap((cell, index) =>
+          cell.classList.contains("different") ? [index] : [],
+        ),
+      ).toEqual(marked);
+      expect(container.querySelectorAll(".difference-mark")).toHaveLength(
+        marked.length,
+      );
+      expect(
+        container.querySelectorAll("tbody:first-of-type td.different"),
+      ).toHaveLength(0);
+      rerender(
+        <ToolComparisonPage
+          topic={{
+            ...topic,
+            tools: topic.tools.map((tool) => ({
+              ...tool,
+              facts: tool.facts.map((fact) => ({
+                ...fact,
+                detail: "Identical explanation",
+              })),
+            })),
+          }}
+        />,
+      );
+      expect(
+        [...container.querySelectorAll("#technical-rows td")].flatMap(
+          (cell, index) =>
+            cell.classList.contains("different") ? [index] : [],
+        ),
+      ).toEqual(marked);
+    },
+  );
+
+  it("keeps visual character in Overview and compares nine UI/developer feature rows", () => {
+    const { getByRole, container } = renderApp("/javascript/components/");
+    const visual = getByRole("row", { name: /^Default look & feel/ });
+    expect(visual.closest("tbody")).toBe(container.querySelector("tbody"));
+    expect(visual.querySelectorAll("td")).toHaveLength(9);
+    expect(
+      visual.querySelectorAll(".different, .difference-mark"),
+    ).toHaveLength(0);
+    expect(visual.textContent).toContain("Restrained, utilitarian");
+    expect(visual.textContent).toContain(
+      "Polished, visually detailed controls",
+    );
+    expect(
+      container.querySelector('button[aria-label="About Primary purpose"]'),
+    ).toBeNull();
+    const info = getByRole("button", { name: "About Default look & feel" });
+    const dialog = container.querySelector<HTMLDialogElement>(
+      `#${info.getAttribute("aria-controls")}`,
+    )!;
+    const showModal = vi.fn();
+    dialog.showModal = showModal;
+    fireEvent.click(info);
+    expect(showModal).toHaveBeenCalledOnce();
+    expect(dialog.textContent).toContain("not objective quality rankings");
+    fireEvent.click(getByRole("button", { name: "Features" }));
+    expect(
+      [...container.querySelectorAll('#technical-rows th[scope="row"]')].map(
+        (row) => row.childNodes[0].textContent,
+      ),
+    ).toEqual([
+      "Component coverage",
+      "Design tokens & theming",
+      "Styling & customization APIs",
+      "Component composition",
+      "Interaction utilities",
+      "Forms & validation integration",
+      "Responsive & density options",
+      "Accessibility support",
+      "TypeScript & developer experience",
+    ]);
+    const styling = getByRole("row", { name: /^Styling & customization APIs/ });
+    expect(
+      [...styling.querySelectorAll(".tool-feature-label")].map(
+        (label) => label.textContent,
+      ),
+    ).toEqual([
+      "Styles / component overrides",
+      "Styles / component overrides",
+      "Styled / unstyled APIs",
+      "Styled / unstyled APIs",
+      "Styles / component overrides",
+      "Styles / component overrides",
+      "Styles / component overrides",
+      "Styled / unstyled APIs",
+      "Styles / component overrides",
+    ]);
+    expect(
+      [...styling.querySelectorAll("td")].flatMap((cell, index) =>
+        cell.classList.contains("different") ? [index] : [],
+      ),
+    ).toEqual([2, 3, 7]);
+    expect(
+      getByRole("row", { name: /^Accessibility support/ }).querySelectorAll(
+        "td.different",
+      ),
+    ).toHaveLength(0);
+    expect(
+      container.querySelectorAll("tbody:first-of-type .difference-mark"),
+    ).toHaveLength(0);
+  });
+
+  it("documents component helpers, form packages and edition boundaries concretely", () => {
+    expect(javascriptTools.mantine.strength).toContain(
+      "reusable interaction hooks",
+    );
+    expect(javascriptTools.mantine.facts[4]).toHaveProperty(
+      "label",
+      "Standalone hook collection",
+    );
+    expect(javascriptTools.mantine.facts[4].detail).toContain("@mantine/hooks");
+    expect(javascriptTools.mantine.facts[5].detail).toContain("@mantine/form");
+    expect(javascriptTools.primevue.facts[5].detail).toContain(
+      "@primevue/forms",
+    );
+    expect(javascriptTools.mui.facts[0].detail).toContain(
+      "community and paid features",
+    );
+    expect(javascriptTools["angular-material"].facts[4].detail).toContain(
+      "@angular/cdk",
+    );
+    expect(javascriptTools["ng-zorro"].facts[1]).toHaveProperty(
+      "label",
+      "Less theme variables",
+    );
+    expect(javascriptTools["ng-zorro"].facts[1].detail).toContain(
+      "differ from React antd tokens",
+    );
+    const topic = javascriptTopics.find(
+      ({ path }) => path === "/javascript/components/",
+    )!;
+    expect(topic.note).toContain("not design-quality scores");
+    expect(topic.note).toContain("server validation or authorization");
+    expect(topic.sources!.length).toBeGreaterThanOrEqual(9);
+    for (const source of topic.sources!)
+      expect(new URL(source.url).protocol).toBe("https:");
+  });
+
+  it("preserves cache-model differences while leaving tied API categories neutral", () => {
+    const { getByRole } = renderApp("/javascript/data-fetching/");
+    fireEvent.click(getByRole("button", { name: "Features" }));
+    const cache = getByRole("row", { name: /^Cache model/ });
+    expect(
+      [...cache.querySelectorAll(".tool-feature-label")].map(
+        (label) => label.textContent,
+      ),
+    ).toEqual([
+      "Keyed results",
+      "Keyed results",
+      "Normalized entities",
+      "Documents / optional entities",
+    ]);
+    expect(
+      [...cache.querySelectorAll("td")].flatMap((cell, index) =>
+        cell.classList.contains("different") ? [index] : [],
+      ),
+    ).toEqual([2, 3]);
+    expect(
+      getByRole("row", { name: /^API focus/ }).querySelectorAll("td.different"),
+    ).toHaveLength(0);
+    expect(cache.textContent).toContain("Graphcache adds normalized caching");
+  });
+
+  it("keeps application-stack candidates outside feature highlighting", () => {
+    const { container } = renderApp(javascriptStacksTopic.path);
+    expect(
+      container.querySelectorAll("td.different, .difference-mark"),
+    ).toHaveLength(0);
   });
 
   it("uses the same three component suites per ecosystem in comparisons and stacks", () => {
@@ -342,7 +586,7 @@ describe("JavaScript / TypeScript", () => {
     );
   });
 
-  it("groups all eight frameworks and explains every row without ambiguous feature statuses", () => {
+  it("groups all nine frameworks and explains every row without ambiguous feature statuses", () => {
     const { getByRole, container } = renderApp("/javascript/ui/");
     const table = within(getByRole("table"));
     fireEvent.click(getByRole("button", { name: "Features" }));
@@ -355,6 +599,7 @@ describe("JavaScript / TypeScript", () => {
       ["React-based", "3"],
       ["Vue-based", "2"],
       ["Angular", "1"],
+      ["Svelte-based", "1"],
       ["Other foundations", "2"],
     ]);
     expect(
@@ -364,18 +609,21 @@ describe("JavaScript / TypeScript", () => {
     ).toEqual([
       "tool-react",
       "tool-next",
-      "tool-react-router",
+      "tool-tanstack-start",
       "tool-vue",
       "tool-nuxt",
       "tool-angular",
+      "tool-sveltekit",
       "tool-astro",
       "tool-remix",
     ]);
     const statuses = [
-      ...container.querySelectorAll(".tool-feature-status"),
+      ...container.querySelectorAll(
+        ".tool-capability-status .tool-feature-label",
+      ),
     ].map((status) => status.textContent);
-    expect(statuses).toHaveLength(24);
-    expect(statuses.filter((status) => status === "Included")).toHaveLength(20);
+    expect(statuses).toHaveLength(27);
+    expect(statuses.filter((status) => status === "Included")).toHaveLength(23);
     expect(statuses.filter((status) => status === "—")).toHaveLength(4);
     const routing = table.getByRole("row", { name: /^Routing/ });
     expect(within(routing).getAllByRole("cell")[5].textContent).toContain(
@@ -407,6 +655,13 @@ describe("JavaScript / TypeScript", () => {
       table.getByText(/webpack · Rspack · custom Nuxt builder/),
     ).toBeTruthy();
     expect(table.getByText(/No application build step:/)).toBeTruthy();
+    expect(table.getByText(/Official Rsbuild integration/)).toBeTruthy();
+    expect(table.getByText(/Vite · SvelteKit plugin/)).toBeTruthy();
+    expect(container.querySelector("#tool-react-router")).toBeNull();
+    expect(container.querySelector("#tool-astro .company")?.textContent).toBe(
+      "React · Vue",
+    );
+    expect(javascriptTools.astro.ecosystems).toEqual(["React", "Vue"]);
     expect(container.textContent).toContain(
       "Remix v3 has its own component model",
     );
@@ -433,20 +688,21 @@ describe("JavaScript / TypeScript", () => {
   it("keeps every framework and its notes available without filtering controls", () => {
     const { getByRole, container } = renderApp("/javascript/ui/");
     fireEvent.click(getByRole("button", { name: "Features" }));
-    expect(container.querySelectorAll("tbody td")).toHaveLength(88);
+    expect(container.querySelectorAll("tbody td")).toHaveLength(99);
     expect(
       container.querySelector(".section-row th")?.getAttribute("colspan"),
-    ).toBe("9");
+    ).toBe("10");
     expect(
       getByRole("button", { name: "Features" }).getAttribute("aria-expanded"),
     ).toBe("true");
-    expect(container.querySelectorAll('th[scope="colgroup"]')).toHaveLength(4);
+    expect(container.querySelectorAll('th[scope="colgroup"]')).toHaveLength(5);
     expect(container.querySelector("#tool-astro")).toBeTruthy();
     expect(container.querySelectorAll(".sources a")).toHaveLength(
-      16 + (frameworksTopic.sources?.length ?? 0),
+      18 + (frameworksTopic.sources?.length ?? 0),
     );
     expect(container.querySelector("#tool-remix")).toBeTruthy();
-    expect(container.querySelector("#tool-react-router")).toBeTruthy();
+    expect(container.querySelector("#tool-tanstack-start")).toBeTruthy();
+    expect(container.querySelector("#tool-sveltekit")).toBeTruthy();
     const notes = container.querySelector(".sources")!;
     expect(notes.hasAttribute("open")).toBe(false);
     expect(notes.textContent).toContain(frameworksTopic.note);
@@ -530,6 +786,49 @@ describe("JavaScript / TypeScript", () => {
             ),
           ).toBe(true);
         }
+      }
+    }
+  });
+
+  it("shows a safe documented local icon for every framework header", () => {
+    const expected = [
+      ["react", "js-react.svg"],
+      ["next", "js-next.svg"],
+      ["tanstack-start", "js-tanstack-start.svg"],
+      ["vue", "js-vue.svg"],
+      ["nuxt", "js-nuxt.svg"],
+      ["angular", "js-angular.svg"],
+      ["sveltekit", "js-sveltekit.png"],
+      ["astro", "js-astro.svg"],
+      ["remix", "js-remix.svg"],
+    ];
+    const notices = readFileSync(
+      resolve(import.meta.dirname, "../../THIRD_PARTY_NOTICES.txt"),
+      "utf8",
+    );
+    const { container } = renderApp(frameworksTopic.path);
+    expect(container.querySelectorAll("thead img.provider-logo")).toHaveLength(
+      9,
+    );
+    for (const [id, filename] of expected) {
+      expect(javascriptTools[id].logo).toBe(filename);
+      const image = container.querySelector(`#tool-${id} img.provider-logo`)!;
+      expect(image.getAttribute("src")).toBe(`/providers/${filename}`);
+      expect(image.getAttribute("alt")).toBe("");
+      const bytes = readFileSync(
+        resolve(import.meta.dirname, "../../public/providers", filename),
+      );
+      expect(bytes.length).toBeGreaterThan(100);
+      expect(notices).toContain(filename);
+      if (filename.endsWith(".svg")) {
+        expect(bytes.toString()).toContain("<svg");
+        expect(bytes.toString()).not.toMatch(
+          /<script|<foreignObject|<!DOCTYPE|<!ENTITY|\bon[a-z]+\s*=|@import|(?:href|src)\s*=\s*["'](?!#)|url\(\s*["']?(?!#)/i,
+        );
+      } else {
+        expect([...bytes.subarray(0, 8)]).toEqual([
+          137, 80, 78, 71, 13, 10, 26, 10,
+        ]);
       }
     }
   });

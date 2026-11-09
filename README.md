@@ -41,16 +41,21 @@ its strengths and limitations, and what you still need to manage.
   validation, backend frameworks, database tools, testing and build tools.
   Comparisons always show all tools in compact tables, without page banners,
   ecosystem selectors or jump controls. Comparisons follow the Cloud/Self-hosted layout: Overview shows Primary
-  purpose, Strengths, Limitations and License & operating costs, followed by a
-  collapsed Features section with topic-specific content. Costs depend on setup
+  purpose (Default look & feel for component libraries), Strengths, Limitations and License & operating costs, followed by a
+  collapsed Features section with comparable labels and explanatory notes. Costs depend on setup
   and are not priced in license cells. ⓘ explains every row; cloud-provider
   responsibility scores are not applied to libraries. Supporting caveats and
   references stay in a collapsed Notes & sources disclosure.
 - Component libraries compares three suites each for React, Vue and Angular,
   with the same candidates in Application stacks; core and commercial license
-  boundaries remain explicit.
-- Frameworks & libraries groups eight columns by ecosystem: React/Next.js/React
-  Router v7 Framework Mode, Vue/Nuxt, Angular, and Astro/Remix v3. Included and —
+  boundaries remain explicit. Default look & feel replaces Primary purpose in
+  Overview, as an unhighlighted editorial description of the components themselves.
+  Nine Features rows compare coverage, tokens/theming, styling APIs, composition,
+  interaction utilities, forms, responsive/density options, accessibility and
+  TypeScript/developer experience, with concrete APIs and companion packages named.
+- Frameworks & libraries groups nine columns by ecosystem: React/Next.js/TanStack
+  Start (React integration), Vue/Nuxt, Angular, SvelteKit, and Astro/Remix v3. Astro
+  is React- or Vue-capable through official integrations. Included and —
   distinguish first-party capabilities from missing features, with package and
   runtime requirements kept visible. UI authoring, build defaults, alternative
   tooling and deployment sit beside routing, SSR and API endpoints. Every row has
@@ -71,7 +76,10 @@ its strengths and limitations, and what you still need to manage.
   Stack rows use editorial order, not measured usage of exact stacks.
   Stack choices and their matching tool headers use locally hosted project icons where available;
   equal alternatives stay equally styled and independently linked.
-- Blue ≠ marks identify less-common responsibility labels, not better products.
+- Blue ≠ marks identify less-common responsibility or JS/TS feature labels, not
+  better products. Feature labels compare across the whole row; uniform rows and
+  ties for the most-common label stay neutral. Overview and Application stacks
+  are not highlighted.
 - All tables stay compact, with sticky labels and horizontal scrolling. Visible
   page banners, view/jump selectors and instructional paragraphs are omitted;
   caveats, status definitions and sources remain in collapsed Notes & sources.
