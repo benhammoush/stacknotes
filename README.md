@@ -71,11 +71,11 @@ its strengths and limitations, and what you still need to manage.
   JavaScript backends. Choices are curated candidates, not exclusive pairings
   or an exhaustive compatibility matrix. Every named tool links to documentation;
   stack rows have no explanation buttons. Alternatives are not a ranking,
-  and the table covers application frameworks, components, styling, state, data
+  and the table covers application frameworks, components, state, data
   fetching and forms, in that order. The Frameworks & libraries comparison
   explains build tooling by project setup rather than presenting it as an independent stack choice.
   Backend, validation, database-tool,
-  and testing choices stay in their dedicated comparisons; animation and icons live in Styling.
+  and testing choices stay in their dedicated comparisons; styling, animation and icons live in the separate Styling tab.
   Columns link to detailed comparisons; choices are optional candidates,
   not required dependencies. These are guides,
   not tested deployment recipes. Python is outside this section.

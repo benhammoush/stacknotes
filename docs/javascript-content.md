@@ -92,8 +92,8 @@ Other tool comparisons retain their existing feature sections and explanations.
 The navigation has eleven comparisons plus Application stacks. The former
 `/javascript/animation/` and `/javascript/icons/` URLs redirect with replacement to
 `/javascript/styling/`, preserving deep links without retaining duplicate topics.
-Each stack offers Tailwind CSS as its styling candidate; animation/icon tools
-remain optional discoveries in Styling rather than added stack dependencies.
+Styling has no column in Application stacks; Tailwind CSS, animation and icon tools
+remain optional discoveries in the separate Styling tab rather than added stack dependencies.
 
 ## Component libraries
 
@@ -233,10 +233,10 @@ authentication/session decisions, authorization, CORS or a same-origin proxy,
 failure handling and coordinated deployment. Input validation and authorization
 must run on the server. Angular client-form checks are not server enforcement;
 Angular CLI is application tooling, and Angular/Material versions must be compatible.
-The stack table has six role columns, in order: application framework,
-component-library candidates, styling, state management,
+The stack table has five role columns, in order: application framework,
+component-library candidates, state management,
 data fetching and forms. Backend, validation, database-tool and testing
-choices remain in their dedicated topic comparisons; animation and icons are in Styling instead of
+choices remain in their dedicated topic comparisons; styling, animation and icons are in the separate Styling tab instead of
 being repeated in each UI row. Each displayed role links to its dedicated comparison. Entries are optional
 candidates, not a dependency checklist. Database tools run in trusted server code;
 client validation does not replace server enforcement. Use compatible ecosystem
@@ -250,7 +250,7 @@ coverage rather than assuming every component can be unit-tested.
 Shared notes below the table explain architecture boundaries; there are no row-info controls.
 Astro requires the matching React/Vue integration and explicit island hydration.
 TanStack Start hosting depends on build tool and target; SvelteKit requires a suitable adapter.
-The Svelte row uses Skeleton, Tailwind CSS, Nano Stores, TanStack Query and TanStack Form.
+The Svelte row lists SvelteKit, Skeleton, Nano Stores, TanStack Query and TanStack Form.
 Skeleton v5 combines styled utilities with framework components, some headless;
 its form utility classes require `@tailwindcss/forms`, while form state and validation stay separate.
 Use `@skeletonlabs/skeleton-svelte`, `@tanstack/svelte-query` (currently Svelte 5.25+)

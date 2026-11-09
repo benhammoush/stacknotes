@@ -238,8 +238,6 @@ describe("JavaScript / TypeScript", () => {
     expect(container.querySelector(".sources")?.textContent).toContain(
       "generic DOM API",
     );
-    for (const stack of javascriptStacks)
-      expect(stack.services[2][3]).toEqual([]);
   });
 
   it.each(["/javascript/animation/", "/javascript/icons/"])(
@@ -586,7 +584,6 @@ describe("JavaScript / TypeScript", () => {
     expect(javascriptStackRoles.map(({ label }) => label)).toEqual([
       "Application framework",
       "Component-library candidates",
-      "Styling",
       "State management",
       "Data fetching",
       "Forms",
@@ -611,7 +608,10 @@ describe("JavaScript / TypeScript", () => {
       /python|django|flask|fastapi/i,
     );
     const { getByRole, container } = renderApp(javascriptStacksTopic.path);
-    expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(24);
+    expect(getByRole("table").querySelectorAll("tbody td")).toHaveLength(20);
+    expect(
+      within(getByRole("table")).queryByRole("link", { name: "Tailwind CSS" }),
+    ).toBeNull();
     expect(
       within(getByRole("table"))
         .getAllByRole("columnheader")
@@ -642,7 +642,7 @@ describe("JavaScript / TypeScript", () => {
   it("keeps shared categories out of the table while preserving their navigation and server caveats", () => {
     for (const id of ["js-react-api", "js-vue-api", "js-angular-api"]) {
       const stack = javascriptStacks.find((item) => item.id === id)!;
-      expect(stack.services).toHaveLength(6);
+      expect(stack.services).toHaveLength(5);
       expect(stack.note).toMatch(/validat/i);
       expect(stack.note).toContain("server");
       expect(stack.note).toMatch(/authorization/);
@@ -673,7 +673,7 @@ describe("JavaScript / TypeScript", () => {
       "Testing",
     ])
       expect(table.queryByRole("columnheader", { name: label })).toBeNull();
-    expect(table.getByRole("columnheader", { name: "Styling" })).toBeTruthy();
+    expect(table.queryByRole("columnheader", { name: "Styling" })).toBeNull();
     expect(container.textContent).not.toContain(
       "Build tooling follows your setup:",
     );

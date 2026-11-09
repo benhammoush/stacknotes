@@ -406,12 +406,17 @@ for (const width of [390, 1440]) {
       name: "Tools by application stack",
     });
     await expect(table.getByRole("rowheader")).toHaveCount(4);
-    await expect(table.getByRole("cell")).toHaveCount(24);
+    await expect(table.getByRole("cell")).toHaveCount(20);
+    await expect(
+      table.getByRole("columnheader", { name: "Styling", exact: true }),
+    ).toHaveCount(0);
+    await expect(
+      table.getByRole("link", { name: "Tailwind CSS", exact: true }),
+    ).toHaveCount(0);
     await expect(table.getByRole("columnheader")).toHaveText([
       "Application stack",
       "Application framework",
       "Component-library candidates",
-      "Styling",
       "State management",
       "Data fetching",
       "Forms",
@@ -449,7 +454,6 @@ for (const width of [390, 1440]) {
     for (const name of [
       "SvelteKit",
       "Skeleton",
-      "Tailwind CSS",
       "Nano Stores",
       "TanStack Query",
       "TanStack Form",
@@ -487,11 +491,9 @@ for (const width of [390, 1440]) {
       const row = table.getByRole("row").filter({
         has: page.getByRole("rowheader", { name: ui, exact: true }),
       });
-      const styling = row.getByRole("cell").nth(2);
-      await expect(styling.getByRole("link").first()).toHaveText(
-        "Tailwind CSS",
-      );
-      const styles = await styling
+      const components = row.getByRole("cell").nth(1);
+      await expect(components.getByRole("link")).toHaveCount(3);
+      const styles = await components
         .locator(".provider-heading")
         .evaluateAll((elements) =>
           elements.map((element) => ({
