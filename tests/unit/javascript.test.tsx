@@ -64,7 +64,7 @@ describe("JavaScript / TypeScript", () => {
       expect(topic.note.length).toBeGreaterThan(60);
       expect(topic.dimensions).toHaveLength(
         topic === frameworksTopic
-          ? 9
+          ? 10
           : topic.path === "/javascript/components/"
             ? 9
             : topic.path === "/javascript/styling/"
@@ -818,7 +818,7 @@ describe("JavaScript / TypeScript", () => {
         cell.classList.contains("different") ? [position] : [],
       ),
     ).toEqual([0, 3, 5]);
-    expect(container.querySelectorAll("dialog")).toHaveLength(13);
+    expect(container.querySelectorAll("dialog")).toHaveLength(14);
     const button = getByRole("button", { name: "About SEO & discoverability" });
     const dialog = container.querySelector<HTMLDialogElement>(
       `#${button.getAttribute("aria-controls")}`,
@@ -902,6 +902,60 @@ describe("JavaScript / TypeScript", () => {
       expect(sources).toContain(url);
   });
 
+  it("compares native data loading without requiring a separate query library", () => {
+    const index = frameworksTopic.dimensions.findIndex(
+      ({ label }) => label === "Data fetching",
+    );
+    expect(index).toBe(9);
+    const expected = [
+      ["react", "App-managed", "Use browser fetching or optional tools."],
+      ["next", "Built-in page loading", "Load data on the server."],
+      ["tanstack-start", "Built-in page loading", "Load data through routes."],
+      ["vue", "App-managed", "Use browser fetching or optional tools."],
+      ["nuxt", "Built-in page loading", "Load data on server and client."],
+      ["angular", "Built-in HTTP tools", "Request data in your app."],
+      ["sveltekit", "Built-in page loading", "Load data on server and client."],
+      ["astro", "Server-side fetching", "Load data when pages are generated."],
+      ["remix", "Built-in server loading", "Load data in route handlers."],
+    ];
+    for (const [id, label, detail] of expected)
+      expect(javascriptTools[id].facts[index]).toEqual({ label, detail });
+    const { getByRole, container } = renderApp(frameworksTopic.path);
+    fireEvent.click(getByRole("button", { name: "Features" }));
+    const row = getByRole("row", { name: /^Data fetching/ });
+    expect(row.querySelectorAll("td")).toHaveLength(9);
+    expect(
+      [...row.querySelectorAll(".tool-feature-label")].map(
+        (cell) => cell.textContent,
+      ),
+    ).toEqual(expected.map(([, label]) => label));
+    expect(
+      [...row.querySelectorAll("td")].flatMap((cell, position) =>
+        cell.classList.contains("different") ? [position] : [],
+      ),
+    ).toEqual([0, 3, 5, 7, 8]);
+    const button = getByRole("button", { name: "About Data fetching" });
+    const dialog = container.querySelector<HTMLDialogElement>(
+      `#${button.getAttribute("aria-controls")}`,
+    )!;
+    const showModal = vi.fn();
+    dialog.showModal = showModal;
+    fireEvent.click(button);
+    expect(showModal).toHaveBeenCalledOnce();
+    for (const text of [
+      "Browser fetching works with every framework",
+      "TanStack Query is separate",
+      "at build time",
+      "at request time",
+      "Keep secrets and direct database access in server code",
+      "isolate private cached data by user and request",
+    ])
+      expect(dialog.textContent).toContain(text);
+    expect(frameworksTopic.sources!.map(({ url }) => url)).toContain(
+      "https://tanstack.com/router/latest/docs/framework/react/guide/data-loading",
+    );
+  });
+
   it("keeps framework cells short while retaining detailed row explanations", () => {
     for (const tool of frameworksTopic.tools) {
       for (const cell of [
@@ -921,7 +975,7 @@ describe("JavaScript / TypeScript", () => {
   it("keeps every framework and its notes available without filtering controls", () => {
     const { getByRole, container } = renderApp("/javascript/ui/");
     fireEvent.click(getByRole("button", { name: "Features" }));
-    expect(container.querySelectorAll("tbody td")).toHaveLength(117);
+    expect(container.querySelectorAll("tbody td")).toHaveLength(126);
     expect(
       container.querySelector(".section-row th")?.getAttribute("colspan"),
     ).toBe("10");

@@ -165,8 +165,8 @@ the routing library alone. Stacknotes itself still uses React Router for navigat
 
 The Overview retains purpose, strengths, limitations and core license terms.
 The collapsed Features section compares UI authoring, routing, SSR, API endpoints,
-default build setup, other build options, deployment, SEO & discoverability and Forms support.
-All thirteen row labels have activation-only ⓘ
+default build setup, other build options, deployment, SEO & discoverability, Forms support
+and Data fetching. All fourteen row labels have activation-only ⓘ
 dialogs explaining purpose and boundaries. Group headings and all tool columns
 remain visible together; source links and additional official references are
 available in the collapsed Notes & sources disclosure.
@@ -212,7 +212,17 @@ checks work everywhere; server validation and authorization remain necessary.
 Live submissions require a server runtime. React form Actions target React 19+;
 TanStack Form is separate from Start. The dedicated Forms comparison is unchanged.
 
-The source list links official feature, forms, mode, rendering and build references.
+Data fetching is the tenth feature row. Plain labels distinguish app-managed
+fetching (React/Vue), integrated page loading (Next.js, TanStack Start, Nuxt and
+SvelteKit), Angular HTTP tools, Astro page-generation fetching and Remix v3 route
+handlers. Native browser fetching works everywhere. Framework loading is not the
+same as an application-wide query cache, and additional query libraries are optional.
+TanStack Start uses Router loaders; Query is separate. Astro can fetch at build time
+or at request time depending on rendering mode. Keep secrets and database access
+server-side, enforce authorization, and isolate private caches by user and request.
+The dedicated Data fetching page compares optional tools separately.
+
+The source list links official feature, forms, data-loading, rendering and build references.
 Next.js build claims target 16+ and Nuxt claims target 4.x. TanStack Start's current
 React documentation describes Vite and Rsbuild builds; hosting integration depends
 on the build tool and target. SvelteKit uses Vite and deployment adapters, with

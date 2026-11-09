@@ -233,8 +233,8 @@ for (const width of [390, 1440]) {
       "Other foundations",
     ]);
     await expect(table.locator(".tool-column-headers th")).toHaveCount(9);
-    await expect(table.getByRole("cell")).toHaveCount(117);
-    await expect(table.locator(".tool-feature-status")).toHaveCount(81);
+    await expect(table.getByRole("cell")).toHaveCount(126);
+    await expect(table.locator(".tool-feature-status")).toHaveCount(90);
     await expect(table.locator(".tool-capability-status")).toHaveCount(27);
     const seo = table.getByRole("row", { name: /^SEO & discoverability/ });
     await expect(seo.getByRole("cell")).toHaveCount(9);
@@ -300,6 +300,35 @@ for (const width of [390, 1440]) {
     await page.keyboard.press("Escape");
     await expect(formsDialog).toBeHidden();
     await expect(formsButton).toBeFocused();
+    const fetching = table.getByRole("row", { name: /^Data fetching/ });
+    await expect(fetching.locator(".tool-feature-label")).toHaveText([
+      "App-managed",
+      "Built-in page loading",
+      "Built-in page loading",
+      "App-managed",
+      "Built-in page loading",
+      "Built-in HTTP tools",
+      "Built-in page loading",
+      "Server-side fetching",
+      "Built-in server loading",
+    ]);
+    const fetchingButton = page.getByRole("button", {
+      name: "About Data fetching",
+      exact: true,
+    });
+    await fetchingButton.focus();
+    await page.keyboard.press("Enter");
+    const fetchingDialog = page.getByRole("dialog", {
+      name: "Data fetching",
+      exact: true,
+    });
+    await expect(fetchingDialog).toBeVisible();
+    await expect(fetchingDialog).toContainText("TanStack Query is separate");
+    await expect(fetchingDialog).toContainText("at build time");
+    await expect(fetchingDialog).toContainText("at request time");
+    await page.keyboard.press("Escape");
+    await expect(fetchingDialog).toBeHidden();
+    await expect(fetchingButton).toBeFocused();
     await expect(page.locator("#tool-tanstack-start a")).toContainText(
       "TanStack Start",
     );

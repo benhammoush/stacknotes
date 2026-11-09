@@ -65,6 +65,11 @@ export const frameworksTopic: JavaScriptTopic = {
       explanation:
         "What the framework provides for collecting, checking and submitting user input. Visual controls come from HTML or component libraries; submission handling is not the same as managing field values, errors and validation. Basic HTML checks work everywhere. Add your application's validation rules even when validation tools are built in. The server must validate submissions and enforce authorization; client checks can be bypassed. Live server submissions require a server runtime. React form Actions target React 19+; TanStack Form is separate from TanStack Start. Angular's built-in forms manage client state and validation, not server enforcement. Extra libraries are optional, not a requirement for every complex form.",
     },
+    {
+      label: "Data fetching",
+      explanation:
+        "Getting data from an API or database into your pages. Browser fetching works with every framework; some also organize page loading for you. Loading is not the same as a shared application-data cache. Frameworks may include caching, while optional libraries add more control over shared results, refreshing and updates after saving. TanStack Start uses TanStack Router loaders; TanStack Query is separate. Astro fetches during page generation: at build time for prerendered pages or at request time for on-demand pages. Live server loading needs a server runtime. Keep secrets and direct database access in server code, enforce authorization, and isolate private cached data by user and request. A browser must use an authorized API rather than direct database credentials.",
+    },
   ],
   tools: [
     {
@@ -115,6 +120,10 @@ export const frameworksTopic: JavaScriptTopic = {
         {
           label: "Basic support",
           detail: "Extra tools for complex forms.",
+        },
+        {
+          label: "App-managed",
+          detail: "Use browser fetching or optional tools.",
         },
       ],
     },
@@ -168,6 +177,10 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "Built-in submissions",
           detail: "Add validation rules.",
         },
+        {
+          label: "Built-in page loading",
+          detail: "Load data on the server.",
+        },
       ],
     },
     {
@@ -217,6 +230,10 @@ export const frameworksTopic: JavaScriptTopic = {
         {
           label: "Built-in submissions",
           detail: "Add validation rules.",
+        },
+        {
+          label: "Built-in page loading",
+          detail: "Load data through routes.",
         },
       ],
     },
@@ -270,6 +287,10 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "Basic support",
           detail: "Extra tools for complex forms.",
         },
+        {
+          label: "App-managed",
+          detail: "Use browser fetching or optional tools.",
+        },
       ],
     },
     {
@@ -322,6 +343,10 @@ export const frameworksTopic: JavaScriptTopic = {
         {
           label: "Built-in server handling",
           detail: "Add validation rules.",
+        },
+        {
+          label: "Built-in page loading",
+          detail: "Load data on server and client.",
         },
       ],
     },
@@ -377,6 +402,10 @@ export const frameworksTopic: JavaScriptTopic = {
         {
           label: "Built-in forms",
           detail: "Form management and validation.",
+        },
+        {
+          label: "Built-in HTTP tools",
+          detail: "Request data in your app.",
         },
       ],
     },
@@ -434,6 +463,10 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "Built-in submissions",
           detail: "Add validation rules.",
         },
+        {
+          label: "Built-in page loading",
+          detail: "Load data on server and client.",
+        },
       ],
     },
     {
@@ -489,6 +522,10 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "Built-in submissions",
           detail: "Schema validation.",
         },
+        {
+          label: "Server-side fetching",
+          detail: "Load data when pages are generated.",
+        },
       ],
     },
     {
@@ -543,10 +580,50 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "Built-in submissions",
           detail: "Validation tools.",
         },
+        {
+          label: "Built-in server loading",
+          detail: "Load data in route handlers.",
+        },
       ],
     },
   ],
   sources: [
+    {
+      label: "React fetching and framework-loading guidance",
+      url: "https://react.dev/learn/synchronizing-with-effects",
+    },
+    {
+      label: "Next.js data fetching and streaming",
+      url: "https://nextjs.org/docs/app/getting-started/fetching-data",
+    },
+    {
+      label: "TanStack Router loaders and route caching used by Start",
+      url: "https://tanstack.com/router/latest/docs/framework/react/guide/data-loading",
+    },
+    {
+      label: "Vue watchers and asynchronous fetching",
+      url: "https://vuejs.org/guide/essentials/watchers.html",
+    },
+    {
+      label: "Nuxt server and client data fetching",
+      url: "https://nuxt.com/docs/4.x/getting-started/data-fetching",
+    },
+    {
+      label: "Angular HTTP requests and error handling",
+      url: "https://angular.dev/guide/http/making-requests",
+    },
+    {
+      label: "SvelteKit universal and server loading",
+      url: "https://svelte.dev/docs/kit/load",
+    },
+    {
+      label: "Astro build-time and request-time fetching",
+      url: "https://docs.astro.build/en/guides/data-fetching/",
+    },
+    {
+      label: "Remix v3 reading data in route actions",
+      url: "https://github.com/remix-run/remix/blob/main/packages/remix/guides/08-data-and-validation.md",
+    },
     {
       label: "React form Actions and submission state",
       url: "https://react.dev/reference/react-dom/components/form",
