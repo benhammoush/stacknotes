@@ -165,7 +165,8 @@ the routing library alone. Stacknotes itself still uses React Router for navigat
 
 The Overview retains purpose, strengths, limitations and core license terms.
 The collapsed Features section compares UI authoring, routing, SSR, API endpoints,
-default build setup, other build options and deployment. All eleven row labels have activation-only ⓘ
+default build setup, other build options, deployment and SEO & discoverability.
+All twelve row labels have activation-only ⓘ
 dialogs explaining purpose and boundaries. Group headings and all tool columns
 remain visible together; source links and additional official references are
 available in the collapsed Notes & sources disclosure.
@@ -184,6 +185,22 @@ package. React and Vue supply SSR APIs, not a fully assembled server app. Angula
 SSR is not a general-purpose API layer. Request-time operations require a server;
 prerendered output cannot execute them. UI authoring, build and deployment use
 category labels with descriptive notes rather than forced binary verdicts.
+
+SEO & discoverability is the eighth feature row, with factual integration labels
+rather than Included/— or quality scores. It covers rendered HTML, titles and meta
+descriptions, canonical URLs, social previews, sitemap/robots files and structured
+data (JSON-LD). The explanation distinguishes HTTP redirects/status codes from
+client navigation, and explicitly gives no indexing or ranking guarantee. Content,
+internal links, performance and the chosen rendering/deployment mode still matter.
+React 19+ head-element support is distinct from an assembled SSR app; Vue requires
+head/server integration. Next.js supplies metadata and sitemap/robots conventions;
+TanStack Start supplies route head APIs and configured prerender sitemap generation.
+Nuxt's useHead/useSeoMeta does not bundle every SEO module. Angular Title/Meta and
+optional SSR are distinct responsibilities. SvelteKit uses svelte:head with manual
+sitemap endpoints/files. Astro uses document head markup and a separate official
+sitemap integration for generated static routes, not automatic dynamic SSR discovery.
+Remix v3 renders an explicit JSX document head; do not assume Remix v2 meta/links
+exports. Every product still needs correctly authored metadata and structured data.
 
 The source list links official feature, mode, rendering and build references.
 Next.js build claims target 16+ and Nuxt claims target 4.x. TanStack Start's current

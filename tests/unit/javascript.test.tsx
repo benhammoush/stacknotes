@@ -64,7 +64,7 @@ describe("JavaScript / TypeScript", () => {
       expect(topic.note.length).toBeGreaterThan(60);
       expect(topic.dimensions).toHaveLength(
         topic === frameworksTopic
-          ? 7
+          ? 8
           : topic.path === "/javascript/components/"
             ? 9
             : topic.path === "/javascript/styling/"
@@ -781,6 +781,74 @@ describe("JavaScript / TypeScript", () => {
       expect(new URL(source.url).protocol).toBe("https:");
   });
 
+  it("compares SEO integration approaches for all nine frameworks without ranking promises", () => {
+    const index = frameworksTopic.dimensions.findIndex(
+      ({ label }) => label === "SEO & discoverability",
+    );
+    expect(index).toBe(7);
+    const expected = [
+      ["react", "App-managed integration", "React 19+"],
+      ["next", "Integrated head APIs", "Metadata API"],
+      ["tanstack-start", "Integrated head APIs", "configured sitemap"],
+      ["vue", "App-managed integration", "Assemble SSR"],
+      ["nuxt", "Integrated head APIs", "useHead/useSeoMeta"],
+      ["angular", "Metadata services", "Title/Meta"],
+      ["sveltekit", "Document head markup", "<svelte:head>"],
+      ["astro", "Document head markup", "@astrojs/sitemap"],
+      ["remix", "Document head markup", "Server-rendered JSX"],
+    ];
+    for (const [id, label, detail] of expected) {
+      const fact = javascriptTools[id].facts[index];
+      expect(fact).toHaveProperty("label", label);
+      expect(fact).not.toHaveProperty("included");
+      expect(fact.detail).toContain(detail);
+    }
+    const { getByRole, container } = renderApp(frameworksTopic.path);
+    fireEvent.click(getByRole("button", { name: "Features" }));
+    const row = getByRole("row", { name: /^SEO & discoverability/ });
+    expect(row.querySelectorAll("td")).toHaveLength(9);
+    expect(row.querySelectorAll(".tool-capability-status")).toHaveLength(0);
+    expect(
+      [...row.querySelectorAll(".tool-feature-label")].map(
+        (cell) => cell.textContent,
+      ),
+    ).toEqual(expected.map(([, label]) => label));
+    expect(
+      [...row.querySelectorAll("td")].flatMap((cell, position) =>
+        cell.classList.contains("different") ? [position] : [],
+      ),
+    ).toEqual([0, 3, 5]);
+    expect(container.querySelectorAll("dialog")).toHaveLength(12);
+    const button = getByRole("button", { name: "About SEO & discoverability" });
+    const dialog = container.querySelector<HTMLDialogElement>(
+      `#${button.getAttribute("aria-controls")}`,
+    )!;
+    const showModal = vi.fn();
+    dialog.showModal = showModal;
+    fireEvent.click(button);
+    expect(showModal).toHaveBeenCalledOnce();
+    for (const text of [
+      "canonical URLs",
+      "link-preview bots",
+      "JSON-LD",
+      "HTTP redirects/404",
+      "neither guarantees indexing or rankings",
+    ])
+      expect(dialog.textContent).toContain(text);
+    expect(frameworksTopic.note).toContain("not Remix v2 meta/links exports");
+    expect(frameworksTopic.note).toContain(
+      "not automatic discovery of dynamic SSR routes",
+    );
+    const sources = frameworksTopic.sources!.map(({ url }) => url);
+    for (const url of [
+      "https://tanstack.com/start/latest/docs/framework/react/guide/seo",
+      "https://svelte.dev/docs/kit/seo",
+      "https://docs.astro.build/en/guides/integrations-guide/sitemap/",
+      "https://github.com/remix-run/remix/blob/main/packages/remix/guides/04-rendering-ui.md",
+    ])
+      expect(sources).toContain(url);
+  });
+
   it("keeps framework cells short while retaining detailed row explanations", () => {
     for (const tool of frameworksTopic.tools) {
       for (const cell of [
@@ -800,7 +868,7 @@ describe("JavaScript / TypeScript", () => {
   it("keeps every framework and its notes available without filtering controls", () => {
     const { getByRole, container } = renderApp("/javascript/ui/");
     fireEvent.click(getByRole("button", { name: "Features" }));
-    expect(container.querySelectorAll("tbody td")).toHaveLength(99);
+    expect(container.querySelectorAll("tbody td")).toHaveLength(108);
     expect(
       container.querySelector(".section-row th")?.getAttribute("colspan"),
     ).toBe("10");

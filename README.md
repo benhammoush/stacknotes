@@ -63,7 +63,8 @@ its strengths and limitations, and what you still need to manage.
   is React- or Vue-capable through official integrations. Included and —
   distinguish first-party capabilities from missing features, with package and
   runtime requirements kept visible. UI authoring, build defaults, alternative
-  tooling and deployment sit beside routing, SSR and API endpoints. Every row has
+  tooling and deployment sit beside routing, SSR and API endpoints. SEO & discoverability
+  distinguishes head APIs, metadata services and app-authored markup, not ranking quality. Every row has
   an ⓘ explanation. The former application-framework URL redirects to this page.
 - Application stacks is the JavaScript / TypeScript entry topic. Four rows—React,
   Angular, Vue and Svelte—group framework and library alternatives and distinguish integrated server capabilities from separately deployed

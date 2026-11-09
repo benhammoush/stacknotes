@@ -233,9 +233,40 @@ for (const width of [390, 1440]) {
       "Other foundations",
     ]);
     await expect(table.locator(".tool-column-headers th")).toHaveCount(9);
-    await expect(table.getByRole("cell")).toHaveCount(99);
-    await expect(table.locator(".tool-feature-status")).toHaveCount(63);
+    await expect(table.getByRole("cell")).toHaveCount(108);
+    await expect(table.locator(".tool-feature-status")).toHaveCount(72);
     await expect(table.locator(".tool-capability-status")).toHaveCount(27);
+    const seo = table.getByRole("row", { name: /^SEO & discoverability/ });
+    await expect(seo.getByRole("cell")).toHaveCount(9);
+    await expect(seo.locator(".tool-feature-label")).toHaveText([
+      "App-managed integration",
+      "Integrated head APIs",
+      "Integrated head APIs",
+      "App-managed integration",
+      "Integrated head APIs",
+      "Metadata services",
+      "Document head markup",
+      "Document head markup",
+      "Document head markup",
+    ]);
+    await expect(seo.locator(".tool-capability-status")).toHaveCount(0);
+    const seoButton = page.getByRole("button", {
+      name: "About SEO & discoverability",
+      exact: true,
+    });
+    await seoButton.focus();
+    await page.keyboard.press("Enter");
+    const seoDialog = page.getByRole("dialog", {
+      name: "SEO & discoverability",
+      exact: true,
+    });
+    await expect(seoDialog).toBeVisible();
+    await expect(seoDialog).toContainText(
+      "neither guarantees indexing or rankings",
+    );
+    await page.keyboard.press("Escape");
+    await expect(seoDialog).toBeHidden();
+    await expect(seoButton).toBeFocused();
     await expect(page.locator("#tool-tanstack-start a")).toContainText(
       "TanStack Start",
     );
