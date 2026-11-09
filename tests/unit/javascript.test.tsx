@@ -64,7 +64,7 @@ describe("JavaScript / TypeScript", () => {
       expect(topic.note.length).toBeGreaterThan(60);
       expect(topic.dimensions).toHaveLength(
         topic === frameworksTopic
-          ? 8
+          ? 9
           : topic.path === "/javascript/components/"
             ? 9
             : topic.path === "/javascript/styling/"
@@ -818,7 +818,7 @@ describe("JavaScript / TypeScript", () => {
         cell.classList.contains("different") ? [position] : [],
       ),
     ).toEqual([0, 3, 5]);
-    expect(container.querySelectorAll("dialog")).toHaveLength(12);
+    expect(container.querySelectorAll("dialog")).toHaveLength(13);
     const button = getByRole("button", { name: "About SEO & discoverability" });
     const dialog = container.querySelector<HTMLDialogElement>(
       `#${button.getAttribute("aria-controls")}`,
@@ -849,6 +849,59 @@ describe("JavaScript / TypeScript", () => {
       expect(sources).toContain(url);
   });
 
+  it("compares forms support for all frameworks without equating submissions with validation", () => {
+    const index = frameworksTopic.dimensions.findIndex(
+      ({ label }) => label === "Forms support",
+    );
+    expect(index).toBe(8);
+    const expected = [
+      ["react", "Basic support", "Extra tools for complex forms."],
+      ["next", "Built-in submissions", "Add validation rules."],
+      ["tanstack-start", "Built-in submissions", "Add validation rules."],
+      ["vue", "Basic support", "Extra tools for complex forms."],
+      ["nuxt", "Built-in server handling", "Add validation rules."],
+      ["angular", "Built-in forms", "Form management and validation."],
+      ["sveltekit", "Built-in submissions", "Add validation rules."],
+      ["astro", "Built-in submissions", "Schema validation."],
+      ["remix", "Built-in submissions", "Validation tools."],
+    ];
+    for (const [id, label, detail] of expected)
+      expect(javascriptTools[id].facts[index]).toEqual({ label, detail });
+    const { getByRole, container } = renderApp(frameworksTopic.path);
+    fireEvent.click(getByRole("button", { name: "Features" }));
+    const row = getByRole("row", { name: /^Forms support/ });
+    expect(row.querySelectorAll("td")).toHaveLength(9);
+    expect(row.querySelectorAll(".tool-capability-status")).toHaveLength(0);
+    expect(
+      [...row.querySelectorAll(".tool-feature-label")].map(
+        (cell) => cell.textContent,
+      ),
+    ).toEqual(expected.map(([, label]) => label));
+    const button = getByRole("button", { name: "About Forms support" });
+    const dialog = container.querySelector<HTMLDialogElement>(
+      `#${button.getAttribute("aria-controls")}`,
+    )!;
+    const showModal = vi.fn();
+    dialog.showModal = showModal;
+    fireEvent.click(button);
+    expect(showModal).toHaveBeenCalledOnce();
+    for (const text of [
+      "Visual controls come from HTML or component libraries",
+      "Basic HTML checks work everywhere",
+      "The server must validate submissions and enforce authorization",
+      "server runtime",
+      "TanStack Form is separate",
+    ])
+      expect(dialog.textContent).toContain(text);
+    const sources = frameworksTopic.sources!.map(({ url }) => url);
+    for (const url of [
+      "https://angular.dev/guide/forms/reactive-forms",
+      "https://docs.astro.build/en/guides/actions/",
+      "https://github.com/remix-run/remix/blob/main/packages/remix/guides/09-forms-and-mutations.md",
+    ])
+      expect(sources).toContain(url);
+  });
+
   it("keeps framework cells short while retaining detailed row explanations", () => {
     for (const tool of frameworksTopic.tools) {
       for (const cell of [
@@ -868,7 +921,7 @@ describe("JavaScript / TypeScript", () => {
   it("keeps every framework and its notes available without filtering controls", () => {
     const { getByRole, container } = renderApp("/javascript/ui/");
     fireEvent.click(getByRole("button", { name: "Features" }));
-    expect(container.querySelectorAll("tbody td")).toHaveLength(108);
+    expect(container.querySelectorAll("tbody td")).toHaveLength(117);
     expect(
       container.querySelector(".section-row th")?.getAttribute("colspan"),
     ).toBe("10");

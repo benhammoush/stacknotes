@@ -60,6 +60,11 @@ export const frameworksTopic: JavaScriptTopic = {
       explanation:
         "Technical tools for making public pages understandable to search crawlers and link-preview bots: rendered HTML, page titles/descriptions, canonical URLs, social metadata, sitemap/robots files and structured data (JSON-LD). Labels describe integration approaches, not SEO quality scores. SSR or prerendering can expose content without browser JavaScript, but neither guarantees indexing or rankings. Content, internal links, performance and correct HTTP redirects/404 status codes still matter. A client-side route change is not an HTTP redirect. Configure the actual rendered output, metadata and deployment for your public routes; private dashboards may not need indexing.",
     },
+    {
+      label: "Forms support",
+      explanation:
+        "What the framework provides for collecting, checking and submitting user input. Visual controls come from HTML or component libraries; submission handling is not the same as managing field values, errors and validation. Basic HTML checks work everywhere. Add your application's validation rules even when validation tools are built in. The server must validate submissions and enforce authorization; client checks can be bypassed. Live server submissions require a server runtime. React form Actions target React 19+; TanStack Form is separate from TanStack Start. Angular's built-in forms manage client state and validation, not server enforcement. Extra libraries are optional, not a requirement for every complex form.",
+    },
   ],
   tools: [
     {
@@ -106,6 +111,10 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "App-managed integration",
           detail:
             "React 19+ title/meta/link; SSR and sitemap/robots setup belong to your app/framework.",
+        },
+        {
+          label: "Basic support",
+          detail: "Extra tools for complex forms.",
         },
       ],
     },
@@ -155,6 +164,10 @@ export const frameworksTopic: JavaScriptTopic = {
           detail:
             "Metadata API, SSR/prerendering and sitemap/robots conventions; configure canonicals and JSON-LD.",
         },
+        {
+          label: "Built-in submissions",
+          detail: "Add validation rules.",
+        },
       ],
     },
     {
@@ -200,6 +213,10 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "Integrated head APIs",
           detail:
             "Route head, SSR/prerendering; configured sitemap generation; author robots and JSON-LD.",
+        },
+        {
+          label: "Built-in submissions",
+          detail: "Add validation rules.",
         },
       ],
     },
@@ -249,6 +266,10 @@ export const frameworksTopic: JavaScriptTopic = {
           detail:
             "Assemble SSR and head management; canonicals, sitemap/robots and JSON-LD are app work.",
         },
+        {
+          label: "Basic support",
+          detail: "Extra tools for complex forms.",
+        },
       ],
     },
     {
@@ -297,6 +318,10 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "Integrated head APIs",
           detail:
             "useHead/useSeoMeta with SSR; sitemap/robots via files, routes or modules; author JSON-LD.",
+        },
+        {
+          label: "Built-in server handling",
+          detail: "Add validation rules.",
         },
       ],
     },
@@ -348,6 +373,10 @@ export const frameworksTopic: JavaScriptTopic = {
           label: "Metadata services",
           detail:
             "Title/Meta services; configure @angular/ssr; canonicals, sitemap/robots and JSON-LD are app work.",
+        },
+        {
+          label: "Built-in forms",
+          detail: "Form management and validation.",
         },
       ],
     },
@@ -401,6 +430,10 @@ export const frameworksTopic: JavaScriptTopic = {
           detail:
             "<svelte:head> with SSR/prerendering; author canonicals/JSON-LD and sitemap/robots routes or files.",
         },
+        {
+          label: "Built-in submissions",
+          detail: "Add validation rules.",
+        },
       ],
     },
     {
@@ -452,6 +485,10 @@ export const frameworksTopic: JavaScriptTopic = {
           detail:
             "<head> in HTML-first pages; add @astrojs/sitemap for static routes; author robots and JSON-LD.",
         },
+        {
+          label: "Built-in submissions",
+          detail: "Schema validation.",
+        },
       ],
     },
     {
@@ -502,10 +539,50 @@ export const frameworksTopic: JavaScriptTopic = {
           detail:
             "Server-rendered JSX document; author head tags, canonicals, sitemap/robots responses and JSON-LD.",
         },
+        {
+          label: "Built-in submissions",
+          detail: "Validation tools.",
+        },
       ],
     },
   ],
   sources: [
+    {
+      label: "React form Actions and submission state",
+      url: "https://react.dev/reference/react-dom/components/form",
+    },
+    {
+      label: "Next.js forms and Server Actions",
+      url: "https://nextjs.org/docs/app/guides/forms",
+    },
+    {
+      label: "TanStack Start server functions and input validation",
+      url: "https://tanstack.com/start/latest/docs/framework/react/guide/server-functions",
+    },
+    {
+      label: "Vue form input bindings",
+      url: "https://vuejs.org/guide/essentials/forms.html",
+    },
+    {
+      label: "Nuxt server routes and request validation",
+      url: "https://nuxt.com/docs/4.x/directory-structure/server",
+    },
+    {
+      label: "Angular reactive forms and validators",
+      url: "https://angular.dev/guide/forms/reactive-forms",
+    },
+    {
+      label: "SvelteKit form actions and validation errors",
+      url: "https://svelte.dev/docs/kit/form-actions",
+    },
+    {
+      label: "Astro Actions and form schema validation",
+      url: "https://docs.astro.build/en/guides/actions/",
+    },
+    {
+      label: "Remix v3 forms, mutations and data-schema validation",
+      url: "https://github.com/remix-run/remix/blob/main/packages/remix/guides/09-forms-and-mutations.md",
+    },
     {
       label: "React 19+ document title and metadata",
       url: "https://react.dev/reference/react-dom/components/title",

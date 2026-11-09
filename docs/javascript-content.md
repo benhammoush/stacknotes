@@ -165,8 +165,8 @@ the routing library alone. Stacknotes itself still uses React Router for navigat
 
 The Overview retains purpose, strengths, limitations and core license terms.
 The collapsed Features section compares UI authoring, routing, SSR, API endpoints,
-default build setup, other build options, deployment and SEO & discoverability.
-All twelve row labels have activation-only ⓘ
+default build setup, other build options, deployment, SEO & discoverability and Forms support.
+All thirteen row labels have activation-only ⓘ
 dialogs explaining purpose and boundaries. Group headings and all tool columns
 remain visible together; source links and additional official references are
 available in the collapsed Notes & sources disclosure.
@@ -202,7 +202,17 @@ sitemap integration for generated static routes, not automatic dynamic SSR disco
 Remix v3 renders an explicit JSX document head; do not assume Remix v2 meta/links
 exports. Every product still needs correctly authored metadata and structured data.
 
-The source list links official feature, mode, rendering and build references.
+Forms support is the ninth feature row, using plain descriptions rather than
+Included/— verdicts. React and Vue show basic support; Next.js, TanStack Start,
+SvelteKit, Astro and Remix v3 show built-in submissions; Nuxt shows built-in server
+handling; Angular shows built-in form management and validation. Details distinguish
+application-authored validation rules from schema/validation tools. The explanation
+separates visual controls, client form state and server submissions. Native HTML
+checks work everywhere; server validation and authorization remain necessary.
+Live submissions require a server runtime. React form Actions target React 19+;
+TanStack Form is separate from Start. The dedicated Forms comparison is unchanged.
+
+The source list links official feature, forms, mode, rendering and build references.
 Next.js build claims target 16+ and Nuxt claims target 4.x. TanStack Start's current
 React documentation describes Vite and Rsbuild builds; hosting integration depends
 on the build tool and target. SvelteKit uses Vite and deployment adapters, with

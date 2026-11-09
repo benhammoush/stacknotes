@@ -65,7 +65,8 @@ its strengths and limitations, and what you still need to manage.
   runtime requirements kept visible. UI authoring, build defaults, alternative
   tooling and deployment sit beside routing, SSR and API endpoints. SEO & discoverability
   distinguishes head APIs, metadata services and app-authored markup, not ranking quality. Every row has
-  an ⓘ explanation. The former application-framework URL redirects to this page.
+  an ⓘ explanation. Forms support distinguishes basic input handling, built-in
+  submissions and form management/validation. The former application-framework URL redirects to this page.
 - Application stacks is the JavaScript / TypeScript entry topic. Four rows—React,
   Angular, Vue and Svelte—group framework and library alternatives and distinguish integrated server capabilities from separately deployed
   JavaScript backends. Choices are curated candidates, not exclusive pairings

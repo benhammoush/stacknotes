@@ -233,8 +233,8 @@ for (const width of [390, 1440]) {
       "Other foundations",
     ]);
     await expect(table.locator(".tool-column-headers th")).toHaveCount(9);
-    await expect(table.getByRole("cell")).toHaveCount(108);
-    await expect(table.locator(".tool-feature-status")).toHaveCount(72);
+    await expect(table.getByRole("cell")).toHaveCount(117);
+    await expect(table.locator(".tool-feature-status")).toHaveCount(81);
     await expect(table.locator(".tool-capability-status")).toHaveCount(27);
     const seo = table.getByRole("row", { name: /^SEO & discoverability/ });
     await expect(seo.getByRole("cell")).toHaveCount(9);
@@ -267,6 +267,39 @@ for (const width of [390, 1440]) {
     await page.keyboard.press("Escape");
     await expect(seoDialog).toBeHidden();
     await expect(seoButton).toBeFocused();
+    const forms = table.getByRole("row", { name: /^Forms support/ });
+    await expect(forms.getByRole("cell")).toHaveCount(9);
+    await expect(forms.locator(".tool-feature-label")).toHaveText([
+      "Basic support",
+      "Built-in submissions",
+      "Built-in submissions",
+      "Basic support",
+      "Built-in server handling",
+      "Built-in forms",
+      "Built-in submissions",
+      "Built-in submissions",
+      "Built-in submissions",
+    ]);
+    const formsButton = page.getByRole("button", {
+      name: "About Forms support",
+      exact: true,
+    });
+    await formsButton.focus();
+    await page.keyboard.press("Enter");
+    const formsDialog = page.getByRole("dialog", {
+      name: "Forms support",
+      exact: true,
+    });
+    await expect(formsDialog).toBeVisible();
+    await expect(formsDialog).toContainText(
+      "Basic HTML checks work everywhere",
+    );
+    await expect(formsDialog).toContainText(
+      "The server must validate submissions and enforce authorization",
+    );
+    await page.keyboard.press("Escape");
+    await expect(formsDialog).toBeHidden();
+    await expect(formsButton).toBeFocused();
     await expect(page.locator("#tool-tanstack-start a")).toContainText(
       "TanStack Start",
     );
